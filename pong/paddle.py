@@ -1,4 +1,5 @@
 import pygame
+from player import Player
 
 black = (0, 0, 0)
 white = (255, 255, 255)
@@ -8,9 +9,10 @@ class Paddle(pygame.sprite.Sprite):
         super().__init__()
 
         # initliazing background color and setting the block to be transparent
-        self.image = pygame.Surface([width, height])
-        self.image.fill(black)
-        self.image.set_colorkey(black)
+        #self.image = pygame.Surface([width, height])
+        #self.image.fill(black)
+        #self.image.set_colorkey(black)
+        self.image = Player(5, 5, 5, 5, 5)
 
         pygame.draw.rect(self.image, color, [0, 0, width, height])
 
