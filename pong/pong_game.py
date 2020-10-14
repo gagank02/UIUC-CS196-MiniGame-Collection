@@ -20,10 +20,6 @@ paddleA = Paddle(white, 10, 100)
 paddleA.rect.x = 20
 paddleA.rect.y = 200
 
-player1 = Player(5, 5, 5, 5, 5)
-player1.rect.x = 345
-player1.rect.y = 250
-
 paddleB = Paddle(white, 10, 100)
 paddleB.rect.x = 670
 paddleB.rect.y = 200
@@ -38,7 +34,6 @@ all_sprites = pygame.sprite.Group()
 all_sprites.add(paddleA)
 all_sprites.add(paddleB)
 all_sprites.add(ball)
-all_sprites.add(player1)
 
 playing = True
 

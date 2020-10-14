@@ -16,22 +16,23 @@ class Player(pygame.sprite.Sprite):
         self.awareness = awareness
         self.attack = attack
 
-        # def moveUp(self, pixels):
-        #     self.rect.y -= pixels
-        #     if self.rect.y < 0:
-        #         self.rect.y = 0
-        #
-        # def moveDown(self, pixels):
-        #     self.rect.y += pixels
-        #     # checks for offscreen
-        #     if self.rect.y > 400:
-        #         self.rect.y = 400
-        #
-        # def moveLeft(self, pixels):
-        #     self.rect.x -= pixels
-        #     if self.rect.x < 0:
-        #         self.rect.x = 0
-        #
-        # def moveRight(self, pixels)
-        #     self.rect.x += pixels
-        #     if self.rect.x > 700
+    def moveUp(self, pixels):
+        self.rect.y -= pixels
+        if self.rect.y < 0:
+            self.rect.y = 0
+
+    def moveDown(self, pixels):
+        self.rect.y += pixels
+        # checks for offscreen
+        if self.rect.y > 400:
+            self.rect.y = 400
+
+    def moveLeft(self, pixels):
+        self.rect.x -= pixels
+        if self.rect.x < 0:
+            self.rect.x = 0
+
+    def moveRight(self, pixels):
+        self.rect.x += pixels
+        if self.rect.x > 700:
+            self.rect.x = 700
