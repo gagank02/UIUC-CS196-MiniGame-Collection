@@ -2,6 +2,7 @@
 import pygame
 from paddle import Paddle
 from ball import Ball
+from player import Player
 
 pygame.init()
 
@@ -18,6 +19,9 @@ pygame.display.set_caption("Pong")
 paddleA = Paddle(white, 10, 100)
 paddleA.rect.x = 20
 paddleA.rect.y = 200
+
+player1 = Player(5, 5, 5, 5, 5)
+paddleA = player1
 
 paddleB = Paddle(white, 10, 100)
 paddleB.rect.x = 670
