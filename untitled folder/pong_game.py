@@ -1,5 +1,6 @@
 # intialize/import pygame
 import pygame
+from paddle import Paddle 
 pygame.init()
 
 # setting colors for game
@@ -23,7 +24,8 @@ while playing:
         if event.type == pygame.QUIT:
             playing = False
 
-    # Game Logic
+    # Game Logic comes here
+
 
     screen.fill(black)
 
