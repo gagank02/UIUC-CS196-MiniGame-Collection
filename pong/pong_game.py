@@ -1,14 +1,13 @@
-# intialize/import pygame
+# initialize/import pygame
 import pygame
-from paddle import Paddle
-from ball import Ball
-from player import Player
+from .paddle import Paddle
+from .ball import Ball
 
 pygame.init()
 
 # setting colors for game
-black = (0,0,0)
-white = (255,255,255)
+black = (0, 0, 0)
+white = (255, 255, 255)
 
 # dimensions for screen size
 size = (700, 500)
@@ -87,7 +86,7 @@ while playing:
     # fills the screen
     screen.fill(black)
 
-    #drawing of the net
+    # drawing of the net
     pygame.draw.line(screen, white, [349, 0], [349, 500], 5)
 
     # draws all sprites on the screen
