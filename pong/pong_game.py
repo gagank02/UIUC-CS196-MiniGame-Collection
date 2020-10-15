@@ -1,13 +1,14 @@
-# initialize/import pygame
+# intialize/import pygame
 import pygame
-from .paddle import Paddle
-from .ball import Ball
+from paddle import Paddle
+from ball import Ball
+from player import Player
 
 pygame.init()
 
 # setting colors for game
-black = (0, 0, 0)
-white = (255, 255, 255)
+black = (0,0,0)
+white = (255,255,255)
 
 # dimensions for screen size
 size = (700, 500)
@@ -15,11 +16,11 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Pong")
 
 # initializing two paddles and ball
-paddleA = Paddle(white, 10, 100)
+paddleA = Paddle(white, 10, 100, '107623182-pixel-elephant-isolated-on-white-background-8-bit-vector-illustration.jpg')
 paddleA.rect.x = 20
 paddleA.rect.y = 200
 
-paddleB = Paddle(white, 10, 100)
+paddleB = Paddle(white, 10, 100, '107623182-pixel-elephant-isolated-on-white-background-8-bit-vector-illustration.jpg')
 paddleB.rect.x = 670
 paddleB.rect.y = 200
 
@@ -86,7 +87,7 @@ while playing:
     # fills the screen
     screen.fill(black)
 
-    # drawing of the net
+    #drawing of the net
     pygame.draw.line(screen, white, [349, 0], [349, 500], 5)
 
     # draws all sprites on the screen
