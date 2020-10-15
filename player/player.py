@@ -12,10 +12,10 @@ from pygame.locals import (
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, hp, ms, luck, awareness, attack):
+    def __init__(self, hp=6, ms=6, luck=6, awareness=6, attack=6, speed=10):
         super().__init__()
 
-        self.image = pygame.image.load('elephant.jpg').convert()
+        self.image = pygame.image.load('../elephant.jpg').convert()
         self.image = pygame.transform.scale(self.image, (100, 100))
 
         self.rect = self.image.get_rect()
@@ -25,6 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.luck = luck
         self.awareness = awareness
         self.attack = attack
+        self.speed = speed
 
     def moveUp(self, pixels):
         self.rect.y -= pixels
@@ -52,6 +53,8 @@ class Player(pygame.sprite.Sprite):
    the following lines of codes are just for testing
    the main thread does not necessarily run under player.py
 '''
+
+# this chuck of code will not execute when imported to another script
 if __name__ == '__main__':
     pygame.init()
     size = (700, 500)

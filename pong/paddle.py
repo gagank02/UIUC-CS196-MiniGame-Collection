@@ -1,14 +1,15 @@
 import pygame
-from player import Player
+# from player import Player
 
 black = (0, 0, 0)
 white = (255, 255, 255)
+
 
 class Paddle(pygame.sprite.Sprite):
     def __init__(self, color, width, height):
         super().__init__()
 
-        # initliazing background color and setting the block to be transparent
+        # initializing background color and setting the block to be transparent
         self.image = pygame.Surface([width, height])
         self.image.fill(black)
         self.image.set_colorkey(black)
