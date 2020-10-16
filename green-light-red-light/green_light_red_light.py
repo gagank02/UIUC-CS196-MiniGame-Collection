@@ -53,32 +53,14 @@ def main():
 
     # Alternates between GO and STOP
     clock = pygame.time.Clock()
-    # # GO
-    # green_light = font.render('GO', True, pygame.Color('green3'))
-    # green_rect = green_light.get_rect()
-    # green_rect.center = screen_rect.center
-    # green_off = pygame.Surface(green_rect.size)
-    # green_off.fill(BLUE)
-    # green_surfaces = cycle([green_light, green_off])
-    # green_surface = next(green_surfaces)
-    # #pygame.time.set_timer(BLINK_EVENT, random.randint(500,2001))
-
-    # # STOP
-    # red_light = font.render('STOP', True, pygame.Color('red3'))
-    # red_rect = red_light.get_rect()
-    # red_rect.center = screen_rect.center
-    # red_off = pygame.Surface(red_rect.size)
-    # red_off.fill(BLUE)
-    # red_surfaces = cycle([red_light, red_off])
-    # red_surface = next(red_surfaces)
-    # pygame.time.set_timer(BLINK_EVENT, random.randint(500,2001))
 
     green = lights.Green()
     red = lights.Red()
+
     if random.randint(0, 100) < 40:
-        pygame.time.set_timer(RED_EVENT, random.randint(500,2001))
+        pygame.time.set_timer(RED_EVENT, random.randint(1000,2001))
     else:
-        pygame.time.set_timer(GREEN_EVENT, random.randint(500,2001))
+        pygame.time.set_timer(GREEN_EVENT, random.randint(1000,2001))
 
     count = random.randint(1,2)
     
@@ -97,16 +79,12 @@ def main():
                     running = False
             if event.type == GREEN_EVENT:
                 count = random.randint(0,2)
-                #green_surface = next(green_surfaces)
                 green.green_surface = next(green.green_surfaces)
-                #red_surface = next(red_surfaces)
-                pygame.time.set_timer(GREEN_EVENT, random.randint(500,2001))
+                pygame.time.set_timer(GREEN_EVENT, random.randint(1000,2001))
             elif event.type == RED_EVENT:
                 count = random.randint(0,2)
-                #green_surface = next(green_surfaces)
                 red.red_surface = next(red.red_surfaces)
-                #red_surface = next(red_surfaces)
-                pygame.time.set_timer(RED_EVENT, random.randint(500,2001))
+                pygame.time.set_timer(RED_EVENT, random.randint(1000,2001))
         
         # Get set of pressed keys
         pressed_keys = pygame.key.get_pressed()
@@ -126,8 +104,6 @@ def main():
         screen.blit(floor_surf, (0, SCREEN_HEIGHT - 50))
 
         # Blinks green/red
-        # screen.blit(green_surface, green_rect)
-        # screen.blit(red_surface, red_rect)
         if count == 0:
             screen.blit(green.green_surface, green.green_rect)
         elif count == 1:
