@@ -2,6 +2,7 @@ import pygame
 from random import randint
 black = (0, 0, 0)
 
+
 class Ball(pygame.sprite.Sprite):
     def __init__(self, color, width, height):
         super().__init__()
