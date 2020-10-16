@@ -1,6 +1,7 @@
 import pygame
 import random
 from itertools import cycle
+from player import Player
 from runner import Runner
 import lights
 

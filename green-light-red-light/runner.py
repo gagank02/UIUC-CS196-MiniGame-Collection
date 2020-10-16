@@ -1,5 +1,4 @@
 import pygame
-from player import Player
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1280, 780
 
