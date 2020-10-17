@@ -10,10 +10,18 @@ from pygame.locals import (
     QUIT
 )
 
+
+def emptyfunc():
+    pass
+
+
 if __name__ == '__main__':
     pygame.init()
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    screen = pygame.display.set_mode((700, 500))
     screen_rect = screen.get_rect()
+
+    # set window name to "Falling Objects"
+    pygame.display.set_caption('Falling Objects')
 
     # customize userevent (add drop blocks)
     ADD_DROP_BLOCKS = pygame.USEREVENT + 1
@@ -21,6 +29,8 @@ if __name__ == '__main__':
 
     # initialize player, drop blocks, and their group
     player = Player()
+    player.image = pygame.transform.scale(player.image, (80, 80))
+    player.re = player.image.get_rect()
     player.rect.centerx = screen_rect.centerx  # set player's initial pos at the bottom center of screen
     player.rect.bottom = HEIGHT
 
@@ -40,6 +50,7 @@ if __name__ == '__main__':
                 game_over = True
             elif event.type == ADD_DROP_BLOCKS:
                 new_drop_block = Drop_Block()
+                drop_blocks.add(new_drop_block)
                 all_sprites.add(new_drop_block)
 
         # initialize screen's background and project sprites to the screen
@@ -58,9 +69,9 @@ if __name__ == '__main__':
             player.moveLeft(player.speed)
         if key[K_RIGHT]:
             player.moveRight(player.speed)
-        drop_blocks.update()      # <- TODO somehow this method doesn't come into effect. Maybe the problems are within all_sprites.py
+
+        drop_blocks.update() 
 
         pygame.display.flip()
 
     pygame.quit()
-
