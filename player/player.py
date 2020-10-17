@@ -11,6 +11,7 @@ from pygame.locals import (
 )
 
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, hp=6, ms=6, luck=6, awareness=6, attack=6, speed=10):
         super().__init__()

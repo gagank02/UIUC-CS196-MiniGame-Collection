@@ -1,5 +1,5 @@
 import pygame
-# from player import Player
+from player.player import Player
 
 black = (0, 0, 0)
 white = (255, 255, 255)
@@ -29,3 +29,6 @@ class Paddle(pygame.sprite.Sprite):
         # checks for offscreen
         if self.rect.y > 400:
             self.rect.y = 400
+
+if __name__ == '__main__':
+    pass

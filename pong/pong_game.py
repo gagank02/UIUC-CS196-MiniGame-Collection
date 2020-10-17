@@ -3,6 +3,7 @@ import pygame
 from paddle import Paddle
 from ball import Ball
 
+
 if __name__ == '__main__':
     pygame.init()
 
@@ -107,3 +108,4 @@ if __name__ == '__main__':
         clock.tick(60)
 
     pygame.quit()
+
