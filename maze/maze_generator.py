@@ -2,41 +2,53 @@ import random
 import pygame
 pygame.init()
 
-WHITE = (255,255,255)
-GREY = (20,20,20)
-BLACK = (0,0,0)
-PURPLE = (100,0,100)
-RED = (255,0,0)
+# Colors available to use in generator
+WHITE = (255, 255, 255)
+GREY = (20, 20, 20)
+BLACK = (0, 0, 0)
+PURPLE = (100, 0, 100)
+RED = (255, 0, 0)
 
-size = (1402,701)
+# Maze is as big as window size
+size = (1402, 701)
 screen = pygame.display.set_mode(size)
 
 pygame.display.set_caption("Maze Generator")
 
 done = False
 
+# Used to determine speed of generator
 clock = pygame.time.Clock()
 
+# Determines size of each square in grid
+# Rounds with 'int()' to keep a perfect grid
 width = 25
 cols = int(size[0] / width)
 rows = int(size[1] / width)
 
 stack = []
 
+# Class for a singular grid cell
 class Cell():
-    def __init__(self,x,y):
+    def __init__(self, x, y):
+
+        # 'x' and 'y' designate coordinate points on the grid
         global width
         self.x = x * width
         self.y = y * width
         
+        # Default values for checking if the cell is current and has been drawn (visited)
         self.visited = False
         self.current = False
         
-        self.walls = [True,True,True,True] # top , right , bottom , left
+        # Default for maze walls in the given cell
+        # self.walls = [top, right, bottom, left]
+        self.walls = [True, True, True, True]
         
-        # neighbors
+        # Lists cells (neighbors) directly surrounding a given cell
         self.neighbors = []
         
+        # States whether <insert after inspecting rest of code>
         self.top = 0
         self.right = 0
         self.bottom = 0
