@@ -181,20 +181,9 @@ while not done:
     elif len(stack) > 0:
         current_cell.current = False
         current_cell = stack.pop()
-        
-    elif len(stack) == 0:
-        grid = []
-        
-        for y in range(rows):
-            grid.append([])
-            for x in range(cols):
-                grid[y].append(Cell(x,y))
-        
-        current_cell = grid[0][0]
-        next_cell = 0
     
     pygame.display.flip()
     
-    clock.tick(60)
+    clock.tick(600)
 
 pygame.quit()
