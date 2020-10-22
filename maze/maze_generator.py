@@ -162,19 +162,22 @@ while not done:
         for x in range(cols):
             grid[y][x].draw()
     
+    # Checks neighbor cells for appropriate information
     next_cell = current_cell.checkNeighbors()
     
+    # If the next cell has been selected:
+    # Clear neighbors list
+    # Add the current cell to the stack list
+    # Remove the wall between the current and next cell
+    # Change the current cell to the next cell
     if next_cell != False:
         current_cell.neighbors = []
-        
         stack.append(current_cell)
-        
-        removeWalls(current_cell,next_cell)
-        
+        removeWalls(current_cell, next_cell)
         current_cell.current = False
-        
         current_cell = next_cell
     
+    # If the stack has cells already on the list: <HARD TO TELL. NEEDS MORE ANALYZING> 
     elif len(stack) > 0:
         current_cell.current = False
         current_cell = stack.pop()
