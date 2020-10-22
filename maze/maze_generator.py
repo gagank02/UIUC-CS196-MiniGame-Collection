@@ -48,44 +48,50 @@ class Cell():
         # Lists cells (neighbors) directly surrounding a given cell
         self.neighbors = []
         
-        # States whether <insert after inspecting rest of code>
+        # States grid positions of given neighbor cells
         self.top = 0
         self.right = 0
         self.bottom = 0
         self.left = 0
         
+        # States grid position of next cell to move to
         self.next_cell = 0
     
     def draw(self):
-        if self.current:
-            pygame.draw.rect(screen,WHITE,(self.x,self.y,width,width))
-        elif self.visited:
-            pygame.draw.rect(screen,BLACK,(self.x,self.y,width,width))
         
+        # If it's the current cell: turn white
+        # If the cell has been visited: turn black
+        if self.current:
+            pygame.draw.rect(screen, WHITE, (self.x, self.y, width, width))
+        elif self.visited:
+            pygame.draw.rect(screen, BLACK, (self.x, self.y, width, width))
+        
+            # If there should be a wall: draw a red line the same width of the cell
+            # If-statements as follow: if top, if right, if bottom, if left
+            # What each argument means: pygame.draw.line(surface, color, start, end, width)
             if self.walls[0]:
-                pygame.draw.line(screen,RED,(self.x,self.y),((self.x + width),self.y),1) # top
+                pygame.draw.line(screen, RED, (self.x, self.y), ((self.x + width), self.y), 1)
             if self.walls[1]:
-                pygame.draw.line(screen,RED,((self.x + width),self.y),((self.x + width),(self.y + width)),1) # right
+                pygame.draw.line(screen, RED, ((self.x + width), self.y), ((self.x + width), (self.y + width)), 1)
             if self.walls[2]:
-                pygame.draw.line(screen,RED,((self.x + width),(self.y + width)),(self.x,(self.y + width)),1) # bottom
+                pygame.draw.line(screen, RED, ((self.x + width), (self.y + width)), (self.x, (self.y + width)), 1)
             if self.walls[3]:
-                pygame.draw.line(screen,RED,(self.x,(self.y + width)),(self.x,self.y),1) # left
+                pygame.draw.line(screen, RED, (self.x, (self.y + width)), (self.x,self.y), 1)
     
     def checkNeighbors(self):
-        #print("Top; y: " + str(int(self.y / width)) + ", y - 1: " + str(int(self.y / width) - 1))
+        
+        # Checks to see if there is a neighbor on the respective side of the current cell
+        # If there is a neighbor: assign corresponding variable with grid position
         if int(self.y / width) - 1 >= 0:
             self.top = grid[int(self.y / width) - 1][int(self.x / width)]
-        #print("Right; x: " + str(int(self.x / width)) + ", x + 1: " + str(int(self.x / width) + 1))
         if int(self.x / width) + 1 <= cols - 1:
             self.right = grid[int(self.y / width)][int(self.x / width) + 1]
-        #print("Bottom; y: " + str(int(self.y / width)) + ", y + 1: " + str(int(self.y / width) + 1))
         if int(self.y / width) + 1 <= rows - 1:
             self.bottom = grid[int(self.y / width) + 1][int(self.x / width)]
-        #print("Left; x: " + str(int(self.x / width)) + ", x - 1: " + str(int(self.x / width) - 1))
         if int(self.x / width) - 1 >= 0:
             self.left = grid[int(self.y / width)][int(self.x / width) - 1]
-        #print("--------------------")
         
+        # Adds all unvisited neighbor cells to a list
         if self.top != 0:
             if self.top.visited == False:
                 self.neighbors.append(self.top)
@@ -99,30 +105,38 @@ class Cell():
             if self.left.visited == False:
                 self.neighbors.append(self.left)
         
+        # If the list isn't empty: move to any unvisited neighbor cell otherwise return false <SPECIFY AFTER READING MORE CODE>
         if len(self.neighbors) > 0:
-            self.next_cell = self.neighbors[random.randrange(0,len(self.neighbors))]
+            self.next_cell = self.neighbors[random.randrange(0, len(self.neighbors))]
             return self.next_cell
         else:
             return False
 
 def removeWalls(current_cell,next_cell):
+
+    # 'x' and 'y' refer to which wall
+    # Negative 'x' and 'y' mean right and bottom respectively
+    # Positive 'x' and 'y' mean left and top respectively
     x = int(current_cell.x / width) - int(next_cell.x / width)
     y = int(current_cell.y / width) - int(next_cell.y / width)
-    if x == -1: # right of current
+    
+    # Removes wall specified by 'x' and 'y' of both the current and next cell
+    if x == -1:
         current_cell.walls[1] = False
         next_cell.walls[3] = False
-    elif x == 1: # left of current
+    elif x == 1:
         current_cell.walls[3] = False
         next_cell.walls[1] = False
-    elif y == -1: # bottom of current
+    elif y == -1:
         current_cell.walls[2] = False
         next_cell.walls[0] = False
-    elif y == 1: # top of current
+    elif y == 1:
         current_cell.walls[0] = False
         next_cell.walls[2] = False
 
 grid = []
 
+# Makes 'grid' two dimensional
 for y in range(rows):
     grid.append([])
     for x in range(cols):
@@ -131,9 +145,10 @@ for y in range(rows):
 current_cell = grid[0][0]
 next_cell = 0
 
-# -------- Main Program Loop -----------
+# Main Program Loop
 while not done:
-    # --- Main event loop
+
+    # Main event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
