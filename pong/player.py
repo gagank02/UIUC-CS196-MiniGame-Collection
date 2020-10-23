@@ -2,11 +2,11 @@ import pygame
 from random import randint
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, hp, ms, luck, awareness, attack):
+    def __init__(self, hp, ms, luck, awareness, attack, image, iheight, iwidth):
         super().__init__()
 
-        self.image = pygame.image.load('107623182-pixel-elephant-isolated-on-white-background-8-bit-vector-illustration.jpg')
-        self.image = pygame.transform.scale(self.image, (100, 40))
+        self.image = pygame.image.load(image)
+        self.image = pygame.transform.scale(self.image, (iwidth, iheight))
 
         self.rect = self.image.get_rect()
 

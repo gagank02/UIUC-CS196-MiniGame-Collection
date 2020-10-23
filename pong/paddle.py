@@ -9,7 +9,7 @@ class Paddle(pygame.sprite.Sprite):
         super().__init__()
 
         # initliazing background color and setting the block to be transparent
-        self.image = pygame.image.load('107623182-pixel-elephant-isolated-on-white-background-8-bit-vector-illustration.jpg')
+        self.image = pygame.image.load(image)
         self.image = pygame.transform.scale(self.image, (100, 50))
 
         pygame.draw.rect(self.image, color, [0, 0, width, height])
