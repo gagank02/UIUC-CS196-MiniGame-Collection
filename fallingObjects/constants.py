@@ -1,0 +1,5 @@
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+BACKGROUND_COLOR = (0, 0, 0)
+WIDTH = 700
+HEIGHT = 500
