@@ -1,6 +1,6 @@
 # initialize/import pygame
 import pygame
-from paddle import Paddle
+from player import Player
 from ball import Ball
 
 
@@ -17,13 +17,13 @@ if __name__ == '__main__':
     pygame.display.set_caption("Pong")
 
     # initializing two paddles and ball
-    paddleA = Paddle(white, 10, 100)
-    paddleA.rect.x = 20
-    paddleA.rect.y = 200
+    player1 = Player(5, 5, 5, 0, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis.png", 50, 10)
+    player1.rect.x = 20
+    player1.rect.y = 200
 
-    paddleB = Paddle(white, 10, 100)
-    paddleB.rect.x = 670
-    paddleB.rect.y = 200
+    player2 = Player(5, 5, 5, 0, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis_copy.png", 50, 10)
+    player2.rect.x = 670
+    player2.rect.y = 200
 
     ball = Ball(white, 10, 10)
     ball.rect.x = 345
@@ -32,8 +32,8 @@ if __name__ == '__main__':
     # list of all sprites in our Game
     all_sprites = pygame.sprite.Group()
 
-    all_sprites.add(paddleA)
-    all_sprites.add(paddleB)
+    all_sprites.add(player1)
+    all_sprites.add(player2)
     all_sprites.add(ball)
 
     playing = True
@@ -44,6 +44,8 @@ if __name__ == '__main__':
     # initializing scores
     scoreA = 0
     scoreB = 0
+    endA = 0
+    endB = 0
 
     # Main Program Loop
     while playing:
@@ -58,13 +60,13 @@ if __name__ == '__main__':
         # inputs from keystrokes
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
-            paddleA.moveUp(5)
+            player1.moveUp(5)
         if keys[pygame.K_s]:
-            paddleA.moveDown(5)
+            player1.moveDown(5)
         if keys[pygame.K_UP]:
-            paddleB.moveUp(5)
+            player2.moveUp(5)
         if keys[pygame.K_DOWN]:
-            paddleB.moveDown(5)
+            player2.moveDown(5)
 
         # Game Logic comes here
         all_sprites.update()
@@ -82,8 +84,16 @@ if __name__ == '__main__':
             ball.velocity[1] = -ball.velocity[1]
 
         # collision detection
-        if pygame.sprite.collide_mask(ball, paddleA) or pygame.sprite.collide_mask(ball, paddleB):
+        if pygame.sprite.collide_mask(ball, player1) or pygame.sprite.collide_mask(ball, player2):
             ball.bounce()
+
+        if scoreA > player2.hp:
+            endA = endA + 1
+            playing = False
+
+        if scoreB > player1.hp:
+            endB = endB + 1
+            playing = False
 
         # fills the screen
         screen.fill(black)
@@ -107,5 +117,12 @@ if __name__ == '__main__':
         # game update speed
         clock.tick(60)
 
-    pygame.quit()
+    if endA == 1:
+        #this code is for endgame screen if A wins
+        print('poop')
 
+    if endB == 1:
+        #this code is for endgame screen if B wins
+        print('poop')
+
+    pygame.quit()
