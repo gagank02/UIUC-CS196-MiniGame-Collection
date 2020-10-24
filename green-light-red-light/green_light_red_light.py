@@ -4,6 +4,7 @@ from itertools import cycle
 from player import Player
 from runner import Runner
 import lights
+import time
 
 from pygame.locals import (
     K_LEFT,
@@ -22,18 +23,6 @@ BLUE = (135,235,250)
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 780
 
-GREEN_EVENT = pygame.USEREVENT + 0
-RED_EVENT = pygame.USEREVENT + 1
-
-def red(font):
-    red_light = font.render('GO', True, pygame.Color('green3'))
-    blink_rect = red_light.get_rect()
-    blink_rect.center = screen_rect.center
-    off = pygame.Surface(blink_rect.size)
-    blink_surfaces = cycle([red_light, off])
-    blink_surface = next(blink_surfaces)
-        
-
 pygame.init()
 font = pygame.font.Font('freesansbold.ttf', 100) 
 
@@ -48,24 +37,26 @@ runner = Runner(BLACK, 75, 75)
 # all_sprites = pygame.sprite.Group()
 # all_sprites.add(runner)
 
+
+clock = pygame.time.Clock()
+
 # Main function
 def main():
     running = True
 
+    passed_time = 0    
+    start_time = pygame.time.get_ticks()
+
     # Alternates between GO and STOP
-    clock = pygame.time.Clock()
 
     green = lights.Green()
     red = lights.Red()
 
-    if random.randint(0, 100) < 40:
-        pygame.time.set_timer(RED_EVENT, random.randint(1000,2001))
-    else:
-        pygame.time.set_timer(GREEN_EVENT, random.randint(1000,2001))
+    LIGHT_EVENT = pygame.USEREVENT + 0
+    pygame.time.set_timer(LIGHT_EVENT, random.randint(1000,3000))
 
-    count = random.randint(1,2)
+    count = 0 # 1 = red, everything else = green
     
-
     # Main loop
     while running:
         # Look for each event in the queue
@@ -78,21 +69,20 @@ def main():
                 # If window close button, QUIT
                 elif event.key == QUIT:
                     running = False
-            if event.type == GREEN_EVENT:
-                count = random.randint(0,2)
-                green.green_surface = next(green.green_surfaces)
-                pygame.time.set_timer(GREEN_EVENT, random.randint(1000,2001))
-            elif event.type == RED_EVENT:
-                count = random.randint(0,2)
-                red.red_surface = next(red.red_surfaces)
-                pygame.time.set_timer(RED_EVENT, random.randint(1000,2001))
+            if event.type == LIGHT_EVENT:
+                count += random.randint(0,10)
+                if count % 2 == 1:
+                    count = 1
+        
+        passed_time = pygame.time.get_ticks() - start_time
+            
         
         # Get set of pressed keys
         pressed_keys = pygame.key.get_pressed()
         if pressed_keys[K_RIGHT]:
-            runner.moveRight(5)
+            runner.moveRight(13)
         if pressed_keys[K_LEFT]:
-            runner.moveRight(-5)
+            runner.moveRight(-13)
             
         runner.rect.clamp_ip(screen_rect) 
 
@@ -105,16 +95,24 @@ def main():
         screen.blit(floor_surf, (0, SCREEN_HEIGHT - 50))
 
         # Blinks green/red
-        if count == 0:
-            screen.blit(green.green_surface, green.green_rect)
-        elif count == 1:
+        ## keep GO stationary interval of red
+        if count == 1:
             screen.blit(red.red_surface, red.red_rect)
+        else:
+            screen.blit(green.green_surface, green.green_rect)
 
         # Draw sprites
         screen.blit(runner.surf, runner.rect)
 
+        # Displays total time during session
+        text = font.render(str(int(passed_time/1000)) + "s", True, BLACK)
+        screen.blit(text, (50, 50))
+
         # Flip everything to display
         pygame.display.flip()
+        clock.tick(60)
+        
+    pygame.quit()
 
 if __name__ == '__main__':
     main()
