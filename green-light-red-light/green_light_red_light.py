@@ -5,10 +5,13 @@ from player import Player
 from runner import Runner
 import lights
 import time
+import clouds
 
 from pygame.locals import (
     K_LEFT,
     K_RIGHT,
+    K_a,
+    K_d,
     K_ESCAPE,
     KEYDOWN,
     QUIT,
@@ -20,8 +23,8 @@ BLACK = (0,0,0)
 GREEN = (34,139,34)
 BLUE = (135,235,250)
 
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 780
+SCREEN_WIDTH = 1024
+SCREEN_HEIGHT = 800
 
 pygame.init()
 font = pygame.font.Font('freesansbold.ttf', 100) 
@@ -30,12 +33,23 @@ font = pygame.font.Font('freesansbold.ttf', 100)
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 screen_rect = screen.get_rect()
 
+# Events
+LIGHT_EVENT = pygame.USEREVENT + 0
+pygame.time.set_timer(LIGHT_EVENT, random.randint(1000,3000))
+
+ADD_CLOUD = pygame.USEREVENT + 1
+pygame.time.set_timer(ADD_CLOUD, 2000)
+
+
+
 # Create a runner
-runner = Runner(BLACK, 75, 75)
+runner = Player(5, 5, 5, 5, 5, 'cloud1.jpg', 75, 75)
+
 
 # # Sprite groups
-# all_sprites = pygame.sprite.Group()
-# all_sprites.add(runner)
+all_sprites = pygame.sprite.Group()
+all_clouds = pygame.sprite.Group()
+all_sprites.add(runner)
 
 
 clock = pygame.time.Clock()
@@ -44,16 +58,14 @@ clock = pygame.time.Clock()
 def main():
     running = True
 
+    hp = float(runner.hp)
+
     passed_time = 0    
     start_time = pygame.time.get_ticks()
 
-    # Alternates between GO and STOP
-
+    # Creates lights
     green = lights.Green()
     red = lights.Red()
-
-    LIGHT_EVENT = pygame.USEREVENT + 0
-    pygame.time.set_timer(LIGHT_EVENT, random.randint(1000,3000))
 
     count = 0 # 1 = red, everything else = green
     
@@ -69,23 +81,34 @@ def main():
                 # If window close button, QUIT
                 elif event.key == QUIT:
                     running = False
+                elif hp <= 0:
+                    running = False
+            if event.type == ADD_CLOUD:
+                new_cloud = clouds.Cloud()
+                all_clouds.add(new_cloud)
+                all_sprites.add(new_cloud)
             if event.type == LIGHT_EVENT:
                 count += random.randint(0,10)
                 if count % 2 == 1:
                     count = 1
         
         passed_time = pygame.time.get_ticks() - start_time
+        # reaction_time = passed_time + 250
             
-        
         # Get set of pressed keys
         pressed_keys = pygame.key.get_pressed()
-        if pressed_keys[K_RIGHT]:
+        if pressed_keys[K_RIGHT] or pressed_keys[K_d]:
             runner.moveRight(13)
-        if pressed_keys[K_LEFT]:
+            if count == 1:
+                print("current hp: " + str(hp))
+                hp -= .025
+        if pressed_keys[K_LEFT] or pressed_keys[K_a]:
             runner.moveRight(-13)
-            
-        runner.rect.clamp_ip(screen_rect) 
+            if count == 1:
+                print("current hp: " + str(hp))
+                hp -= .025
 
+        all_clouds.update()
 
         screen.fill(BLUE)
 
@@ -94,19 +117,25 @@ def main():
         floor_surf.fill(GREEN)
         screen.blit(floor_surf, (0, SCREEN_HEIGHT - 50))
 
-        # Blinks green/red
-        ## keep GO stationary interval of red
-        if count == 1:
-            screen.blit(red.red_surface, red.red_rect)
-        else:
-            screen.blit(green.green_surface, green.green_rect)
+        runner.rect.clamp_ip(screen_rect) 
 
         # Draw sprites
-        screen.blit(runner.surf, runner.rect)
+        for entity in all_sprites:
+            screen.blit(entity.surf, entity.rect)
 
         # Displays total time during session
         text = font.render(str(int(passed_time/1000)) + "s", True, BLACK)
         screen.blit(text, (50, 50))
+
+        # Alternates between GO and STOP
+        if count == 1:
+            screen.blit(red.red_surface, red.red_rect)
+        else:
+            screen.blit(green.green_surface, green.green_rect)
+        
+        # Check death
+        if hp <= 0:
+            running = False
 
         # Flip everything to display
         pygame.display.flip()
