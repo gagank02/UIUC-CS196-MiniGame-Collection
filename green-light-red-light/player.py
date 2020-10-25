@@ -1,16 +1,19 @@
 import pygame
 from random import randint
 
+SCREEN_WIDTH = 1024
+SCREEN_HEIGHT = 800
+
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, hp, ms, luck, awareness, attack):
+    def __init__(self, hp, ms, luck, awareness, attack, image_path, iwidth, iheight):
         super().__init__()
 
-        self.image = pygame.image.load('107623182-pixel-elephant-isolated-on-white-background-8-bit-vector-illustration.jpg')
-        self.image = pygame.transform.scale(self.image, (100, 40))
-
-        self.rect = self.image.get_rect()
+        self.surf = pygame.image.load(image_path).convert()
+        self.surf = pygame.transform.scale(self.surf, (iwidth, iheight))
+        pygame.draw.rect(self.surf, (0,0,0), [0, 0, iwidth, iheight])
+        self.rect = self.surf.get_rect(topleft=(0, SCREEN_HEIGHT - 100))
 
         self.hp = hp
         self.ms = ms
@@ -26,8 +29,8 @@ class Player(pygame.sprite.Sprite):
     def moveDown(self, pixels):
         self.rect.y += pixels
         # checks for offscreen
-        if self.rect.y > 400:
-            self.rect.y = 400
+        if self.rect.y > SCREEN_HEIGHT:
+            self.rect.y = SCREEN_HEIGHT
 
     def moveLeft(self, pixels):
         self.rect.x -= pixels
@@ -36,5 +39,5 @@ class Player(pygame.sprite.Sprite):
 
     def moveRight(self, pixels):
         self.rect.x += pixels
-        if self.rect.x > 700:
-            self.rect.x = 700
+        if self.rect.x > SCREEN_WIDTH:
+            self.rect.x = SCREEN_WIDTH
