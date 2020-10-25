@@ -16,7 +16,7 @@ class Cloud(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect(
             center = (
                 random.randint(SCREEN_WIDTH + 30, SCREEN_WIDTH + 150),
-                random.randint(0, SCREEN_HEIGHT - 69),
+                random.randint(0, SCREEN_HEIGHT - 150),
             )
         )
     
