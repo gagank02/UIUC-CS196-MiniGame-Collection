@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
 
         self.hp = hp
         self.ms = ms
-        self.luck = luck
+        self.luck = randint(0, luck)
         self.awareness = awareness
         self.attack = attack
 
