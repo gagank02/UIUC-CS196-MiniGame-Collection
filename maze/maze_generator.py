@@ -1,5 +1,6 @@
 import random
 import pygame
+from player import Player
 pygame.init()
 
 # Colors available to use in generator
@@ -148,6 +149,8 @@ for y in range(rows):
 current_cell = grid[0][0]
 next_cell = 0
 
+state = 'INTRO'
+
 # Main Program Loop
 while not done:
 
@@ -155,6 +158,15 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                done = True
+
+            if state == 'GAME':
+                if event.key == pygame.K_ESCAPE:
+                    state = 'END'
+
+
     
     screen.fill(BLACK)
     
@@ -186,6 +198,8 @@ while not done:
         current_cell = stack.pop()
     
     pygame.display.flip()
+
+    state = 'GAME'
     
     clock.tick(600)
 
