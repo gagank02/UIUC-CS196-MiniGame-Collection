@@ -10,7 +10,7 @@ PURPLE = (100, 0, 100)
 RED = (255, 0, 0)
 
 # Maze is as big as window size
-size = (1402, 701)
+size = (801, 801)
 screen = pygame.display.set_mode(size)
 
 pygame.display.set_caption("Maze Generator")
@@ -59,24 +59,27 @@ class Cell():
     
     def draw(self):
         
+        """
+        ~~~This code can be obsolete~~~
         # If it's the current cell: turn white
         # If the cell has been visited: turn black
         if self.current:
             pygame.draw.rect(screen, WHITE, (self.x, self.y, width, width))
         elif self.visited:
             pygame.draw.rect(screen, BLACK, (self.x, self.y, width, width))
-        
-            # If there should be a wall: draw a red line the same width of the cell
-            # If-statements as follow: if top, if right, if bottom, if left
-            # What each argument means: pygame.draw.line(surface, color, start, end, width)
-            if self.walls[0]:
-                pygame.draw.line(screen, RED, (self.x, self.y), ((self.x + width), self.y), 1)
-            if self.walls[1]:
-                pygame.draw.line(screen, RED, ((self.x + width), self.y), ((self.x + width), (self.y + width)), 1)
-            if self.walls[2]:
-                pygame.draw.line(screen, RED, ((self.x + width), (self.y + width)), (self.x, (self.y + width)), 1)
-            if self.walls[3]:
-                pygame.draw.line(screen, RED, (self.x, (self.y + width)), (self.x,self.y), 1)
+        """
+
+        # If there should be a wall: draw a red line the same width of the cell
+        # If-statements as follow: if top, if right, if bottom, if left
+        # What each argument means: pygame.draw.line(surface, color, start, end, width)
+        if self.walls[0]:
+            pygame.draw.line(screen, RED, (self.x, self.y), ((self.x + width), self.y), 1)
+        if self.walls[1]:
+            pygame.draw.line(screen, RED, ((self.x + width), self.y), ((self.x + width), (self.y + width)), 1)
+        if self.walls[2]:
+            pygame.draw.line(screen, RED, ((self.x + width), (self.y + width)), (self.x, (self.y + width)), 1)
+        if self.walls[3]:
+            pygame.draw.line(screen, RED, (self.x, (self.y + width)), (self.x,self.y), 1)
     
     def checkNeighbors(self):
         
