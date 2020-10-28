@@ -43,7 +43,7 @@ pygame.time.set_timer(ADD_CLOUD, 2000)
 
 
 # Create a runner
-runner = Player(5, 5, 5, 5, 5, 'cloud1.jpg', 75, 75)
+runner = Player(5, 5, 5, 5, 5, 'minotaur.png', 100, 100)
 
 
 # # Sprite groups
@@ -123,9 +123,13 @@ def main():
         for entity in all_sprites:
             screen.blit(entity.surf, entity.rect)
 
-        # Displays total time during session
+        # Displays total time
         text = font.render(str(int(passed_time/1000)) + "s", True, BLACK)
         screen.blit(text, (50, 50))
+
+        # Displays HP
+        hp_text = font.render("HP: " + str(round(hp, 2)), True, BLACK)
+        screen.blit(hp_text, (SCREEN_WIDTH - 400, 50))
 
         # Alternates between GO and STOP
         if count == 1:
