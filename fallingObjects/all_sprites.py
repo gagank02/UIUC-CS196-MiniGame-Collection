@@ -4,18 +4,18 @@ from fallingObjects.constants import *
 
 
 class Drop_Block(pygame.sprite.Sprite):
-    def __init__(self, *groups):
+    def __init__(self):
         super(Drop_Block, self).__init__()
 
         # create a rectangular surface
         self.surf = pygame.Surface((15, 30))
         # fill the surface with #FFFFFF
-        self.surf.fill((255, 255, 255))
+        self.surf.fill(WHITE)
         # determine the spawnpoint of the blocks
         self.rect = self.surf.get_rect(
             center=(
                 randint(0, WIDTH),
-                randint(-50, -20)
+                randint(-150, -20)
             )
         )
         self.speed = 2
@@ -33,3 +33,6 @@ class Drop_Block(pygame.sprite.Sprite):
     #     self.rect.move_ip(0, self.speed)
     #     if self.rect.top > HEIGHT:
     #         self.kill()
+
+    def change_color(self, color):
+        self.surf.fill(color)

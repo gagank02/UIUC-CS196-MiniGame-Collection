@@ -7,32 +7,44 @@ from pygame.locals import (
     K_RIGHT,
     K_ESCAPE,
     KEYDOWN,
-    QUIT
+    QUIT,
+    MOUSEMOTION,
+    MOUSEBUTTONUP,
+    MOUSEBUTTONDOWN
 )
 
-
+'''
+ImportError often occurs,
+therefore an empty function is added to test if there's an ImportError when importing this module'''
 def emptyfunc():
     pass
 
 
 if __name__ == '__main__':
     pygame.init()
+
+    # create the screen to display game
     screen = pygame.display.set_mode((700, 500))
     screen_rect = screen.get_rect()
 
     # set window name to "Falling Objects"
     pygame.display.set_caption('Falling Objects')
 
+    # block some of the events to make sure the important ones don't get dropped
+    events_blocked = [MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN]
+    pygame.event.set_blocked(events_blocked)
+
     # customize userevent (add drop blocks)
     ADD_DROP_BLOCKS = pygame.USEREVENT + 1
-    pygame.time.set_timer(ADD_DROP_BLOCKS, 500)
+    pygame.time.set_timer(ADD_DROP_BLOCKS, BLOCK_SPAWN_FREQUENCY)
 
     # initialize player, drop blocks, and their group
     player = Player()
     player.image = pygame.transform.scale(player.image, (80, 80))
     player.re = player.image.get_rect()
     player.rect.centerx = screen_rect.centerx  # set player's initial pos at the bottom center of screen
-    player.rect.bottom = HEIGHT
+    player.rect.bottom = HEIGHT + 30
+    invincible = 120  # give player a 2-sec invincibility at the beginning of the game
 
     drop_blocks = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group()
@@ -60,18 +72,31 @@ if __name__ == '__main__':
                 screen.blit(item.surf, item.rect)
             except AttributeError:
                 screen.blit(item.image, item.rect)
-        if pygame.sprite.spritecollideany(player, drop_blocks):
+
+        # player loses 1 hp when hit
+        if pygame.sprite.spritecollideany(player, drop_blocks) and invincible <= 0:
+            player.hp -= 1
+            pygame.time.Clock().tick(5)  # the timeflow reduces slightly to respond for the collision
+            invincible = 60 * 1.5  # give player a 2-sec invincibility when hit
+
+        if player.hp <= 0:
             player.kill()
             game_over = True
 
+        '''
+        these are essentially update() function of Player class
+        Player class did not implement such function, so I just put it explicitly
+        these should be deleted if Player class did realize update() in the future'''
         key = pygame.key.get_pressed()
         if key[K_LEFT]:
             player.moveLeft(player.speed)
         if key[K_RIGHT]:
             player.moveRight(player.speed)
 
-        drop_blocks.update() 
+        drop_blocks.update()
 
         pygame.display.flip()
+
+        invincible -= 1  # each game loop invincible is subtracted by 1. If below 0 player is not invincible
 
     pygame.quit()
