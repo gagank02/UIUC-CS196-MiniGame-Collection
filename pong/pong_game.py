@@ -4,6 +4,17 @@ from player import Player
 from ball import Ball
 
 
+def reset_all_values():
+    global scoreA
+    global scoreB
+    global endA
+    global endB
+
+    scoreA = 0
+    scoreB = 0
+    A = 0
+    B = 0
+
 if __name__ == '__main__':
     pygame.init()
 
@@ -17,12 +28,12 @@ if __name__ == '__main__':
     pygame.display.set_caption("Pong")
 
     # initializing two paddles and ball
-    player1 = Player(5, 5, 5, 0, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis.png", 50, 10)
-    player1.rect.x = 20
+    player1 = Player(5, 5, 5, 0, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis.png", 100, 20)
+    player1.rect.x = 0
     player1.rect.y = 200
 
-    player2 = Player(5, 5, 5, 0, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis_copy.png", 50, 10)
-    player2.rect.x = 670
+    player2 = Player(5, 5, 5, 0, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis_copy.png", 100, 20)
+    player2.rect.x = 680
     player2.rect.y = 200
 
     ball = Ball(white, 10, 10)
@@ -34,18 +45,19 @@ if __name__ == '__main__':
 
     all_sprites.add(player1)
     all_sprites.add(player2)
-    all_sprites.add(ball)
 
     playing = True
+    state = 'INTRO'
+
+    scoreA = 0
+    scoreB = 0
+    A = 0
+    B = 0
 
     # controls how fast game updates
     clock = pygame.time.Clock()
 
-    # initializing scores
-    scoreA = 0
-    scoreB = 0
-    endA = 0
-    endB = 0
+    font = pygame.font.Font(None, 50)
 
     # Main Program Loop
     while playing:
@@ -57,43 +69,64 @@ if __name__ == '__main__':
                 if event.key == pygame.K_q:  # pressing q key quits the game
                     playing = False
 
+                if state == 'INTRO':
+                    if event.key == pygame.K_SPACE:
+                        state = 'GAME'
+                        all_sprites.add(ball)
+                        reset_all_values()
+                elif state == 'GAME':
+                    if event.key == pygame.K_ESCAPE:
+                        state = 'GAMEOVER'
+                elif state == 'GAMEOVER':
+                    if event.key == pygame.K_ESCAPE:
+                        state = 'QUIT'
+
+
         # inputs from keystrokes
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
-            player1.moveUp(5)
+            player1.moveUp(7)
         if keys[pygame.K_s]:
-            player1.moveDown(5)
+            player1.moveDown(7)
         if keys[pygame.K_UP]:
-            player2.moveUp(5)
+            player2.moveUp(7)
         if keys[pygame.K_DOWN]:
-            player2.moveDown(5)
+            player2.moveDown(7)
 
         # Game Logic comes here
         all_sprites.update()
-
-        # checks for ball bouncing against walls
-        if ball.rect.x >= 690:
-            scoreA += 1
-            ball.velocity[0] = -ball.velocity[0]
-        if ball.rect.x <= 0:
-            scoreB += 1
-            ball.velocity[0] = -ball.velocity[0]
-        if ball.rect.y > 490:
-            ball.velocity[1] = -ball.velocity[1]
-        if ball.rect.y < 0:
-            ball.velocity[1] = -ball.velocity[1]
 
         # collision detection
         if pygame.sprite.collide_mask(ball, player1) or pygame.sprite.collide_mask(ball, player2):
             ball.bounce()
 
-        if scoreA > player2.hp:
-            endA = endA + 1
-            playing = False
+        if state == 'INTRO':
+            pass
+        elif state == 'GAME':
+            # what side ball starts going towards first
 
-        if scoreB > player1.hp:
-            endB = endB + 1
-            playing = False
+            # checks for ball bouncing against walls
+            if ball.rect.x >= 690:
+                scoreA += 1
+                ball.velocity[0] = -ball.velocity[0]
+            if ball.rect.x <= 0:
+                scoreB += 1
+                ball.velocity[0] = -ball.velocity[0]
+            if ball.rect.y > 490:
+                ball.velocity[1] = -ball.velocity[1]
+            if ball.rect.y < 0:
+                ball.velocity[1] = -ball.velocity[1]
+
+            if scoreA == player2.hp:
+                A = 1
+                state = 'GAMEOVER'
+            if scoreB == player1.hp:
+                B = 1
+                state = 'GAMEOVER'
+        elif state == 'GAMEOVER':
+            pass
+        elif state == 'QUIT':
+            pygame.quit()
 
         # fills the screen
         screen.fill(black)
@@ -111,18 +144,26 @@ if __name__ == '__main__':
         text = font.render(str(scoreB), 1, white)
         screen.blit(text, (420, 10))
 
+        if state == 'INTRO':
+            text = font.render('Press SPACE to Play!', True, (255,255,255))
+            rect = text.get_rect(center=screen.get_rect().center)
+            screen.blit(text, rect)
+        elif state == 'GAMEOVER':
+            ball.velocity[0] = 0
+            ball.velocity[1] = 0
+            if A == 1:
+                text = font.render('Player 1 Wins!', True, (255,255,255))
+                rect = text.get_rect(center=screen.get_rect().center)
+                screen.blit(text, rect)
+            elif B == 1:
+                text = font.render('Player 2 Wins!', True, (255,255,255))
+                rect = text.get_rect(center=screen.get_rect().center)
+                screen.blit(text, rect)
+
         # updates screen
         pygame.display.flip()
 
         # game update speed
         clock.tick(60)
-
-    if endA == 1:
-        #this code is for endgame screen if A wins
-        print('poop')
-
-    if endB == 1:
-        #this code is for endgame screen if B wins
-        print('poop')
 
     pygame.quit()
