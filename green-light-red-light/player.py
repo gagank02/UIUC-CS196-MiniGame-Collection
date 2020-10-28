@@ -7,12 +7,11 @@ SCREEN_HEIGHT = 800
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, hp, ms, luck, awareness, attack, image_path, iwidth, iheight):
+    def __init__(self, hp, ms, luck, awareness, attack, image, iwidth, iheight):
         super().__init__()
 
-        self.surf = pygame.image.load(image_path).convert()
+        self.surf = pygame.image.load(image)
         self.surf = pygame.transform.scale(self.surf, (iwidth, iheight))
-        pygame.draw.rect(self.surf, (0,0,0), [0, 0, iwidth, iheight])
         self.rect = self.surf.get_rect(topleft=(0, SCREEN_HEIGHT - 100))
 
         self.hp = hp
