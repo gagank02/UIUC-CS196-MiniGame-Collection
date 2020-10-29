@@ -1,6 +1,6 @@
 import pygame
 from random import randint
-from fallingObjects.constants import *
+from constants import *
 
 
 class Drop_Block(pygame.sprite.Sprite):

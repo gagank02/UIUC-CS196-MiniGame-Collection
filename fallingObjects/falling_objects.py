@@ -1,7 +1,7 @@
 import pygame
-from player.player import Player
-from fallingObjects.constants import *
-from fallingObjects.all_sprites import Drop_Block
+from player import Player
+from constants import *
+from all_sprites import Drop_Block
 from pygame.locals import (
     K_LEFT,
     K_RIGHT,
@@ -63,4 +63,3 @@ if __name__ == '__main__':
         pygame.display.flip()
 
     pygame.quit()
-
