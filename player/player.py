@@ -51,8 +51,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.x = 700 - 100
 
 
-'''
-   the following lines of codes are just for testing
+'''the following lines of codes are just for testing
    and will not execute when imported
 '''
 if __name__ == '__main__':

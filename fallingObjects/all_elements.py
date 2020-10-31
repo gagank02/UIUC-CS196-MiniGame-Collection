@@ -36,3 +36,29 @@ class Drop_Block(pygame.sprite.Sprite):
 
     def change_color(self, color):
         self.surf.fill(color)
+
+
+class UI:
+    class HP:
+        """HP class
+
+        Attributes:
+            hp: (int) the value to be displayed
+            font : (pygame.font.Font) font object that initiates the font properties
+            surf: (pygame.Surface) surface object where the text is rendered
+            rect: (pygame.Rect) rectangle object representing the properties of surface
+        """
+        def __init__(self, init_hp, font, size):
+            self.hp = init_hp
+            self.font = pygame.font.SysFont(font, size)
+            self.surf = None
+            self.rect = None
+
+        """initiate self.surf and self.rect"""
+        def render(self):
+            self.surf = self.font.render(f'HP: {self.hp}', True, WHITE)
+            self.rect = self.surf.get_rect(height=40, width=40)
+
+        def update(self, new_hp):
+            self.surf = self.font.render(f'HP: {new_hp}', True, WHITE)
+            self.rect = self.surf.get_rect(height=40, width=40)
