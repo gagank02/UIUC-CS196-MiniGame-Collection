@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.y = 0
 
     def moveDown(self, pixels):
-	self.rect.y += pixels
+        self.rect.y += pixels
         # checks for offscreen
         if self.rect.y > 720:
             self.rect.y = 720
@@ -33,6 +33,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.x = 0
 
     def moveRight(self, pixels):
-	self.rect.x += pixels
+        self.rect.x += pixels
         if self.rect.x > 1280:
             self.rect.x = 1280
