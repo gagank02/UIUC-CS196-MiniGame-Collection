@@ -43,11 +43,11 @@ while running:
     if keys[pygame.K_w] or keys[pygame.K_UP]:
         player.moveUp(player.ms)
     if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-        player.moveDown(player.ms)
+        player.moveDown(player.ms, SCREEN_HEIGHT)
     if keys[pygame.K_a] or keys[pygame.K_LEFT]:
         player.moveLeft(player.ms)
     if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-        player.moveRight(player.ms)
+        player.moveRight(player.ms, SCREEN_WIDTH)
 
     # Updates sprites
     all_sprites.update()
