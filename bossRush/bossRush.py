@@ -27,6 +27,10 @@ boss.rect.x = (SCREEN_WIDTH - boss.i_width) / 2
 boss.rect.y = (SCREEN_HEIGHT - boss.i_height) / 2
 all_sprites.add(boss)
 
+projectile = Entity(10, 25, 10, 0, 0, "sprites/[PH]_projectile.png", 32, 32)
+projectile.rect.x = 0
+projectile.rect.y = 0
+
 running = True
 
 # For program update speed
@@ -42,6 +46,10 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
+            if event.key == pygame.K_SPACE:
+                projectile.rect.x = player.rect.x
+                projectile.rect.y = player.rect.y
+                all_sprites.add(projectile)
 
     # Check for user input
     keys = pygame.key.get_pressed()
@@ -53,6 +61,13 @@ while running:
         player.moveLeft(player.ms)
     if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
         player.moveRight(player.ms, SCREEN_WIDTH)
+    
+    # Check for projectile shot
+    if all_sprites.has(projectile):
+        if projectile.rect.x >= (SCREEN_WIDTH - projectile.i_width):
+            all_sprites.remove(projectile)
+        else:
+            projectile.moveRight(projectile.ms, SCREEN_WIDTH)
 
     # Updates sprites
     all_sprites.update()
