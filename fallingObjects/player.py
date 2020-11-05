@@ -1,11 +1,16 @@
 import pygame
 from random import randint
+from constants import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, hp, ms, luck, awareness, attack, image, iheight, iwidth):
-        super().__init__()
+    def __init__(self,
+                 hp=6, ms=6, luck=6, awareness=6, attack=6, speed=6,
+                 image='../elephant.jpg',
+                 iheight=80, iwidth=80):
+        super(Player, self).__init__()
 
-        self.image = pygame.image.load(image)
+        self.image = pygame.image.load(image).convert()
+        self.image.set_colorkey(WHITE)
         self.image = pygame.transform.scale(self.image, (iwidth, iheight))
 
         self.rect = self.image.get_rect()
@@ -15,6 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.luck = randint(0, luck)
         self.awareness = awareness
         self.attack = attack
+        self.speed = speed
 
     def moveUp(self, pixels):
         self.rect.y -= pixels

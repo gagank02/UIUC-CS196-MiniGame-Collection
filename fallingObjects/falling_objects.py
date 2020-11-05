@@ -40,12 +40,10 @@ if __name__ == '__main__':
     pygame.time.set_timer(ADD_DROP_BLOCKS, BLOCK_SPAWN_FREQUENCY)
 
     # initialize player, drop blocks, and their group
-    player = Player()
-    player.image = pygame.transform.scale(player.image, (80, 80))
+    player = Player(speed=10)
     player.rect = player.image.get_rect()
     player.rect.centerx = screen_rect.centerx  # set player's initial pos at the bottom center of screen
-    player.rect.bottom = HEIGHT + 30
-    invincible = 120  # give player a 2-sec invincibility at the beginning of the game
+    player.rect.bottom = HEIGHT + 10
 
     drop_blocks = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group()
@@ -54,7 +52,8 @@ if __name__ == '__main__':
     # initialize the indicator of player's HP
     player_UI_HP = UI.HP(player.hp, FONT['font'], FONT['size'])
     player_UI_HP.render()
-    print(player_UI_HP.rect)
+
+    invincible = 120  # give player a 2-sec invincibility at the beginning of the game
 
     game_over = False
 
@@ -88,7 +87,6 @@ if __name__ == '__main__':
             player.hp -= 1
             pygame.time.Clock().tick(5)  # the timeflow reduces slightly to respond for the collision
             invincible = 60 * 1.5  # give player a 1.5-sec invincibility when hit
-            player_UI_HP.update(player.hp)
 
         if player.hp <= 0:
             player.kill()
@@ -104,7 +102,12 @@ if __name__ == '__main__':
         if key[K_RIGHT]:
             player.moveRight(player.speed)
 
+        # update the state of elements
         drop_blocks.update()
+        if invincible <= 0:
+            player_UI_HP.update(player.hp)
+        else:
+            player_UI_HP.update(player.hp, RED)
 
         pygame.display.flip()
 

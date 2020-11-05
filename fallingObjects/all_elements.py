@@ -21,7 +21,6 @@ class Drop_Block(pygame.sprite.Sprite):
         self.speed = 2
 
     def update(self):
-        # print(self.rect.top)
         self.rect.move_ip(0, self.speed)
         self.speed = self.speed * ACCELERATION_COEFFICIENT
         if self.rect.top > HEIGHT:
@@ -59,6 +58,6 @@ class UI:
             self.surf = self.font.render(f'HP: {self.hp}', True, WHITE)
             self.rect = self.surf.get_rect(height=40, width=40)
 
-        def update(self, new_hp):
-            self.surf = self.font.render(f'HP: {new_hp}', True, WHITE)
+        def update(self, new_hp, color=WHITE):
+            self.surf = self.font.render(f'HP: {new_hp}', True, color)
             self.rect = self.surf.get_rect(height=40, width=40)
