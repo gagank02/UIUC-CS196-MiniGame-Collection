@@ -13,14 +13,19 @@ SCREEN_HEIGHT = 720
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Boss Rush Time Trial")
 
-# Initialize player and adds it to sprite list
+# Initializes sprite list
+all_sprites = pygame.sprite.Group()
+
+# Initialize entities and add them to sprite list
 player = Entity(10, 10, 10, 0, 0, "sprites/placeholder.png", 128, 128)
 player.rect.x = 0
 player.rect.y = 0
-
-# Initializes sprite list and adds sprites
-all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
+
+boss = Entity(10, 10, 10, 0, 0, "sprites/boss_placeholder.png", 256, 256)
+boss.rect.x = (SCREEN_WIDTH - boss.i_width) / 2
+boss.rect.y = (SCREEN_HEIGHT - boss.i_height) / 2
+all_sprites.add(boss)
 
 running = True
 
