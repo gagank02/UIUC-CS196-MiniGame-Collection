@@ -1,7 +1,7 @@
 import pygame
 from random import randint
 
-class Player(pygame.sprite.Sprite):
+class Entity(pygame.sprite.Sprite):
     def __init__(self, hp, ms, luck, awareness, attack, image, i_height, i_width):
         super().__init__()
 

@@ -1,6 +1,6 @@
 # Initialize outside modules to be used
 import pygame
-from player import Player
+from entity import Entity
 
 pygame.init()
 
@@ -14,7 +14,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Boss Rush Time Trial")
 
 # Initialize player and adds it to sprite list
-player = Player(10, 10, 10, 0, 0, "sprites/placeholder.png", 128, 128)
+player = Entity(10, 10, 10, 0, 0, "sprites/placeholder.png", 128, 128)
 player.rect.x = 0
 player.rect.y = 0
 
