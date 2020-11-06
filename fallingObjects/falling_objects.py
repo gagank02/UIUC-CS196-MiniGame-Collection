@@ -1,3 +1,13 @@
+"""
+In PyCharm, this action is not needed since it automatically adds the path of the whole project to sys.path
+ - However, when directly executing this script via python interpreter, that will not be added, which triggers an
+   ImportError.
+ - Ultimately the project should be running in *main.py* located on the root of our project repo. This issue should
+   not come into effect then.
+"""
+import sys
+sys.path.append('../')
+
 import pygame
 from player import Player
 from constants import *
