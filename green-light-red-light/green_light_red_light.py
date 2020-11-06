@@ -1,4 +1,6 @@
-import pygame
+import pygame, sys
+sys.path.insert(0, '..') 
+from entity.entity import Entity
 import random
 from itertools import cycle
 from player import Player
@@ -40,10 +42,8 @@ ADD_CLOUD = pygame.USEREVENT + 1
 pygame.time.set_timer(ADD_CLOUD, 2000)
 
 
-
 # Create a runner
-runner = Player(5, 5, 5, 5, 5, 'minotaur.png', 100, 100)
-
+runner = Entity(5, 5, 5, 5, 'minotaur.png', 100, 100, True)
 
 
 # # Sprite groups
@@ -98,12 +98,12 @@ def main():
         # Get set of pressed keys
         pressed_keys = pygame.key.get_pressed()
         if pressed_keys[K_RIGHT] or pressed_keys[K_d]:
-            runner.moveRight(13)
+            runner.moveRight(13, SCREEN_WIDTH)
             if count == 1:
                 print("current hp: " + str(hp))
                 hp -= .025
         if pressed_keys[K_LEFT] or pressed_keys[K_a]:
-            runner.moveRight(-13)
+            runner.moveLeft(13)
             if count == 1:
                 print("current hp: " + str(hp))
                 hp -= .025
