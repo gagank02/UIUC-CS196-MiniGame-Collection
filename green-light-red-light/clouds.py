@@ -10,7 +10,7 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 1024, 800
 class Cloud(pygame.sprite.Sprite):
     def __init__(self):
         super(Cloud, self).__init__()
-        self.surf = pygame.image.load('cloud1.jpg').convert()
+        self.surf = pygame.image.load('cloud.png').convert()
         self.surf = pygame.transform.scale(self.surf, (80, 50))
         self.surf.set_colorkey(BLACK, RLEACCEL)
         self.rect = self.surf.get_rect(
