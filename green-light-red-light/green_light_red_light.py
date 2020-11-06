@@ -17,17 +17,16 @@ from pygame.locals import (
     QUIT,
 )
 
-
-WHITE = (255,255,255)
-BLACK = (0,0,0)
-GREEN = (34,139,34)
-BLUE = (135,235,250)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GREEN = (34, 139, 34)
+BLUE = (135, 235, 250)
 
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 800
 
 pygame.init()
-font = pygame.font.Font('freesansbold.ttf', 100) 
+font = pygame.font.Font('freesansbold.ttf', 100)
 
 # Create screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -44,6 +43,7 @@ pygame.time.set_timer(ADD_CLOUD, 2000)
 
 # Create a runner
 runner = Player(5, 5, 5, 5, 5, 'minotaur.png', 100, 100)
+
 
 
 # # Sprite groups
@@ -75,7 +75,7 @@ def main():
         for event in pygame.event.get():
             # Check if user hit a key
             if event.type == KEYDOWN:
-                #If esc, QUIT
+                # If esc, QUIT
                 if event.key == K_ESCAPE:
                     running = False
                 # If window close button, QUIT
@@ -146,6 +146,7 @@ def main():
         clock.tick(60)
         
     pygame.quit()
+
 
 if __name__ == '__main__':
     main()
