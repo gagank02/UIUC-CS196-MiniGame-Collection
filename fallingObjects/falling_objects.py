@@ -1,25 +1,22 @@
 import pygame
-from player.player import Player
-from constants import *
-from all_sprites import Drop_Block
 from player import Player
 from constants import *
-from all_elements import Drop_Block, UI
+from all_elements import Drop_Block, Start, HP, GameOver
 
 from pygame.locals import (
     K_LEFT,
     K_RIGHT,
     K_ESCAPE,
+    K_RETURN,
     KEYDOWN,
     QUIT,
-    MOUSEMOTION,
-    MOUSEBUTTONUP,
-    MOUSEBUTTONDOWN
 )
 
 '''ImportError often occurs,
 therefore an empty function is added to test if there's an ImportError when importing this module
 '''
+
+
 def emptyfunc():
     pass
 
@@ -34,16 +31,12 @@ if __name__ == '__main__':
     # set window name to "Falling Objects"
     pygame.display.set_caption('Falling Objects')
 
-    # block some of the events to make sure the important ones don't get dropped
-    events_blocked = [MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN]
-    pygame.event.set_blocked(events_blocked)
-
     # customize userevent (add drop blocks)
     ADD_DROP_BLOCKS = pygame.USEREVENT + 1
     pygame.time.set_timer(ADD_DROP_BLOCKS, BLOCK_SPAWN_FREQUENCY)
 
     # initialize player, drop blocks, and their group
-    player = Player(speed=10)
+    player = Player(speed=10, hp=2)
     player.rect = player.image.get_rect()
     player.rect.centerx = screen_rect.centerx  # set player's initial pos at the bottom center of screen
     player.rect.bottom = HEIGHT + 10
@@ -52,22 +45,65 @@ if __name__ == '__main__':
     all_sprites = pygame.sprite.Group()
     all_sprites.add(player)
 
+    '''initialize UIs'''
+    # initialize the commence indicator
+    game_UI_start = Start()
     # initialize the indicator of player's HP
-    player_UI_HP = UI.HP(player.hp, FONT['font'], FONT['size'])
-    player_UI_HP.render()
+    player_UI_HP = HP(player.hp)
+    player_UI_HP.render(f'HP: {player.hp}')
+    # initialize Game Over indicator
+    game_UI_gameover = GameOver(FONT['game_over']['size'])
+    game_UI_presskey = GameOver(FONT['game_over']['size'] - 20)  # <- press-key text is smaller than that of game over
 
-    invincible = 120  # give player a 2-sec invincibility at the beginning of the game
+    # TODO the for loop below is not running
+    for count in range(60*30+30, 0):
+        pygame.time.Clock().tick(60)  # screen refreshes every 60 milliseconds
+
+        # initialize screen's background and project sprites to the screen
+        screen.fill(BACKGROUND_COLOR)
+        if count > 60*2-30:
+            game_UI_start.render('Wait...')
+            game_UI_start.set_rect((WIDTH / 2, HEIGHT / 2))
+            screen.blit(game_UI_start.surf, game_UI_start.rect)
+        elif 10 < count < 60:
+            game_UI_start.render('GO')
+            game_UI_start.set_rect((WIDTH / 2, HEIGHT / 2))
+            screen.blit(game_UI_start.surf, game_UI_start.rect)
+
+        screen.blit(player.surf, player.rect)
+        pygame.display.flip()
 
     game_over = False
+    invincible = 120  # give player a 2-sec invincibility at the beginning of the game
 
     while not game_over:
         pygame.time.Clock().tick(60)  # screen refreshes every 60 milliseconds
 
+        # player loses 1 hp when hit
+        if pygame.sprite.spritecollideany(player, drop_blocks) and invincible <= 0:
+            player.hp -= 1
+            player_UI_HP.hp -= 1
+            pygame.time.Clock().tick(5)  # timeflow slows down slightly to respond for the collision
+            invincible = 60 * 1.5  # give player a 1.5-sec invincibility when hit
+
+        # if player runs out of HP, declare that the game is over.
+        if player.hp <= 0:
+            game_UI_gameover.render('Game Over')
+            game_UI_gameover.set_rect((WIDTH / 2, HEIGHT / 2))
+            game_UI_presskey.render('Press Enter to exit')
+            game_UI_presskey.set_rect((WIDTH / 2, HEIGHT / 2 + 40))
+
+            screen.blit(game_UI_gameover.surf, game_UI_gameover.rect)
+            screen.blit(game_UI_presskey.surf, game_UI_presskey.rect)
+            for event in pygame.event.get():
+                if (event.type == KEYDOWN and event.key == K_RETURN) or event.type == QUIT:
+                    print('Game exited by player')
+                    game_over = True
+            pygame.display.flip()
+            continue
+
         for event in pygame.event.get():
-            if event.type == KEYDOWN and event.key == K_ESCAPE:
-                print('Game exited by player')
-                game_over = True
-            elif event.type == QUIT:
+            if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
                 print('Game exited by player')
                 game_over = True
             elif event.type == ADD_DROP_BLOCKS:
@@ -83,17 +119,7 @@ if __name__ == '__main__':
             except AttributeError:
                 screen.blit(item.image, item.rect)
 
-        screen.blit(player_UI_HP.surf, player_UI_HP.rect)
-
-        # player loses 1 hp when hit
-        if pygame.sprite.spritecollideany(player, drop_blocks) and invincible <= 0:
-            player.hp -= 1
-            pygame.time.Clock().tick(5)  # the timeflow reduces slightly to respond for the collision
-            invincible = 60 * 1.5  # give player a 1.5-sec invincibility when hit
-
-        if player.hp <= 0:
-            player.kill()
-            game_over = True
+        screen.blit(player_UI_HP.surf, (0, 0))
 
         '''these are essentially update() function of Player class
         Player class did not implement such function, so I just put it explicitly
@@ -103,14 +129,14 @@ if __name__ == '__main__':
         if key[K_LEFT]:
             player.moveLeft(player.speed)
         if key[K_RIGHT]:
-            player.moveRight(player.speed)
+            player.moveRight(player.speed, WIDTH)
 
         # update the state of elements
         drop_blocks.update()
-        if invincible <= 0:
-            player_UI_HP.update(player.hp)
+        if invincible <= 0 and player.hp > 1:
+            player_UI_HP.update(WHITE)
         else:
-            player_UI_HP.update(player.hp, RED)
+            player_UI_HP.update(RED)
 
         pygame.display.flip()
 
