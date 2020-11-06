@@ -1,6 +1,7 @@
 # Initialize outside modules to be used
-import pygame
-from entity import Entity
+import pygame, sys
+sys.path.insert(0, '..')
+from entity.entity import Entity
 
 pygame.init()
 
