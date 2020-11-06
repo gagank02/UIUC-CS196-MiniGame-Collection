@@ -1,14 +1,11 @@
 import pygame
-<<<<<<< HEAD
 from player.player import Player
 from constants import *
 from all_sprites import Drop_Block
-=======
 from player import Player
 from constants import *
 from all_elements import Drop_Block, UI
 
->>>>>>> 267eac7d9e903d0d0d0d2c2e1c5f6c8a54ecea37
 from pygame.locals import (
     K_LEFT,
     K_RIGHT,
