@@ -65,9 +65,9 @@ if __name__ == '__main__':
     game_UI_gameover = GameOver(FONT['game_over']['size'])
     game_UI_presskey = GameOver(FONT['game_over']['size'] - 20)  # <- press-key text is smaller than that of game over
 
-    # TODO the for loop below is not running
-    for count in range(60*30+30, 0):
+    for count in range(60*3+30, 0, -1):
         pygame.time.Clock().tick(60)  # screen refreshes every 60 milliseconds
+        print(count)
 
         # initialize screen's background and project sprites to the screen
         screen.fill(BACKGROUND_COLOR)
