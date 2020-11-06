@@ -1,5 +1,8 @@
-**A kind reminder:**
+**How to import into your minigame file**
 
-       Do not try to import from this folder until further notice.
-       
-       Code for how to import from this folder will be added soon. For now, just copy entity.py into your respective minigame folder.
+First three lines of code:
+1	import pygame, sys
+2	sys.path.insert(0, '..')
+3	from entity.entity import Entity
+
+That's about it!

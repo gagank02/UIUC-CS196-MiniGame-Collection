@@ -2,21 +2,20 @@ import pygame
 from random import randint
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, hp, ms, luck, awareness, attack, image, i_height, i_width):
+    def __init__(self, hp, ms, luck, attack, image, ih, iw):
         super().__init__()
 
         self.image = pygame.image.load(image)
-        self.image = pygame.transform.scale(self.image, (i_width, i_height))
+        self.image = pygame.transform.scale(self.image, (iw, ih))
 
         self.rect = self.image.get_rect()
 
         self.hp = hp
         self.ms = ms
         self.luck = randint(0, luck)
-        self.awareness = awareness
         self.attack = attack
-        self.i_height = i_height
-        self.i_width = i_width
+        self.ih = ih
+        self.iw = iw
 
     # If-statements refer to off-screen checks
     def moveUp(self, pixels):
@@ -26,8 +25,8 @@ class Entity(pygame.sprite.Sprite):
 
     def moveDown(self, pixels, height):
         self.rect.y += pixels
-        if self.rect.y > (height - self.i_height):
-            self.rect.y = (height - self.i_height)
+        if self.rect.y > (height - self.ih):
+            self.rect.y = (height - self.ih)
 
     def moveLeft(self, pixels):
         self.rect.x -= pixels
@@ -36,5 +35,5 @@ class Entity(pygame.sprite.Sprite):
 
     def moveRight(self, pixels, width):
         self.rect.x += pixels
-        if self.rect.x > (width - self.i_width):
-            self.rect.x = (width - self.i_width)
+        if self.rect.x > (width - self.iw):
+            self.rect.x = (width - self.iw)
