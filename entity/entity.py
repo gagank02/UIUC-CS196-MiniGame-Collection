@@ -1,18 +1,19 @@
 import pygame
 from random import randint
 
+
 class Entity(pygame.sprite.Sprite):
     """Class Entity
 
-    Attributes:
-        hp: (int)
-        ms: (???)
-        luck: (int)
-        attack: (int)
-        image: (str)
-        ih: (int)
-        iw: (int)
-        isGLRL: (bool)
+    Args:
+        hp (int):
+        ms (Any):
+        luck (int):
+        attack (int):
+        image (str):
+        ih (int):
+        iw (int):
+        isGLRL (bool):
     """
     def __init__(self, hp, ms, luck, attack, image, ih, iw, isGLRL):
         super(Entity, self).__init__()

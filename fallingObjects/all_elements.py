@@ -4,14 +4,19 @@ from fallingObjects.constants import *
 
 
 class Drop_Block(pygame.sprite.Sprite):
+    """determines properties and behaviors of falling objects
+
+    Attributes:
+        surf (pygame.Surface): Surface object where the image is drawn
+        rect (pygame.Rect):    Rect object representing the size and the position of surf
+        speed (int):           the velocity falling object moves
+    """
     def __init__(self):
         super(Drop_Block, self).__init__()
 
         # create a rectangular surface
         self.surf = pygame.Surface((40, 40))
         self.surf.set_colorkey(BACKGROUND_COLOR)
-        # fill the surface with #FFFFFF
-        # determine the spawnpoint of the blocks
         self.rect = pygame.draw.circle(
             self.surf,
             WHITE,
@@ -36,11 +41,16 @@ class Drop_Block(pygame.sprite.Sprite):
 class UI:
     """UI class
 
+    The super class of all classes related to GUI.
+
+    Args:
+        font (pygame.font.Font):  font object that initiates the font properties
+        size (int): the size of text to be rendered
+        color (tuple): the color of the text
+
     Attributes:
-        font : (pygame.font.Font) font object that initiates the font properties
-        surf: (pygame.Surface) surface object where the text is rendered
-        rect: (pygame.Rect) rectangle object representing the properties of surface
-        color: (tuple) the color of the text
+        surf (pygame.Surface):
+        rect (pygame.Rect):
     """
 
     def __init__(self, font, size, color):
@@ -50,9 +60,20 @@ class UI:
         self.color = color
 
     def render(self, to_render):
+        """draw text with given font properties to a Surface
+
+        Args:
+            to_render (str): the text message to be rendered
+
+        Returns:
+            None
+        """
         if type(to_render) != str:
-            raise TypeError('to_render must be String')
+            raise TypeError('Argument to_render must be str')
         self.surf = self.font.render(to_render, True, self.color)
+
+    def set_rect(self, pos):
+        self.rect = self.surf.get_rect(center=pos)
 
 
 class Start(UI):
@@ -61,15 +82,12 @@ class Start(UI):
                                     FONT['game_over']['size'],
                                     FONT['game_over']['color'])
 
-    def set_rect(self, pos):
-        self.rect = self.surf.get_rect(center=pos)
-
 
 class HP(UI):
     """HP class extending UI
 
     Attributes:
-        hp: (int) the value to be displayed
+        hp (int): the value to be displayed
     """
 
     '''initiate self.surf and self.rect'''
@@ -84,10 +102,6 @@ class HP(UI):
 class GameOver(UI):
     """GameOver class extending UI
     """
-    def __init__(self, size):
+    def __init__(self, size, color):
         super(GameOver, self).__init__(FONT['game_over']['font'],
-                                       size,
-                                       FONT['game_over']['color'])
-
-    def set_rect(self, pos):
-        self.rect = self.surf.get_rect(center=pos)
+                                       size, color)
