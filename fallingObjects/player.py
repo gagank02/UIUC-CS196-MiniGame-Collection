@@ -1,44 +1,64 @@
 import pygame
-from random import randint
 from constants import *
+from entity.entity import Entity
+from pygame.locals import (
+    K_LEFT,
+    K_RIGHT,
+    K_a,
+    K_d
+)
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self,
-                 hp=6, ms=6, luck=6, awareness=6, attack=6, speed=6,
-                 image='../elephant.jpg',
-                 iheight=80, iwidth=80):
-        super(Player, self).__init__()
+
+class Player(Entity):
+    """Player class extending Entity
+    Controls the properties and behaviors of the player
+
+    Attributes:
+        speed (int):        the velocity the player moves
+        hp (int):           the number of times the player can collide with falling objects
+        image (pygame.Surface): 
+        rect (pygame.Rect): Rect object representing the spatial properties of player
+        max_inv (int):      maximum duration of player's invincibility
+                            Remains unchanged once set
+        inv (int):          duration of invincibility after player is hit or spawns (in ticks)
+                            Dynamically changes
+
+    """
+    def __init__(self, speed=6, hp=6, image='../elephant.jpg', invincibility=60 * 1.5):
+        super().__init__(ms=6, luck=6, attack=6,
+                         image=image, hp=hp,
+                         ih=80, iw=80,
+                         isGLRL=False)
 
         self.image = pygame.image.load(image).convert()
         self.image.set_colorkey(WHITE)
-        self.image = pygame.transform.scale(self.image, (iwidth, iheight))
+        self.image = pygame.transform.scale(self.image, (self.iw, self.ih))
 
         self.rect = self.image.get_rect()
-
-        self.hp = hp
-        self.ms = ms
-        self.luck = randint(0, luck)
-        self.awareness = awareness
-        self.attack = attack
         self.speed = speed
+        self.inv, self.max_inv = invincibility, invincibility
 
-    def moveUp(self, pixels):
-        self.rect.y -= pixels
-        if self.rect.y < 0:
-            self.rect.y = 0
+    def reset_inv(self):
+        self.inv = self.max_inv
 
-    def moveDown(self, pixels):
-        self.rect.y += pixels
-        # checks for offscreen
-        if self.rect.y > 400:
-            self.rect.y = 400
+    def lose_inv(self, value=1):
+        self.inv -= value
 
-    def moveLeft(self, pixels):
-        self.rect.x -= pixels
-        if self.rect.x < 0:
-            self.rect.x = 0
+    def update(self, key, key_comb):
+        """controls player's movement
 
-    def moveRight(self, pixels):
-        self.rect.x += pixels
-        if self.rect.x > 700:
-            self.rect.x = 700
+        Args:
+            key (tuple): a tuple of int containing player's key strokes
+            key_comb (tuple): the key combination the player uses,
+                              either direction keys or \"A\" & \"D\"
+        """
+        if key_comb == (K_LEFT, K_RIGHT) or (K_RIGHT, K_LEFT):
+            if key[K_LEFT]:
+                self.moveLeft(self.speed)
+            if key[K_RIGHT]:
+                self.moveRight(self.speed, WIDTH)
+        elif key_comb == (K_a, K_d) or (K_d, K_a):
+            if key[K_a]:
+                self.moveLeft(self.speed)
+            if key[K_d]:
+                self.moveRight(self.speed, WIDTH)

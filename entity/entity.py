@@ -1,14 +1,27 @@
 import pygame
 from random import randint
 
+
 class Entity(pygame.sprite.Sprite):
+    """Class Entity
+
+    Args:
+        hp (int):
+        ms (Any):
+        luck (int):
+        attack (int):
+        image (str):
+        ih (int):
+        iw (int):
+        isGLRL (bool):
+    """
     def __init__(self, hp, ms, luck, attack, image, ih, iw, isGLRL):
-        super().__init__()
+        super(Entity, self).__init__()
 
         self.surf = pygame.image.load(image)
         self.surf = pygame.transform.scale(self.surf, (iw, ih))
         if isGLRL:
-            self.rect = self.surf.get_rect(topleft=(0, 800 - 100)) # Screen height - 100px
+            self.rect = self.surf.get_rect(topleft=(0, 800 - 100))  # Screen height - 100px
         else:
             self.rect = self.surf.get_rect()
 
