@@ -77,6 +77,12 @@ def main():
     game_UI_gameover = GameOver(FONT['game_over']['size'], FONT['game_over']['color'])
     game_UI_presskey = GameOver(FONT['game_over']['size'] - 20, (220, 100, 100))  # <- press-key text is smaller
 
+    '''import myFont'''
+    myFont = pygame.font.SysFont("monospace", 35)
+
+    '''initialize score'''
+    score = 0
+
     '''Intro of the game
     The screen displays "Wait..." and "GO" in turn
     This intro lasts for 3 secs.
@@ -159,8 +165,14 @@ def main():
         '''update the state of elements'''
         drop_blocks.update()
         key = pygame.key.get_pressed()
+
+        '''set score board'''
         player_a.update(key=key, key_comb=(K_LEFT, K_RIGHT))
         player_b.update(key=key, key_comb=(K_a, K_d))
+        text = "Score:" + str(score)
+        label = myFont.render(text, 1, (255, 255, 0))
+        screen.blit(label, (550, 450))
+
         if player_a.inv <= 0 and player_a.hp > 1:
             player_a_UI_HP.update(WHITE)     # When player is invincible, HP indicator turns to red
         else:
