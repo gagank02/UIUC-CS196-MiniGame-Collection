@@ -7,7 +7,7 @@ class Entity(pygame.sprite.Sprite):
 
     Args:
         hp (int):
-        ms (Any):
+        ms (int):
         luck (int):
         attack (int):
         image (str):

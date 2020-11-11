@@ -7,7 +7,7 @@ BLACK = (0, 0, 0)
 BACKGROUND_COLOR = BLACK
 
 # below defines the size of the screen.
-WIDTH = 700
+WIDTH = 1000
 HEIGHT = 500
 
 ACCELERATION_COEFFICIENT = 1.025  # <- this determines the acceleration of falling objects

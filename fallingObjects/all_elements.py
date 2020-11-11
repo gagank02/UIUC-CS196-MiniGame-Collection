@@ -58,6 +58,7 @@ class UI:
         self.surf = None
         self.rect = None
         self.color = color
+        self.to_render = str()
 
     def render(self, to_render):
         """draw text with given font properties to a Surface
@@ -71,6 +72,7 @@ class UI:
         if type(to_render) != str:
             raise TypeError('Argument to_render must be str')
         self.surf = self.font.render(to_render, True, self.color)
+        self.to_render = to_render
 
     def set_rect(self, pos):
         self.rect = self.surf.get_rect(center=pos)
@@ -96,7 +98,7 @@ class HP(UI):
         self.hp = init_hp
 
     def update(self, color):
-        self.surf = self.font.render(f'HP: {self.hp}', True, color)
+        self.surf = self.font.render(self.to_render, True, color)
 
 
 class GameOver(UI):
