@@ -16,7 +16,7 @@ sys.path.append('../')
 import pygame
 from player import Player, Players
 from constants import *
-from all_elements import Drop_Block, Start, HP, GameOver
+from all_elements import Drop_Block, UI, Start, HP, GameOver
 
 from pygame.locals import (
     K_LEFT,
@@ -69,10 +69,15 @@ def main():
     # initialize the commence indicator
     game_UI_start = Start()
     # initialize the indicator of player's HP
-    player_a_UI_HP = HP(player_a.hp)
-    player_a_UI_HP.render(f'Player A HP: {player_a.hp}')
-    player_b_UI_HP = HP(player_b.hp)
-    player_b_UI_HP.render(f'Player B HP: {player_b.hp}')
+    player_a_UI_HP = HP(player_a.hp, 'Player A')
+    player_a_UI_HP.render()
+    player_b_UI_HP = HP(player_b.hp, 'Player B')
+    player_b_UI_HP.render()
+    # initialize the scoreboard
+    score = 0
+    """score (int): the score players earn during the gameplay"""
+    scoreboard = UI('monospace', 35, YELLOW)
+    scoreboard.render(f'SCORE: {score}')
     # initialize Game Over indicator
     game_UI_gameover = GameOver(FONT['game_over']['size'], FONT['game_over']['color'])
     game_UI_presskey = GameOver(FONT['game_over']['size'] - 20, (220, 100, 100))  # <- press-key text is smaller
@@ -85,7 +90,7 @@ def main():
 
     '''Intro of the game
     The screen displays "Wait..." and "GO" in turn
-    This intro lasts for 3 secs.
+    This lasts for 3 secs.
      '''
     for count in range(60 * 3 + 30, 0, -1):
         pygame.time.Clock().tick(60)  # screen refreshes every 60 milliseconds
@@ -116,15 +121,17 @@ def main():
         pygame.time.Clock().tick(60)  # screen refreshes every 60 milliseconds
 
         '''player loses 1 hp when hit.'''
+        # the following 4 lines modify the UI
+        if pygame.sprite.spritecollideany(player_a, drop_blocks) and player_a.inv <= 0:
+            player_a_UI_HP.lose_hp()
+        if pygame.sprite.spritecollideany(player_b, drop_blocks) and player_b.inv <= 0:
+            player_b_UI_HP.lose_hp()
+        # these modify the actual HP
         for player in all_players:
             if pygame.sprite.spritecollideany(player, drop_blocks) and player.inv <= 0:
                 player.lose_hp()
                 pygame.time.Clock().tick(5)  # timeflow slows down slightly to respond for the collision
                 player.reset_inv()  # give player a 1.5-sec invincibility when hit
-        if pygame.sprite.spritecollideany(player_a, drop_blocks) and player_a.inv <= 0:
-            player_a_UI_HP.hp -= 1
-        if pygame.sprite.spritecollideany(player_b, drop_blocks) and player_b.inv <= 0:
-            player_b_UI_HP.hp -= 1
 
         '''if player runs out of HP, declare that the game is over.'''
         if all_players.is_anyone_dead():
@@ -135,6 +142,8 @@ def main():
 
             screen.blit(game_UI_gameover.surf, game_UI_gameover.rect)
             screen.blit(game_UI_presskey.surf, game_UI_presskey.rect)
+            screen.blit(player_a_UI_HP.surf, (0, 0))
+            screen.blit(player_b_UI_HP.surf, (0, 30))
             for event in pygame.event.get():
                 if (event.type == KEYDOWN and event.key == K_RETURN) or event.type == QUIT:
                     print('Game Over')
@@ -161,17 +170,14 @@ def main():
 
         screen.blit(player_a_UI_HP.surf, (0, 0))
         screen.blit(player_b_UI_HP.surf, (0, 30))
+        screen.blit(scoreboard.surf, (550, 0))
 
         '''update the state of elements'''
         drop_blocks.update()
         key = pygame.key.get_pressed()
 
-        '''set score board'''
         player_a.update(key=key, key_comb=(K_LEFT, K_RIGHT))
         player_b.update(key=key, key_comb=(K_a, K_d))
-        text = "Score:" + str(score)
-        label = myFont.render(text, 1, (255, 255, 0))
-        screen.blit(label, (550, 450))
 
         if player_a.inv <= 0 and player_a.hp > 1:
             player_a_UI_HP.update(WHITE)     # When player is invincible, HP indicator turns to red
@@ -181,6 +187,8 @@ def main():
             player_b_UI_HP.update(WHITE)
         else:
             player_b_UI_HP.update(RED)
+        score += 1
+        scoreboard.render(f'SCORE: {score // 10}')
 
         pygame.display.flip()
 
