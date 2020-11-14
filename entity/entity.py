@@ -6,24 +6,20 @@ class Entity(pygame.sprite.Sprite):
     """Class Entity
 
     Args:
-        hp (int):
-        ms (Any):
-        luck (int):
-        attack (int):
-        image (str):
-        ih (int):
-        iw (int):
-        isGLRL (bool):
+        hp (int): The amount of health points your player has
+        ms (Any): How fast your player can move
+        luck (int): How lucky your player is
+        attack (int): How much damage your player can deal
+        image (str): The image/sprite for your player
+        ih (int): How tall your player is (in px)
+        iw (int): How wide your player is (in px)
     """
-    def __init__(self, hp, ms, luck, attack, image, ih, iw, isGLRL):
+    def __init__(self, hp, ms, luck, attack, image, ih, iw):
         super(Entity, self).__init__()
 
         self.surf = pygame.image.load(image)
         self.surf = pygame.transform.scale(self.surf, (iw, ih))
-        if isGLRL:
-            self.rect = self.surf.get_rect(topleft=(0, 800 - 100))  # Screen height - 100px
-        else:
-            self.rect = self.surf.get_rect()
+        self.rect = self.surf.get_rect()
 
         self.hp = hp
         self.ms = ms

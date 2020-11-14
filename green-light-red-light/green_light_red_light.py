@@ -41,7 +41,9 @@ pygame.time.set_timer(ADD_CLOUD, 2000)
 
 
 # Create a runner
-runner = Entity(5, 5, 5, 5, 'minotaur.png', 100, 100, True)
+runner = Entity(5, 5, 5, 5, 'minotaur.png', 100, 100)
+runner.rect.x = 0
+runner.rect.y = SCREEN_HEIGHT - 100
 
 
 # # Sprite groups
