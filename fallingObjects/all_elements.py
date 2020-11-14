@@ -58,6 +58,7 @@ class UI:
         self.surf = None
         self.rect = None
         self.color = color
+        self.to_render = str()
 
     def render(self, to_render):
         """draw text with given font properties to a Surface
@@ -71,8 +72,9 @@ class UI:
         if type(to_render) != str:
             raise TypeError('Argument to_render must be str')
         self.surf = self.font.render(to_render, True, self.color)
+        self.to_render = to_render
 
-    def set_rect(self, pos):
+    def set_rect(self, pos: tuple):
         self.rect = self.surf.get_rect(center=pos)
 
 
@@ -87,16 +89,25 @@ class HP(UI):
     """HP class extending UI
 
     Attributes:
-        hp (int): the value to be displayed
+        __hp (int): private variable
+                    the HP value to be displayed.
+        name (str): the name of the owner of this HP-UI.
     """
 
     '''initiate self.surf and self.rect'''
-    def __init__(self, init_hp):
+    def __init__(self, init_hp, name):
         super(HP, self).__init__(FONT['HP']['font'], FONT['HP']['size'], WHITE)
-        self.hp = init_hp
+        self.__hp = init_hp
+        self.name = name
+
+    def lose_hp(self):
+        self.__hp -= 1
+
+    def render(self, unused=None):
+        self.surf = self.font.render(f'{self.name} ->>   {self.__hp}', True, self.color)
 
     def update(self, color):
-        self.surf = self.font.render(f'HP: {self.hp}', True, color)
+        self.surf = self.font.render(f'{self.name} ->>   {self.__hp}', True, color)
 
 
 class GameOver(UI):

@@ -4,10 +4,11 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+YELLOW = (255, 225, 0)
 BACKGROUND_COLOR = BLACK
 
 # below defines the size of the screen.
-WIDTH = 700
+WIDTH = 1000
 HEIGHT = 500
 
 ACCELERATION_COEFFICIENT = 1.025  # <- this determines the acceleration of falling objects
@@ -26,5 +27,11 @@ FONT = {  # <- the font properties the UI uses.
             'font': 'calibri',
             'size': 60,
             'color': (200, 200, 200)
+        },
+    'score':
+        {
+            'font': 'monospace',
+            'size': '35',
+            'color': YELLOW
         }
 }

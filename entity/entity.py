@@ -13,6 +13,14 @@ class Entity(pygame.sprite.Sprite):
         image (str): The image/sprite for your player
         ih (int): How tall your player is (in px)
         iw (int): How wide your player is (in px)
+        hp (int):
+        ms (int):
+        luck (int):
+        attack (int):
+        image (str):
+        ih (int):
+        iw (int):
+        isGLRL (bool):
     """
     def __init__(self, hp, ms, luck, attack, image, ih, iw):
         super(Entity, self).__init__()

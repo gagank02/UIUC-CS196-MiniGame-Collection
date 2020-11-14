@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -13,9 +14,9 @@ import sys
 sys.path.append('../')
 
 import pygame
-from player import Player
+from player import Player, Players
 from constants import *
-from all_elements import Drop_Block, Start, HP, GameOver
+from all_elements import Drop_Block, UI, Start, HP, GameOver
 
 from pygame.locals import (
     K_LEFT,
@@ -42,35 +43,54 @@ def main():
     pygame.init()
 
     # create the screen to display game
-    screen = pygame.display.set_mode((700, 500))
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
     screen_rect = screen.get_rect()
 
     # set window name to "Falling Objects"
     pygame.display.set_caption('Falling Objects')
 
     # initialize player, drop blocks, and their group
-    player_a = Player(speed=10, hp=2, invincibility=60 * 1.5)
+    player_a = Player(speed=10, hp=3, invincibility=60 * 1.5)
     player_a.rect = player_a.image.get_rect()
-    player_a.rect.centerx = screen_rect.centerx  # set player's initial pos at the bottom center of screen
-    player_a.rect.bottom = HEIGHT + 10
+    player_a.rect.centerx = screen_rect.centerx - 80  # set player's initial pos at the bottom center of screen
+    player_a.rect.bottom = HEIGHT + 5
+    player_b = Player(speed=10, hp=3, invincibility=60 * 1.5)
+    player_b.rect = player_b.image.get_rect()
+    player_b.rect.centerx = screen_rect.centerx + 80
+    player_b.rect.bottom = HEIGHT + 5
 
     drop_blocks = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group()
-    all_sprites.add(player_a)
+    all_players = Players()
+    all_sprites.add(player_a, player_b)
+    all_players.add(player_a, player_b)
 
     '''initialize UIs'''
     # initialize the commence indicator
     game_UI_start = Start()
     # initialize the indicator of player's HP
-    player_a_UI_HP = HP(player_a.hp)
-    player_a_UI_HP.render(f'HP: {player_a.hp}')
+    player_a_UI_HP = HP(player_a.hp, 'Player A')
+    player_a_UI_HP.render()
+    player_b_UI_HP = HP(player_b.hp, 'Player B')
+    player_b_UI_HP.render()
+    # initialize the scoreboard
+    score = 0
+    """score (int): the score players earn during the gameplay"""
+    scoreboard = UI('monospace', 35, YELLOW)
+    scoreboard.render(f'SCORE: {score}')
     # initialize Game Over indicator
     game_UI_gameover = GameOver(FONT['game_over']['size'], FONT['game_over']['color'])
     game_UI_presskey = GameOver(FONT['game_over']['size'] - 20, (220, 100, 100))  # <- press-key text is smaller
 
+    '''import myFont'''
+    myFont = pygame.font.SysFont("monospace", 35)
+
+    '''initialize score'''
+    score = 0
+
     '''Intro of the game
     The screen displays "Wait..." and "GO" in turn
-    This intro lasts for 3 secs.
+    This lasts for 3 secs.
      '''
     for count in range(60 * 3 + 30, 0, -1):
         pygame.time.Clock().tick(60)  # screen refreshes every 60 milliseconds
@@ -86,7 +106,8 @@ def main():
             game_UI_start.set_rect((WIDTH / 2, HEIGHT / 2))
             screen.blit(game_UI_start.surf, game_UI_start.rect)
 
-        screen.blit(player_a.surf, player_a.rect)
+        for player in all_players:
+            screen.blit(player.surf, player.rect)
         pygame.display.flip()
 
     # customize userevent (add drop blocks)
@@ -100,14 +121,20 @@ def main():
         pygame.time.Clock().tick(60)  # screen refreshes every 60 milliseconds
 
         '''player loses 1 hp when hit.'''
+        # the following 4 lines modify the UI
         if pygame.sprite.spritecollideany(player_a, drop_blocks) and player_a.inv <= 0:
-            player_a.hp -= 1
-            player_a_UI_HP.hp -= 1
-            pygame.time.Clock().tick(5)  # timeflow slows down slightly to respond for the collision
-            player_a.reset_inv()  # give player a 1.5-sec invincibility when hit
+            player_a_UI_HP.lose_hp()
+        if pygame.sprite.spritecollideany(player_b, drop_blocks) and player_b.inv <= 0:
+            player_b_UI_HP.lose_hp()
+        # these modify the actual HP
+        for player in all_players:
+            if pygame.sprite.spritecollideany(player, drop_blocks) and player.inv <= 0:
+                player.lose_hp()
+                pygame.time.Clock().tick(5)  # timeflow slows down slightly to respond for the collision
+                player.reset_inv()  # give player a 1.5-sec invincibility when hit
 
         '''if player runs out of HP, declare that the game is over.'''
-        if player_a.hp <= 0:
+        if all_players.is_anyone_dead():
             game_UI_gameover.render('Game Over')
             game_UI_gameover.set_rect((WIDTH / 2, HEIGHT / 2))
             game_UI_presskey.render('Press Enter to exit')
@@ -115,6 +142,8 @@ def main():
 
             screen.blit(game_UI_gameover.surf, game_UI_gameover.rect)
             screen.blit(game_UI_presskey.surf, game_UI_presskey.rect)
+            screen.blit(player_a_UI_HP.surf, (0, 0))
+            screen.blit(player_b_UI_HP.surf, (0, 30))
             for event in pygame.event.get():
                 if (event.type == KEYDOWN and event.key == K_RETURN) or event.type == QUIT:
                     print('Game Over')
@@ -140,19 +169,30 @@ def main():
                 screen.blit(item.image, item.rect)
 
         screen.blit(player_a_UI_HP.surf, (0, 0))
+        screen.blit(player_b_UI_HP.surf, (0, 30))
+        screen.blit(scoreboard.surf, (550, 0))
 
         '''update the state of elements'''
         drop_blocks.update()
         key = pygame.key.get_pressed()
+
         player_a.update(key=key, key_comb=(K_LEFT, K_RIGHT))
+        player_b.update(key=key, key_comb=(K_a, K_d))
+
         if player_a.inv <= 0 and player_a.hp > 1:
             player_a_UI_HP.update(WHITE)     # When player is invincible, HP indicator turns to red
         else:
             player_a_UI_HP.update(RED)       # The indicator remains red if player's HP is low (i.e. HP == 1)
+        if player_b.inv <= 0 and player_b.hp > 1:
+            player_b_UI_HP.update(WHITE)
+        else:
+            player_b_UI_HP.update(RED)
+        score += 1
+        scoreboard.render(f'SCORE: {score // 10}')
 
         pygame.display.flip()
 
-        player_a.lose_inv()  # <- each game loop invincible is subtracted by 1. If below 0 player is not invincible
+        all_players.lose_inv()  # <- each game loop player loses invincibility. If below 0 player is not invincible
 
     pygame.quit()
 

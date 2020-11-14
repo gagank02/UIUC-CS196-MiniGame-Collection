@@ -14,7 +14,6 @@ class Player(Entity):
     Controls the properties and behaviors of the player
 
     Attributes:
-        speed (int):        the velocity the player moves
         hp (int):           the number of times the player can collide with falling objects
         image (pygame.Surface): 
         rect (pygame.Rect): Rect object representing the spatial properties of player
@@ -25,8 +24,8 @@ class Player(Entity):
 
     """
     def __init__(self, speed=6, hp=6, image='../elephant.jpg', invincibility=60 * 1.5):
-        super().__init__(ms=6, luck=6, attack=6,
-                         image=image, hp=hp,
+        super().__init__(luck=6, attack=6,
+                         ms=speed, image=image, hp=hp,
                          ih=80, iw=80,
                          isGLRL=False)
 
@@ -35,14 +34,20 @@ class Player(Entity):
         self.image = pygame.transform.scale(self.image, (self.iw, self.ih))
 
         self.rect = self.image.get_rect()
-        self.speed = speed
         self.inv, self.max_inv = invincibility, invincibility
+
+    def lose_hp(self, value=1):
+        self.hp -= value
 
     def reset_inv(self):
         self.inv = self.max_inv
 
     def lose_inv(self, value=1):
         self.inv -= value
+
+    def is_dead(self):
+        """Returns True is player runs out of HP"""
+        return self.hp <= 0
 
     def update(self, key, key_comb):
         """controls player's movement
@@ -52,13 +57,37 @@ class Player(Entity):
             key_comb (tuple): the key combination the player uses,
                               either direction keys or \"A\" & \"D\"
         """
-        if key_comb == (K_LEFT, K_RIGHT) or (K_RIGHT, K_LEFT):
+        if key_comb.__eq__((K_LEFT, K_RIGHT)):
             if key[K_LEFT]:
-                self.moveLeft(self.speed)
+                self.moveLeft(self.ms)
             if key[K_RIGHT]:
-                self.moveRight(self.speed, WIDTH)
-        elif key_comb == (K_a, K_d) or (K_d, K_a):
+                self.moveRight(self.ms, WIDTH)
+        elif key_comb.__eq__((K_a, K_d)):
             if key[K_a]:
-                self.moveLeft(self.speed)
+                self.moveLeft(self.ms)
             if key[K_d]:
-                self.moveRight(self.speed, WIDTH)
+                self.moveRight(self.ms, WIDTH)
+
+
+class Players(pygame.sprite.Group):
+    def __init__(self, *players):
+        super(Players, self).__init__(self)
+        self.add(*players)
+
+    def lose_hp(self, value=1):
+        for s in self.sprites():
+            s.lose_hp()
+
+    def lose_inv(self, value=1):
+        for s in self.sprites():
+            s.lose_inv()
+
+    def reset_inv(self):
+        for s in self.sprites():
+            s.reset_inv()
+
+    def is_anyone_dead(self):
+        for s in self.sprites():
+            if s.is_dead():
+                return True
+        return False
