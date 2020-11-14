@@ -30,11 +30,11 @@ if __name__ == '__main__':
     pygame.display.set_caption("Pong")
 
     # initializing two paddles and ball
-    player1 = Entity(5, 5, 5, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis.png", 100, 20, False)
+    player1 = Entity(5, 5, 5, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis.png", 100, 20)
     player1.rect.x = 0
     player1.rect.y = 200
 
-    player2 = Entity(5, 5, 5, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis_copy.png", 100, 20, False)
+    player2 = Entity(5, 5, 5, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis_copy.png", 100, 20)
     player2.rect.x = 680
     player2.rect.y = 200
 
@@ -85,15 +85,17 @@ if __name__ == '__main__':
 
 
         # inputs from keystrokes
+        p1speed = player1.ms * 1.5
+        p2speed = player2.ms * 1.5
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
-            player1.moveUp(player1.ms)
+            player1.moveUp(p1speed)
         if keys[pygame.K_s]:
-            player1.moveDown(player1.ms, SCREEN_HEIGHT)
+            player1.moveDown(p1speed, SCREEN_HEIGHT)
         if keys[pygame.K_UP]:
-            player2.moveUp(player2.ms)
+            player2.moveUp(p2speed)
         if keys[pygame.K_DOWN]:
-            player2.moveDown(player2.ms, SCREEN_WIDTH)
+            player2.moveDown(p2speed, SCREEN_WIDTH)
 
         # Game Logic comes here
         all_sprites.update()
