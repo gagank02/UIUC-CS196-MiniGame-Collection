@@ -18,17 +18,17 @@ pygame.display.set_caption("Boss Rush Time Trial")
 all_sprites = pygame.sprite.Group()
 
 # Initialize entities and add them to sprite list
-player = Entity(10, 10, 10, 0, "sprites/[PH]_player.png", 128, 128)
+player = Entity(10, 10, 10, 0, "sprites/[PH]_player.png", 128, 128, False)
 player.rect.x = 0
 player.rect.y = 0
 all_sprites.add(player)
 
-boss = Entity(10, 10, 10, 0, "sprites/[PH]_boss.png", 256, 256)
+boss = Entity(10, 10, 10, 0, "sprites/[PH]_boss.png", 256, 256, False)
 boss.rect.x = (SCREEN_WIDTH - boss.iw) / 2
 boss.rect.y = (SCREEN_HEIGHT - boss.ih) / 2
 all_sprites.add(boss)
 
-shot = Entity(10, 25, 10, 0, "sprites/[PH]_shot.png", 32, 32)
+shot = Entity(10, 25, 10, 0, "sprites/[PH]_shot.png", 32, 32, False)
 shot.rect.x = -1 * shot.iw
 shot.rect.y = -1 * shot.ih
 directions = {
@@ -83,7 +83,7 @@ while running:
     if keys[pygame.K_RIGHT]:
         directions["Left"] = False
         directions["Right"] = True
-    
+
     # Check for shot shot
     if all_sprites.has(shot):
         # Try to shorten this conditional somehow
