@@ -18,12 +18,12 @@ class Entity(pygame.sprite.Sprite):
     def __init__(self, hp, ms, luck, attack, image, ih, iw, isGLRL):
         super(Entity, self).__init__()
 
-        self.surf = pygame.image.load(image)
-        self.surf = pygame.transform.scale(self.surf, (iw, ih))
+        self.image = pygame.image.load(image)
+        self.image = pygame.transform.scale(self.image, (iw, ih))
         if isGLRL:
-            self.rect = self.surf.get_rect(topleft=(0, 800 - 100))  # Screen height - 100px
+            self.rect = self.image.get_rect(topleft=(0, 800 - 100))  # Screen height - 100px
         else:
-            self.rect = self.surf.get_rect()
+            self.rect = self.image.get_rect()
 
         self.hp = hp
         self.ms = ms

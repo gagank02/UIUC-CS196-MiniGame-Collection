@@ -24,8 +24,8 @@ player.rect.y = 0
 all_sprites.add(player)
 
 boss = Entity(10, 10, 10, 0, "sprites/[PH]_boss.png", 256, 256, False)
-boss.rect.x = (SCREEN_WIDTH - boss.iw) / 2
-boss.rect.y = (SCREEN_HEIGHT - boss.ih) / 2
+boss.rect.x = (SCREEN_WIDTH - boss.iw)/ 2
+boss.rect.y = (SCREEN_HEIGHT - boss.ih)/ 2
 all_sprites.add(boss)
 
 shot = Entity(10, 25, 10, 0, "sprites/[PH]_shot.png", 32, 32, False)

@@ -1,8 +1,8 @@
 # initialize/import pygame
-import pygame
-from player import Player
+import pygame, sys
+sys.path.insert(0, '..')
+from entity.entity import Entity
 from ball import Ball
-
 
 def reset_all_values():
     global scoreA
@@ -23,16 +23,18 @@ if __name__ == '__main__':
     white = (255, 255, 255)
 
     # dimensions for screen size
-    size = (700, 500)
+    SCREEN_WIDTH = 700
+    SCREEN_HEIGHT = 500
+    size = (SCREEN_WIDTH, SCREEN_HEIGHT)
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Pong")
 
     # initializing two paddles and ball
-    player1 = Player(5, 5, 5, 0, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis.png", 100, 20)
+    player1 = Entity(5, 5, 5, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis.png", 100, 20, False)
     player1.rect.x = 0
     player1.rect.y = 200
 
-    player2 = Player(5, 5, 5, 0, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis_copy.png", 100, 20)
+    player2 = Entity(5, 5, 5, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis_copy.png", 100, 20, False)
     player2.rect.x = 680
     player2.rect.y = 200
 
@@ -85,13 +87,13 @@ if __name__ == '__main__':
         # inputs from keystrokes
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
-            player1.moveUp(7)
+            player1.moveUp(player1.ms)
         if keys[pygame.K_s]:
-            player1.moveDown(7)
+            player1.moveDown(player1.ms, SCREEN_HEIGHT)
         if keys[pygame.K_UP]:
-            player2.moveUp(7)
+            player2.moveUp(player2.ms)
         if keys[pygame.K_DOWN]:
-            player2.moveDown(7)
+            player2.moveDown(player2.ms, SCREEN_WIDTH)
 
         # Game Logic comes here
         all_sprites.update()
