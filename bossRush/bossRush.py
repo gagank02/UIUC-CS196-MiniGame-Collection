@@ -2,6 +2,7 @@
 import pygame, sys
 sys.path.insert(0, '..')
 from entity.entity import Entity
+from random import randint
 
 pygame.init()
 
@@ -31,12 +32,20 @@ all_sprites.add(boss)
 shot = Entity(10, 25, 10, 0, "sprites/[PH]_shot.png", 32, 32)
 shot.rect.x = -1 * shot.iw
 shot.rect.y = -1 * shot.ih
+
+bossShot = Entity(10, 5, 10, 0, "sprites/[PH]_shot.png", 32, 32)
+bossShot.rect.x = -1 * bossShot.iw
+bossShot.rect.y = -1 * bossShot.ih
+
 directions = {
     "Up": False,
     "Down": False,
     "Left": False,
     "Right": False
 }
+
+shootEvent = pygame.USEREVENT + 1
+pygame.time.set_timer(shootEvent, 2000)
 
 running = True
 
@@ -50,6 +59,10 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == shootEvent:
+            bossShot.rect.x = (boss.rect.x + (boss.iw - bossShot.iw) / 2)
+            bossShot.rect.y = (boss.rect.y + (boss.ih - bossShot.ih) / 2)
+            all_sprites.add(bossShot)
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
@@ -100,6 +113,19 @@ while running:
                 shot.moveLeft(shot.ms)
             if directions["Right"]:
                 shot.moveRight(shot.ms, SCREEN_WIDTH)
+
+    if all_sprites.has(bossShot):
+        if bossShot.rect.x >= (SCREEN_WIDTH - bossShot.iw) or bossShot.rect.y >= (SCREEN_HEIGHT - bossShot.ih) or bossShot.rect.x <= 0 or bossShot.rect.y <= 0:
+            all_sprites.remove(bossShot)
+        else:
+            if dir == 1:
+                bossShot.moveUp(bossShot.ms)
+            if dir == 2:
+                bossShot.moveDown(bossShot.ms, SCREEN_HEIGHT)
+            if dir == 3:
+                bossShot.moveLeft(bossShot.ms)
+            if dir == 4:
+                bossShot.moveRight(bossShot.ms, SCREEN_WIDTH)
 
     # Updates sprites
     all_sprites.update()
