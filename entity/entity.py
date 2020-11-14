@@ -17,9 +17,9 @@ class Entity(pygame.sprite.Sprite):
     def __init__(self, hp, ms, luck, attack, image, ih, iw):
         super(Entity, self).__init__()
 
-        self.surf = pygame.image.load(image)
-        self.surf = pygame.transform.scale(self.surf, (iw, ih))
-        self.rect = self.surf.get_rect()
+        self.image = pygame.image.load(image)
+        self.image = pygame.transform.scale(self.image, (iw, ih))
+        self.rect = self.image.get_rect()
 
         self.hp = hp
         self.ms = ms

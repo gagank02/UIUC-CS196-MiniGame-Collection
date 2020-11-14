@@ -124,7 +124,7 @@ def main():
 
         # Draw sprites
         for entity in all_sprites:
-            screen.blit(entity.surf, entity.rect)
+            screen.blit(entity.image, entity.rect)
 
         # Displays total time
         text = font.render(str(int(passed_time/1000)) + "s", True, BLACK)
