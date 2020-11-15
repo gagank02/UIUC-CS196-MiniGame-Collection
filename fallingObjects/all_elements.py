@@ -7,29 +7,36 @@ class Drop_Block(pygame.sprite.Sprite):
     """determines properties and behaviors of falling objects
 
     Attributes:
-        surf (pygame.Surface): Surface object where the image is drawn
-        rect (pygame.Rect):    Rect object representing the size and the position of surf
-        speed (int):           the velocity falling object moves
+        __horizontal_move_direction (int): direction of movement of drop block
+                                           -1 for left, 1 for right, and 0 for NA
+        __horizontal_move_speed (int):     movement speed of drop block
+        surf (pygame.Surface):  Surface object where the image is drawn
+        rect (pygame.Rect):     Rect object representing the size and the position of surf
+        speed (int):            the velocity falling object moves
+        side (int):             length of the surface of individual drop block
     """
-    def __init__(self):
+    def __init__(self, side):
         super(Drop_Block, self).__init__()
 
         # create a rectangular surface
-        self.surf = pygame.Surface((40, 40))
+        self.surf = pygame.Surface((side, side))
         self.surf.set_colorkey(BACKGROUND_COLOR)
         self.rect = pygame.draw.circle(
             self.surf,
             WHITE,
-            (20, 20),
-            20
+            (side // 2, side // 2),
+            side // 2
         )
         self.rect.center = (
             randint(0, WIDTH),
             randint(-150, -20))
         self.speed = 2
+        self.__horizontal_move_direction = randint(-1, 1)
+        self.__horizontal_move_speed = randint(1, 4)
 
     def update(self):
-        self.rect.move_ip(0, self.speed)
+        self.rect.move_ip(self.__horizontal_move_direction * self.__horizontal_move_speed,
+                          self.speed)
         self.speed = self.speed * ACCELERATION_COEFFICIENT
         if self.rect.top > HEIGHT:
             self.kill()

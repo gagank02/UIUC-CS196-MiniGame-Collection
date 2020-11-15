@@ -10,7 +10,7 @@ class Entity(pygame.sprite.Sprite):
         ms (Any): How fast your player can move
         luck (int): How lucky your player is
         attack (int): How much damage your player can deal
-        image (str): The image/sprite for your player
+        image (pygame.Surface): The image/sprite for your player
         ih (int): How tall your player is (in px)
         iw (int): How wide your player is (in px)
     """

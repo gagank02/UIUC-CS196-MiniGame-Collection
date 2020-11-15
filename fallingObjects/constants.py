@@ -11,7 +11,7 @@ BACKGROUND_COLOR = BLACK
 WIDTH = 1000
 HEIGHT = 500
 
-ACCELERATION_COEFFICIENT = 1.025  # <- this determines the acceleration of falling objects
+ACCELERATION_COEFFICIENT = 1.030  # <- this determines the acceleration of falling objects
 # (note that this coefficient is super sensitive and should be altered carefully).
 
 BLOCK_SPAWN_FREQUENCY = 180  # <- this determines how fast falling objects generates (one per milliseconds).

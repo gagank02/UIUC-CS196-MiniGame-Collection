@@ -1,5 +1,5 @@
 import pygame
-from constants import *
+from .constants import *
 from entity.entity import Entity
 from pygame.locals import (
     K_LEFT,
@@ -21,13 +21,14 @@ class Player(Entity):
                             Remains unchanged once set
         inv (int):          duration of invincibility after player is hit or spawns (in ticks)
                             Dynamically changes
-
+        direction (int):    where the player is facing at
+                            1 for the right, -1 for the left
     """
-    def __init__(self, speed=6, hp=6, image='../elephant.jpg', invincibility=60 * 1.5):
-        super().__init__(luck=6, attack=6,
-                         ms=speed, image=image, hp=hp,
-                         ih=80, iw=80,
-                         isGLRL=False)
+
+    def __init__(self, image, speed=6, hp=6, invincibility=60 * 1.5):
+        super(Player, self).__init__(luck=6, attack=6,
+                                     ms=speed, image=image, hp=hp,
+                                     ih=80, iw=80)
 
         self.image = pygame.image.load(image).convert()
         self.image.set_colorkey(WHITE)
@@ -35,6 +36,18 @@ class Player(Entity):
 
         self.rect = self.image.get_rect()
         self.inv, self.max_inv = invincibility, invincibility
+        self.direction = -1
+
+    def init(self, deviation: int):
+        """set up player's initial position
+        accepts future extension
+
+        Args:
+            deviation (int): the distance player is placed from the center of screen
+                             positive for the right, negative for the left
+        """
+        self.rect.centerx = WIDTH / 2 + deviation
+        self.rect.bottom = HEIGHT + 20
 
     def lose_hp(self, value=1):
         self.hp -= value
@@ -59,8 +72,14 @@ class Player(Entity):
         """
         if key_comb.__eq__((K_LEFT, K_RIGHT)):
             if key[K_LEFT]:
+                if self.direction == 1:
+                    self.image = pygame.transform.flip(self.image, True, False)
+                    self.direction *= -1
                 self.moveLeft(self.ms)
             if key[K_RIGHT]:
+                if self.direction == -1:
+                    self.image = pygame.transform.flip(self.image, True, False)
+                    self.direction *= -1
                 self.moveRight(self.ms, WIDTH)
         elif key_comb.__eq__((K_a, K_d)):
             if key[K_a]:
@@ -70,6 +89,13 @@ class Player(Entity):
 
 
 class Players(pygame.sprite.Group):
+    """Container class that accepts any number of player object
+    Batch process actions involving player object.
+
+    This class is currently unused because this section of game does not require
+    multiplayer feature.
+    """
+
     def __init__(self, *players):
         super(Players, self).__init__(self)
         self.add(*players)
