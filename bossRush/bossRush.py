@@ -2,7 +2,6 @@
 import pygame, sys
 sys.path.insert(0, '..')
 from entity.entity import Entity
-from random import randint
 
 pygame.init()
 
@@ -39,6 +38,10 @@ directions = {
     "Left": False,
     "Right": False
 }
+collisions = {
+    "Bump": False,
+    "Hit": False
+}
 
 shootEvent = pygame.USEREVENT + 1
 pygame.time.set_timer(shootEvent, 2000)
@@ -65,7 +68,10 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 running = False
             # Try to shorten this conditional somehow
-            if event.key == pygame.K_UP or event.key == pygame.K_DOWN or event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+            if (event.key == pygame.K_UP 
+                or event.key == pygame.K_DOWN 
+                or event.key == pygame.K_LEFT 
+                or event.key == pygame.K_RIGHT):
                 new_shot = Entity(10, 25, 10, 0, "sprites/[PH]_shot.png", 32, 32)
                 new_shot.rect.x = -1 * new_shot.iw
                 new_shot.rect.y = -1 * new_shot.ih
@@ -78,12 +84,29 @@ while running:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         player.moveUp(player.ms)
+        if collisions["Bump"]:
+            player.rect.y += 20 * player.ms
+            if player.rect.y > (SCREEN_HEIGHT - player.ih):
+                player.rect.y = SCREEN_HEIGHT - player.ih
     if keys[pygame.K_s]:
         player.moveDown(player.ms, SCREEN_HEIGHT)
+        if collisions["Bump"]:
+            player.rect.y -= 20 * player.ms
+            if player.rect.y < 0:
+                player.rect.y = 0
     if keys[pygame.K_a]:
         player.moveLeft(player.ms)
+        if collisions["Bump"]:
+            player.rect.x += 20 * player.ms
+            if player.rect.y < (SCREEN_WIDTH - player.iw):
+                player.rect.y = 0
     if keys[pygame.K_d]:
         player.moveRight(player.ms, SCREEN_WIDTH)
+        if collisions["Bump"]:
+            player.rect.x -= 20 * player.ms
+            if player.rect.y < 0:
+                player.rect.y = 0
+    collisions["Bump"] = False
 
     # Check for user input (shot shot)
     if keys[pygame.K_UP]:
@@ -129,6 +152,12 @@ while running:
                 bossShot.moveLeft(bossShot.ms)
             if dir == 4:
                 bossShot.moveRight(bossShot.ms, SCREEN_WIDTH)
+                
+    # Check for collision
+    collisions["Bump"] = (player.rect.x > (boss.rect.x - player.iw) 
+        and player.rect.x < (boss.rect.x + boss.iw)
+        and player.rect.y > (boss.rect.y - player.ih) 
+        and player.rect.y < (boss.rect.y + boss.ih))
 
     # Updates sprites
     all_sprites.update()
