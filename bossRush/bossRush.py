@@ -29,10 +29,6 @@ boss.rect.x = (SCREEN_WIDTH - boss.iw) / 2
 boss.rect.y = (SCREEN_HEIGHT - boss.ih) / 2
 all_sprites.add(boss)
 
-shot = Entity(10, 25, 10, 0, "sprites/[PH]_shot.png", 32, 32)
-shot.rect.x = -1 * shot.iw
-shot.rect.y = -1 * shot.ih
-
 bossShot = Entity(10, 5, 10, 0, "sprites/[PH]_shot.png", 32, 32)
 bossShot.rect.x = -1 * bossShot.iw
 bossShot.rect.y = -1 * bossShot.ih
@@ -46,6 +42,8 @@ directions = {
 
 shootEvent = pygame.USEREVENT + 1
 pygame.time.set_timer(shootEvent, 2000)
+
+shotList = []
 
 running = True
 
@@ -68,9 +66,13 @@ while running:
                 running = False
             # Try to shorten this conditional somehow
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN or event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                shot.rect.x = (player.rect.x + (player.iw - shot.iw) / 2)
-                shot.rect.y = (player.rect.y + (player.ih - shot.ih) / 2)
-                all_sprites.add(shot)
+                new_shot = Entity(10, 25, 10, 0, "sprites/[PH]_shot.png", 32, 32)
+                new_shot.rect.x = -1 * new_shot.iw
+                new_shot.rect.y = -1 * new_shot.ih
+                new_shot.rect.x = (player.rect.x + (player.iw - new_shot.iw) / 2)
+                new_shot.rect.y = (player.rect.y + (player.ih - new_shot.ih) / 2)
+                shotList.append(new_shot)
+                all_sprites.add(new_shot)
 
     # Check for user input (moving)
     keys = pygame.key.get_pressed()
@@ -98,10 +100,11 @@ while running:
         directions["Right"] = True
 
     # Check for shot shot
-    if all_sprites.has(shot):
+    for shot in shotList:
         # Try to shorten this conditional somehow
         if shot.rect.x >= (SCREEN_WIDTH - shot.iw) or shot.rect.y >= (SCREEN_HEIGHT - shot.ih) or shot.rect.x <= 0 or shot.rect.y <= 0:
             all_sprites.remove(shot)
+            shotList.remove(shot)
             for direction in directions:
                 directions[direction] = False
         else:
