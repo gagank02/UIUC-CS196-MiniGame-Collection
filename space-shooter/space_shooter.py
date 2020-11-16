@@ -1,7 +1,7 @@
 import pygame, sys
 sys.path.insert(0, '..')
 from entity.entity import Entity
-from sprites import Movement, Enemies, Bullet
+from sprites import Enemies, Bullet
 from os import path 
 
 pygame.init()
@@ -33,6 +33,8 @@ bullets = pygame.sprite.Group()
 player = Entity(100, 10, 0, 0, "playerShip3_blue.png", 40, 50)
 player.rect.centerx = width / 2
 player.rect.bottom = height - 10
+player.radius = 25
+pygame.draw.circle(player.image, red, player.rect.center, player.radius)
 player.image.set_colorkey(black)
 all_sprites.add(player)
 for x in range(10):
@@ -85,7 +87,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
 
-    collision = pygame.sprite.spritecollide(player, enemies, True)
+    collision = pygame.sprite.spritecollide(player, enemies, True, pygame.sprite.collide_circle)
     for i in collision:
         player.hp -= 30
         if player.hp <= 0:
