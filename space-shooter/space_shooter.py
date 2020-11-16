@@ -1,4 +1,6 @@
-import pygame
+import pygame, sys
+sys.path.insert(0, '..')
+from entity.entity import Entity
 from sprites import Movement, Enemies, Bullet
 from os import path 
 
@@ -22,18 +24,17 @@ pygame.display.set_caption("space shooter")
 running = True
 
 images = path.join(path.dirname(__file__), "images")
-player_image = pygame.image.load(path.join(images, "playerShip3_blue.png")).convert()
 enemy_image = pygame.image.load(path.join(images, "meteorGrey_small1.png")).convert()
 bullet_image = pygame.image.load(path.join(images, "laserRed02.png")).convert()
 
 all_sprites = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
-movement = Movement()
-movement.shield = 100
-movement.image = player_image
-movement.image.set_colorkey(black)
-all_sprites.add(movement)
+player = Entity(100, 10, 0, 0, "playerShip3_blue.png", 40, 50)
+player.rect.centerx = width / 2
+player.rect.bottom = height - 10
+player.image.set_colorkey(black)
+all_sprites.add(player)
 for x in range(10):
     e = Enemies()
     e.image = enemy_image
@@ -61,15 +62,20 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 running = False
             if event.key == pygame.K_SPACE:
-                bullet = Bullet(movement.rect.centerx, movement.rect.top)
+                bullet = Bullet(player.rect.centerx, player.rect.top)
                 bullet.image = bullet_image
                 bullet.image.set_colorkey(black)
                 all_sprites.add(bullet)
-                bullets.add(bullet)             
+                bullets.add(bullet) 
 
         if event.type == pygame.QUIT:
             running = False
 
+    keypress = pygame.key.get_pressed()
+    if keypress[pygame.K_RIGHT]:
+        player.moveRight(player.ms, width)
+    if keypress[pygame.K_LEFT]:
+        player.moveLeft(player.ms)    
 
     all_sprites.update()
 
@@ -79,17 +85,17 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
 
-    collision = pygame.sprite.spritecollide(movement, enemies, True)
+    collision = pygame.sprite.spritecollide(player, enemies, True)
     for i in collision:
-        movement.shield -= 30
-        if movement.shield <= 0:
+        player.hp -= 30
+        if player.hp <= 0:
             running = False
 
     screen.fill(black)
     
     all_sprites.draw(screen)
 
-    health_bar(screen, 5, 5, movement.shield)
+    health_bar(screen, 5, 5, player.hp)
 
     pygame.display.flip()
 
