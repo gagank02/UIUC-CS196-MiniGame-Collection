@@ -35,21 +35,18 @@ bossShot.rect.y = -1 * bossShot.ih
 shootEvent = pygame.USEREVENT + 1
 pygame.time.set_timer(shootEvent, 2000)
 
+# Projectile lists for player
 playerShot = []
-shotUpdate = []
-playerShotLast = len(playerShot) - 1
-def shotAppend(shot):
-    playerShot.append(shot)
-    playerShot[playerShotLast].rect.y += player.ih 
-    playerShot[playerShotLast].rect.y -= playerShot[playerShotLast].ih 
-    playerShot[playerShotLast].rect.y /= 2
-    playerShot[playerShotLast].rect.y += player.rect.y
-    playerShot[playerShotLast].rect.x += player.iw 
-    playerShot[playerShotLast].rect.x -= playerShot[playerShotLast].iw 
-    playerShot[playerShotLast].rect.x /= 2
-    playerShot[playerShotLast].rect.x += player.rect.x
-    all_sprites.add(playerShot[playerShotLast])
 
+# Adds projectile with specified direction to the list
+def shotAppend(direction):
+     playerShot.append(Entity(direction, 10, player.luck, player.attack,
+                              "sprites/[PH]_shot.png", 16, 16))
+     playerShot[-1].rect.y = (player.rect.y + 
+                              ((player.ih - playerShot[-1].ih) / 2))
+     playerShot[-1].rect.x = (player.rect.x + 
+                              ((player.iw - playerShot[-1].iw) / 2))
+     all_sprites.add(playerShot[-1])
 
 running = True
 
@@ -84,19 +81,15 @@ while running:
         player.moveRight(player.ms, SCREEN_WIDTH)
         
     # Check for player shot
-    if len(playerShot) < 6:
+    if len(playerShot) > -1:
         if keys[pygame.K_UP]:
-            shotAppend(Entity(1, 10, player.luck, player.attack,
-                                 "sprites/[PH]_shot.png", 16, 16))
-        elif keys[pygame.K_DOWN]:
-            shotAppend(Entity(2, 10, player.luck, player.attack,
-                                 "sprites/[PH]_shot.png", 16, 16))
-        elif keys[pygame.K_LEFT]:
-            shotAppend(Entity(3, 10, player.luck, player.attack,
-                                 "sprites/[PH]_shot.png", 16, 16))
-        elif keys[pygame.K_RIGHT]:
-            shotAppend(Entity(4, 10, player.luck, player.attack,
-                                 "sprites/[PH]_shot.png", 16, 16))
+            shotAppend(1)
+        if keys[pygame.K_DOWN]:
+            shotAppend(2)
+        if keys[pygame.K_LEFT]:
+            shotAppend(3)
+        if keys[pygame.K_RIGHT]:
+            shotAppend(4)
     
     # Check for player collision
     if (pygame.sprite.collide_rect(player, boss)):
@@ -110,14 +103,15 @@ while running:
             player.moveRight(10 * player.ms, SCREEN_WIDTH)
 
     # Check for shot in playerShot (Fix)
-    shotUpdate = playerShot
-    for shot in shotUpdate:
+    for shot in playerShot:
         if (shot.rect.y > (SCREEN_HEIGHT - shot.ih) 
             or shot.rect.x > (SCREEN_WIDTH - shot.iw) 
             or shot.rect.y < 0 
             or shot.rect.x < 0):
-            playerShot.remove(shot)
+            shot.rect.y = -1 * shot.ih
+            shot.rect.x = -1 * shot.iw
             all_sprites.remove(shot)
+            playerShot.remove(shot)
         else:
             if shot.hp == 1:
                 shot.moveUp(shot.ms)
