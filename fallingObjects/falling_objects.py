@@ -10,60 +10,52 @@ In PyCharm, this action is not needed since it automatically adds the path of th
    not come into effect then.
 
 """
-import sys
-sys.path.append('../')
-
 import pygame
-from player import Player, Players
-from constants import *
-from all_elements import Drop_Block, UI, Start, HP, GameOver
-
+import random
 from pygame.locals import (
     K_LEFT,
     K_RIGHT,
-    K_a,
-    K_d,
     K_ESCAPE,
     K_RETURN,
     KEYDOWN,
     QUIT,
 )
+try:
+    from fallingObjects.player import Player
+    from fallingObjects.constants import *
+    from fallingObjects.all_elements import Drop_Block, UI, Start, HP, GameOver
+except ImportError:
+    print('Proper search path not found\nAdding correct path to system path...')
+    import sys
+    sys.path.append('../')
+    from fallingObjects.player import Player
+    from fallingObjects.constants import *
+    from fallingObjects.all_elements import Drop_Block, UI, Start, HP, GameOver
 
 
 def foo():
     """An empty function
 
     This function does not do anything. It is for convenience of checking
-    the presence of ImportError
+    the presence of `ImportError`
     """
     pass
 
 
-def main():
+def main(image_path):
     pygame.init()
 
-    # create the screen to display game
+    # initialize the screen
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    screen_rect = screen.get_rect()
-
-    # set window name to "Falling Objects"
     pygame.display.set_caption('Falling Objects')
 
     # initialize player, drop blocks, and their group
-    player_a = Player(speed=10, hp=3, invincibility=60 * 1.5)
-    player_a.rect = player_a.image.get_rect()
-    player_a.rect.centerx = screen_rect.centerx - 80  # set player's initial pos at the bottom center of screen
-    player_a.rect.bottom = HEIGHT + 5
-    player_b = Player(speed=10, hp=3, invincibility=60 * 1.5)
-    player_b.rect = player_b.image.get_rect()
-    player_b.rect.centerx = screen_rect.centerx + 80
-    player_b.rect.bottom = HEIGHT + 5
+    player_a = Player(speed=10, hp=3, invincibility=60 * 1.5, image=image_path)
+    player_a.init(0)
 
     drop_blocks = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group()
-    all_players = Players()
-    all_sprites.add(player_a, player_b)
-    all_players.add(player_a, player_b)
+    all_sprites.add(player_a)
 
     '''initialize UIs'''
     # initialize the commence indicator
@@ -71,22 +63,15 @@ def main():
     # initialize the indicator of player's HP
     player_a_UI_HP = HP(player_a.hp, 'Player A')
     player_a_UI_HP.render()
-    player_b_UI_HP = HP(player_b.hp, 'Player B')
-    player_b_UI_HP.render()
     # initialize the scoreboard
     score = 0
     """score (int): the score players earn during the gameplay"""
     scoreboard = UI('monospace', 35, YELLOW)
+    scoreboard.font.set_bold(True)   # <- make scoreboard bold
     scoreboard.render(f'SCORE: {score}')
     # initialize Game Over indicator
     game_UI_gameover = GameOver(FONT['game_over']['size'], FONT['game_over']['color'])
     game_UI_presskey = GameOver(FONT['game_over']['size'] - 20, (220, 100, 100))  # <- press-key text is smaller
-
-    '''import myFont'''
-    myFont = pygame.font.SysFont("monospace", 35)
-
-    '''initialize score'''
-    score = 0
 
     '''Intro of the game
     The screen displays "Wait..." and "GO" in turn
@@ -106,8 +91,7 @@ def main():
             game_UI_start.set_rect((WIDTH / 2, HEIGHT / 2))
             screen.blit(game_UI_start.surf, game_UI_start.rect)
 
-        for player in all_players:
-            screen.blit(player.surf, player.rect)
+        screen.blit(player_a.image, player_a.rect)
         pygame.display.flip()
 
     # customize userevent (add drop blocks)
@@ -116,47 +100,50 @@ def main():
 
     """ main loop commences """
     game_over = False
+    count = 0
 
     while not game_over:
         pygame.time.Clock().tick(60)  # screen refreshes every 60 milliseconds
 
         '''player loses 1 hp when hit.'''
-        # the following 4 lines modify the UI
         if pygame.sprite.spritecollideany(player_a, drop_blocks) and player_a.inv <= 0:
             player_a_UI_HP.lose_hp()
-        if pygame.sprite.spritecollideany(player_b, drop_blocks) and player_b.inv <= 0:
-            player_b_UI_HP.lose_hp()
-        # these modify the actual HP
-        for player in all_players:
-            if pygame.sprite.spritecollideany(player, drop_blocks) and player.inv <= 0:
-                player.lose_hp()
-                pygame.time.Clock().tick(5)  # timeflow slows down slightly to respond for the collision
-                player.reset_inv()  # give player a 1.5-sec invincibility when hit
+            # TODO actions when single player (a) is hit  (lines involving multiplayer feature are removed)
+            player_a.lose_hp()
+            pygame.time.Clock().tick(5)
+            player_a.reset_inv()
 
         '''if player runs out of HP, declare that the game is over.'''
-        if all_players.is_anyone_dead():
+        if player_a.is_dead():
             game_UI_gameover.render('Game Over')
             game_UI_gameover.set_rect((WIDTH / 2, HEIGHT / 2))
-            game_UI_presskey.render('Press Enter to exit')
-            game_UI_presskey.set_rect((WIDTH / 2, HEIGHT / 2 + 40))
-
+            if count % 40 <= 20:
+                game_UI_presskey.render('Press Enter to exit')
+                game_UI_presskey.set_rect((WIDTH / 2, HEIGHT / 2 + 40))
+                screen.blit(game_UI_presskey.surf, game_UI_presskey.rect)
+            else:
+                coverage = pygame.Surface((290, 41))
+                coverage.fill(BACKGROUND_COLOR)
+                coverage_rect = coverage.get_rect(topleft=(355, 270), size=(290, 41))
+                screen.blit(coverage, coverage_rect)
             screen.blit(game_UI_gameover.surf, game_UI_gameover.rect)
-            screen.blit(game_UI_presskey.surf, game_UI_presskey.rect)
             screen.blit(player_a_UI_HP.surf, (0, 0))
-            screen.blit(player_b_UI_HP.surf, (0, 30))
             for event in pygame.event.get():
                 if (event.type == KEYDOWN and event.key == K_RETURN) or event.type == QUIT:
                     print('Game Over')
                     game_over = True
             pygame.display.flip()
+            count += 1
             continue
 
+        '''handle game events'''
         for event in pygame.event.get():
             if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
                 print('Game exited by player')
                 game_over = True
             elif event.type == ADD_DROP_BLOCKS:
-                new_drop_block = Drop_Block()
+                size = random.randint(20, 60)
+                new_drop_block = Drop_Block(size)
                 drop_blocks.add(new_drop_block)
                 all_sprites.add(new_drop_block)
 
@@ -169,7 +156,6 @@ def main():
                 screen.blit(item.image, item.rect)
 
         screen.blit(player_a_UI_HP.surf, (0, 0))
-        screen.blit(player_b_UI_HP.surf, (0, 30))
         screen.blit(scoreboard.surf, (550, 0))
 
         '''update the state of elements'''
@@ -177,25 +163,20 @@ def main():
         key = pygame.key.get_pressed()
 
         player_a.update(key=key, key_comb=(K_LEFT, K_RIGHT))
-        player_b.update(key=key, key_comb=(K_a, K_d))
 
         if player_a.inv <= 0 and player_a.hp > 1:
             player_a_UI_HP.update(WHITE)     # When player is invincible, HP indicator turns to red
         else:
             player_a_UI_HP.update(RED)       # The indicator remains red if player's HP is low (i.e. HP == 1)
-        if player_b.inv <= 0 and player_b.hp > 1:
-            player_b_UI_HP.update(WHITE)
-        else:
-            player_b_UI_HP.update(RED)
         score += 1
         scoreboard.render(f'SCORE: {score // 10}')
 
         pygame.display.flip()
 
-        all_players.lose_inv()  # <- each game loop player loses invincibility. If below 0 player is not invincible
+        player_a.lose_inv()
 
     pygame.quit()
 
 
 if __name__ == '__main__':
-    main()
+    main('resources/elephant.jpg')
