@@ -65,7 +65,7 @@ def main(image_path):
     player_a_UI_HP.render()
     # initialize the scoreboard
     score = 0
-    """score (int): the score players earn during the gameplay"""
+    """score (int): the score player earns during the gameplay"""
     scoreboard = UI('monospace', 35, YELLOW)
     scoreboard.font.set_bold(True)   # <- make scoreboard bold
     scoreboard.render(f'SCORE: {score}')

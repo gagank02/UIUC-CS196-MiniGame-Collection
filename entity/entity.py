@@ -5,9 +5,9 @@ from random import randint
 class Entity(pygame.sprite.Sprite):
     """Class Entity
 
-    Args:
+    Attributes:
         hp (int): The amount of health points your player has
-        ms (Any): How fast your player can move
+        ms (int): How fast your player can move
         luck (int): How lucky your player is
         attack (int): How much damage your player can deal
         image (pygame.Surface): The image/sprite for your player
