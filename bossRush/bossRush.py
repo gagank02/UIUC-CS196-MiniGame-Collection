@@ -31,9 +31,10 @@ all_sprites.add(boss)
 bossShot = Entity(10, 5, 10, 0, "sprites/[PH]_shot.png", 32, 32)
 bossShot.rect.x = -1 * bossShot.iw
 bossShot.rect.y = -1 * bossShot.ih
+tangent = 0
 
 shootEvent = pygame.USEREVENT + 1
-pygame.time.set_timer(shootEvent, 2000)
+pygame.time.set_timer(shootEvent, 1200)
 
 # Projectile lists for player
 playerShot = []
@@ -60,10 +61,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        # elif event.type == shootEvent:
-            # bossShot.rect.x = (boss.rect.x + (boss.iw - bossShot.iw) / 2)
-            # bossShot.rect.y = (boss.rect.y + (boss.ih - bossShot.ih) / 2)
-            # all_sprites.add(bossShot)
+        elif event.type == shootEvent:
+            bossShot.rect.x = (boss.rect.x + (boss.iw - bossShot.iw) / 2)
+            bossShot.rect.y = (boss.rect.y + (boss.ih - bossShot.ih) / 2)
+            tangent = ((boss.rect.y - player.rect.y)
+                       / (boss.rect.x - player.rect.x))
+            all_sprites.add(bossShot)
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
@@ -122,20 +125,20 @@ while running:
             if shot.hp == 4:
                 shot.moveRight(shot.ms, SCREEN_WIDTH)
     
-    """
+    
     if all_sprites.has(bossShot):
-        if bossShot.rect.x >= (SCREEN_WIDTH - bossShot.iw) or bossShot.rect.y >= (SCREEN_HEIGHT - bossShot.ih) or bossShot.rect.x <= 0 or bossShot.rect.y <= 0:
+        if (bossShot.rect.x > (SCREEN_WIDTH - bossShot.iw) 
+            or bossShot.rect.y > (SCREEN_HEIGHT - bossShot.ih) 
+            or bossShot.rect.x < 0 
+            or bossShot.rect.y < 0):
             all_sprites.remove(bossShot)
         else:
-            if dir == 1:
-                bossShot.moveUp(bossShot.ms)
-            if dir == 2:
-                bossShot.moveDown(bossShot.ms, SCREEN_HEIGHT)
-            if dir == 3:
-                bossShot.moveLeft(bossShot.ms)
-            if dir == 4:
-                bossShot.moveRight(bossShot.ms, SCREEN_WIDTH)
-    """
+            if ((boss.rect.x + (boss.iw / 2)) 
+                > (player.rect.x + (player.iw / 2))):
+                bossShot.rect.x -= bossShot.ms
+            else:
+                bossShot.rect.x += bossShot.ms
+            bossShot.rect.y = tangent * bossShot.rect.x
 
     # Updates sprites
     all_sprites.update()
