@@ -35,20 +35,18 @@ bossShot.rect.y = -1 * bossShot.ih
 shootEvent = pygame.USEREVENT + 1
 pygame.time.set_timer(shootEvent, 2000)
 
+# Projectile lists for player
 playerShot = []
-playerShotLast = len(playerShot) - 1
-def shotAppend(shot):
-    playerShot.append(shot)
-    playerShot[playerShotLast].rect.y += player.ih 
-    playerShot[playerShotLast].rect.y -= playerShot[playerShotLast].ih 
-    playerShot[playerShotLast].rect.y /= 2
-    playerShot[playerShotLast].rect.y += player.rect.y
-    playerShot[playerShotLast].rect.x += player.iw 
-    playerShot[playerShotLast].rect.x -= playerShot[playerShotLast].iw 
-    playerShot[playerShotLast].rect.x /= 2
-    playerShot[playerShotLast].rect.x += player.rect.x
-    all_sprites.add(playerShot[playerShotLast])
 
+# Adds projectile with specified direction to the list
+def shotAppend(direction):
+     playerShot.append(Entity(direction, 10, player.luck, player.attack,
+                              "sprites/[PH]_shot.png", 16, 16))
+     playerShot[-1].rect.y = (player.rect.y + 
+                              ((player.ih - playerShot[-1].ih) / 2))
+     playerShot[-1].rect.x = (player.rect.x + 
+                              ((player.iw - playerShot[-1].iw) / 2))
+     all_sprites.add(playerShot[-1])
 
 running = True
 
@@ -62,10 +60,10 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == shootEvent:
-            bossShot.rect.x = (boss.rect.x + (boss.iw - bossShot.iw) / 2)
-            bossShot.rect.y = (boss.rect.y + (boss.ih - bossShot.ih) / 2)
-            all_sprites.add(bossShot)
+        # elif event.type == shootEvent:
+            # bossShot.rect.x = (boss.rect.x + (boss.iw - bossShot.iw) / 2)
+            # bossShot.rect.y = (boss.rect.y + (boss.ih - bossShot.ih) / 2)
+            # all_sprites.add(bossShot)
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
@@ -83,25 +81,18 @@ while running:
         player.moveRight(player.ms, SCREEN_WIDTH)
         
     # Check for player shot
-    if keys[pygame.K_UP]:
-        shotAppend(Entity(0, 10, 1, player.attack,
-                                 "sprites/[PH]_shot.png", 16, 16))
-        
-    elif keys[pygame.K_DOWN]:
-        shotAppend(Entity(0, 10, 2, player.attack,
-                                 "sprites/[PH]_shot.png", 16, 16))
-    elif keys[pygame.K_LEFT]:
-        shotAppend(Entity(0, 10, 3, player.attack,
-                                 "sprites/[PH]_shot.png", 16, 16))
-    elif keys[pygame.K_RIGHT]:
-        shotAppend(Entity(0, 10, 4, player.attack,
-                                 "sprites/[PH]_shot.png", 16, 16))
+    if len(playerShot) > -1:
+        if keys[pygame.K_UP]:
+            shotAppend(1)
+        if keys[pygame.K_DOWN]:
+            shotAppend(2)
+        if keys[pygame.K_LEFT]:
+            shotAppend(3)
+        if keys[pygame.K_RIGHT]:
+            shotAppend(4)
     
     # Check for player collision
-    if (player.rect.y > (boss.rect.y - player.ih) 
-        and player.rect.y < (boss.rect.y + boss.ih) 
-        and player.rect.x > (boss.rect.x - player.iw) 
-        and player.rect.x < (boss.rect.x + boss.iw)):
+    if (pygame.sprite.collide_rect(player, boss)):
         if player.rect.y < boss.rect.y + (boss.ih / 2):
             player.moveUp(10 * player.ms)
         if player.rect.y >= boss.rect.y + (boss.ih / 2):
@@ -111,7 +102,7 @@ while running:
         if player.rect.x >= boss.rect.x + (boss.iw / 2):
             player.moveRight(10 * player.ms, SCREEN_WIDTH)
 
-    # Check for shot in playerShot
+    # Check for shot in playerShot (Fix)
     for shot in playerShot:
         if (shot.rect.y > (SCREEN_HEIGHT - shot.ih) 
             or shot.rect.x > (SCREEN_WIDTH - shot.iw) 
@@ -122,15 +113,15 @@ while running:
             all_sprites.remove(shot)
             playerShot.remove(shot)
         else:
-            if shot.luck == 1:
+            if shot.hp == 1:
                 shot.moveUp(shot.ms)
-            if shot.luck == 2:
+            if shot.hp == 2:
                 shot.moveDown(shot.ms, SCREEN_HEIGHT)
-            if shot.luck == 3:
+            if shot.hp == 3:
                 shot.moveLeft(shot.ms)
-            if shot.luck == 4:
+            if shot.hp == 4:
                 shot.moveRight(shot.ms, SCREEN_WIDTH)
-
+    
     """
     if all_sprites.has(bossShot):
         if bossShot.rect.x >= (SCREEN_WIDTH - bossShot.iw) or bossShot.rect.y >= (SCREEN_HEIGHT - bossShot.ih) or bossShot.rect.x <= 0 or bossShot.rect.y <= 0:
