@@ -23,7 +23,7 @@ class Entity(pygame.sprite.Sprite):
 
         self.hp = hp
         self.ms = ms
-        self.luck = randint(0, luck)
+        self.luck = luck
         self.attack = attack
         self.ih = ih
         self.iw = iw
@@ -32,19 +32,31 @@ class Entity(pygame.sprite.Sprite):
     def moveUp(self, pixels):
         self.rect.y -= pixels
         if self.rect.y < 0:
-            self.rect.y = 0
+            if self.hp == 0:
+                self.kill()
+            else:
+                self.rect.y = 0
 
     def moveDown(self, pixels, height):
         self.rect.y += pixels
         if self.rect.y > (height - self.ih):
-            self.rect.y = (height - self.ih)
+            if self.hp == 0:
+                self.kill()
+            else:
+                self.rect.y = (height - self.ih)
 
     def moveLeft(self, pixels):
         self.rect.x -= pixels
         if self.rect.x < 0:
-            self.rect.x = 0
+            if self.hp == 0:
+                self.kill()
+            else:
+                self.rect.x = 0
 
     def moveRight(self, pixels, width):
         self.rect.x += pixels
         if self.rect.x > (width - self.iw):
-            self.rect.x = (width - self.iw)
+            if self.hp == 0:
+                self.kill()
+            else:
+                self.rect.x = (width - self.iw)
