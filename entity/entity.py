@@ -7,6 +7,7 @@ class Entity(pygame.sprite.Sprite):
 
     Args:
         hp (int): The amount of health points your player has
+            - if hp is 0, the entity will be killed off
         ms (Any): How fast your player can move
         luck (int): How lucky your player is
         attack (int): How much damage your player can deal
