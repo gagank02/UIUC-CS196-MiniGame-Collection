@@ -23,18 +23,18 @@ player.rect.y = 0
 player.rect.x = 0
 all_sprites.add(player)
 
-boss = Entity(10, 10, 10, 0, "sprites/[PH]_boss.png", 256, 256)
+boss = Entity(10, 10, 0, 10, "sprites/[PH]_boss.png", 256, 256)
 boss.rect.y = (SCREEN_HEIGHT - boss.ih) / 2
 boss.rect.x = (SCREEN_WIDTH - boss.iw) / 2
 all_sprites.add(boss)
 
-bossShot = Entity(10, 5, 10, 0, "sprites/[PH]_shot.png", 32, 32)
+bossShot = Entity(0, 5, 10, boss.attack, "sprites/[PH]_shot.png", 32, 32)
 bossShot.rect.x = -1 * bossShot.iw
 bossShot.rect.y = -1 * bossShot.ih
-tangent = 0
+tan = (0, 0)
 
 shootEvent = pygame.USEREVENT + 1
-pygame.time.set_timer(shootEvent, 1200)
+pygame.time.set_timer(shootEvent, 2400)
 
 # Projectile lists for player
 playerShot = []
@@ -64,8 +64,8 @@ while running:
         elif event.type == shootEvent:
             bossShot.rect.x = (boss.rect.x + (boss.iw - bossShot.iw) / 2)
             bossShot.rect.y = (boss.rect.y + (boss.ih - bossShot.ih) / 2)
-            tangent = ((boss.rect.y - player.rect.y)
-                       / (boss.rect.x - player.rect.x))
+            tan = ((bossShot.rect.x - player.rect.x),
+                   (bossShot.rect.y - player.rect.y))
             all_sprites.add(bossShot)
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
@@ -118,20 +118,17 @@ while running:
         if pygame.sprite.collide_rect(shot, boss):
             shot.kill()
     
-    
     if all_sprites.has(bossShot):
-        if (bossShot.rect.x > (SCREEN_WIDTH - bossShot.iw) 
-            or bossShot.rect.y > (SCREEN_HEIGHT - bossShot.ih) 
-            or bossShot.rect.x < 0 
-            or bossShot.rect.y < 0):
-            all_sprites.remove(bossShot)
-        else:
-            if ((boss.rect.x + (boss.iw / 2)) 
-                > (player.rect.x + (player.iw / 2))):
-                bossShot.rect.x -= bossShot.ms
-            else:
-                bossShot.rect.x += bossShot.ms
-                bossShot.rect.y = tangent * bossShot.rect.x
+        if tan[1] > 0:
+            bossShot.moveUp(tan[1] / 62.4)
+        if tan[1] < 0:
+            bossShot.moveDown(-1 * tan[1] / 62.4, SCREEN_HEIGHT)
+        if tan[0] > 0:
+            bossShot.moveLeft(tan[0] / 62.4)
+        if tan[0] < 0:
+            bossShot.moveRight(-1 * tan[0] / 62.4, SCREEN_WIDTH)
+        if pygame.sprite.collide_rect(player, bossShot):
+            bossShot.kill()
 
     # Updates sprites
     all_sprites.update()
