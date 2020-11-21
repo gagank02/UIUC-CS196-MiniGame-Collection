@@ -55,7 +55,20 @@ def health_bar(surface, x, y, health):
     pygame.draw.rect(surface, green, current)
     pygame.draw.rect(surface, white, outer, 2)
 
+def new_enemies():
+    e = Enemies()
+    all_sprites.add(e)
+    enemies.add(e)
 
+font_type = pygame.font.match_font('times new roman')
+def draw_text(surface, text, font_size, x, y):
+    font = pygame.font.Font(font_type, font_size)
+    text_surface = font.render(text, True, white)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (int(x), int(y))
+    surface.blit(text_surface, text_rect)
+
+score = 0
 while running:
     clock.tick(30)
 
@@ -83,13 +96,13 @@ while running:
 
     collisions = pygame.sprite.groupcollide(enemies, bullets, True, True)
     for i in collisions:
-        e = Enemies()
-        all_sprites.add(e)
-        enemies.add(e)
+        new_enemies()
+        score += 100
 
     collision = pygame.sprite.spritecollide(player, enemies, True, pygame.sprite.collide_circle)
     for i in collision:
         player.hp -= 30
+        new_enemies()
         if player.hp <= 0:
             running = False
 
@@ -98,6 +111,8 @@ while running:
     all_sprites.draw(screen)
 
     health_bar(screen, 5, 5, player.hp)
+
+    draw_text(screen, "SCORE: " + str(score), 40, width / 2, 10)
 
     pygame.display.flip()
 
