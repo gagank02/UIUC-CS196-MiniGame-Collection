@@ -27,6 +27,7 @@ pygame.init()
 font = pygame.font.Font('freesansbold.ttf', 100)
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Green Light Red Light") 
 screen_rect = screen.get_rect()
 
 # Events
