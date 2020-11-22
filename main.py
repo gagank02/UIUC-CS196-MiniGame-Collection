@@ -1,9 +1,22 @@
 import pygame, sys
 from pygame.locals import *
+
 from greenLightRedLight.green_light_red_light import GLRL_main
 from greenLightRedLight.lights import Green, Red
 from greenLightRedLight.clouds import Cloud
+
 # from bossRush.bossRush import boss_rush_main
+
+# from fallingObjects.falling_objects import foo, falling_objects_main
+# import fallingObjects.constants
+# from fallingObjects.player import Player, Players
+# from fallingObjects.all_elements import Drop_Block, UI, Start, HP, GameOver
+
+# from pong.pong_game import reset_all_values, pong_main
+# from pong.ball import Ball
+
+# from spaceShooter.space_shooter import health_bar, new_enemies, draw_text, space_shooter_main
+# from spaceShooter.sprites import Enemies, Bullet
 
 pygame.init()
 pygame.display.set_caption('Main Menu')
@@ -32,10 +45,9 @@ falling_objects_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 300), (200, 50)
 pong_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 400), (200, 50))
 space_shooter_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 500), (200, 50))
 
-def draw_text(text, font, color, surface, x, y):
+def write_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
-    textrect = textobj.get_rect()
-    textrect.topleft = (x, y)
+    textrect = textobj.get_rect(center=(x, y))
     surface.blit(textobj, textrect)
 
 def main_menu():
@@ -47,7 +59,7 @@ def main_menu():
         background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         # background.fill(pygame.Color('#000000'))
         screen.blit(bg, (0, 0))
-        draw_text("Main Menu", font, (255, 255, 255), screen, 105, 25)
+        write_text("Main Menu", font, (255, 255, 255), screen, SCREEN_WIDTH/2, 50)
         
         # Mouse coordinates
         mx, my = pygame.mouse.get_pos()
@@ -64,31 +76,31 @@ def main_menu():
         # if falling_objects_button.collidepoint((mx,my)):
         #     if click:
         #         pygame.display.set_mode((1000, 500))
-        #         GLRL_main()
+        #         falling_objects_main()
         # if pong_button.collidepoint((mx,my)):
         #     if click:
         #         pygame.display.set_mode((700, 500))
-        #         GLRL_main()
+        #         pong_main()
         # if space_shooter_button.collidepoint((mx,my)):
         #     if click:
         #         pygame.display.set_mode((600, 700))
-        #         GLRL_main()
+        #         space_shooter_main()
         
         # Draw buttons
         pygame.draw.rect(screen, button_clr, glrl_button)
-        screen.blit(button_font.render("Green Light Red Light", True, (255,255,255)), ((SCREEN_WIDTH // 2) - 90, 110))
+        write_text("Green Light Red Light", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 125)
 
         pygame.draw.rect(screen, button_clr, boss_rush_button)
-        screen.blit(button_font.render("Boss Rush", True, (255,255,255)), ((SCREEN_WIDTH // 2) - 90, 210))
+        write_text("Boss Rush", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 225)
 
         pygame.draw.rect(screen, button_clr, falling_objects_button)
-        screen.blit(button_font.render("Falling Objects", True, (255,255,255)), ((SCREEN_WIDTH // 2) - 90, 310))
+        write_text("Falling Objects", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 325)
 
         pygame.draw.rect(screen, button_clr, pong_button)
-        screen.blit(button_font.render("Pong", True, (255,255,255)), ((SCREEN_WIDTH // 2) - 90, 410))
+        write_text("Pong", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 425)
 
         pygame.draw.rect(screen, button_clr, space_shooter_button)
-        screen.blit(button_font.render("Space Shooter", True, (255,255,255)), ((SCREEN_WIDTH // 2) - 90, 510))
+        write_text("Space Shooter", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 525)
 
         click = False
 
