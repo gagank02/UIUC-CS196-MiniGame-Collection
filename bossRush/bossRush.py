@@ -44,19 +44,23 @@ playerShot = []
 
 # Adds projectile with specified direction to the list
 def shotAppend(direction):
-     playerShot.append(Entity(0, 10, direction, player.attack,
-                              "bossRush/sprites/[PH]_shot.png", 16, 16))
-     playerShot[-1].rect.y = (player.rect.y + 
+    playerShot.append(Entity(0, 10, direction, player.attack,
+                              "sprites/[PH]_shot.png", 16, 16))
+    #  playerShot.append(Entity(0, 10, direction, player.attack,           # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
+                            #   "bossRush/sprites/[PH]_shot.png", 16, 16)) # Line 49-50 intended for Main Menu functionality
+    playerShot[-1].rect.y = (player.rect.y +                            
                               ((player.ih - playerShot[-1].ih) / 2))
-     playerShot[-1].rect.x = (player.rect.x + 
+    playerShot[-1].rect.x = (player.rect.x + 
                               ((player.iw - playerShot[-1].iw) / 2))
-     all_sprites.add(playerShot[-1])
+    all_sprites.add(playerShot[-1])
 
 # For program update speed
 clock = pygame.time.Clock()
 
 def boss_rush_main():
     running = True
+
+    tan = (0, 0) # Replicated variable for Main Meny functionality
 
     # Main Loop
     while running:
@@ -65,6 +69,7 @@ def boss_rush_main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                return_to_main_menu()
             elif event.type == shootEvent:
                 bossShot.rect.x = (boss.rect.x + (boss.iw - bossShot.iw) / 2)
                 bossShot.rect.y = (boss.rect.y + (boss.ih - bossShot.ih) / 2)
@@ -74,6 +79,7 @@ def boss_rush_main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
+                    return_to_main_menu()
 
         keys = pygame.key.get_pressed()
         
@@ -148,6 +154,11 @@ def boss_rush_main():
         clock.tick(60)
 
     pygame.quit()
+
+def return_to_main_menu():
+    screen = pygame.display.set_mode((480, 640))
+    from main import main_menu
+    main_menu()
 
 if __name__ == "__main__":
     boss_rush_main()
