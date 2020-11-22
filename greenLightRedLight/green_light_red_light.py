@@ -157,7 +157,7 @@ def GLRL_main():
     pygame.quit()
 
 def return_to_main_menu():
-    screen = pygame.display.set_mode((500, 650))
+    screen = pygame.display.set_mode((480, 640))
     from main import main_menu
     main_menu()
 
