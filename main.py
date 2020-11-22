@@ -1,14 +1,11 @@
 import pygame, sys
 from pygame.locals import *
-# import green_light_red_light
-from greenLightRedLight.green_light_red_light import main
+from greenLightRedLight.green_light_red_light import GLRL_main
 from greenLightRedLight.lights import Green, Red
 from greenLightRedLight.clouds import Cloud
-
-
+# from bossRush.bossRush import boss_rush_main
 
 pygame.init()
-
 pygame.display.set_caption('Main Menu')
 
 SCREEN_WIDTH = 500
@@ -44,22 +41,35 @@ def main_menu():
     while True:
         background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         background.fill(pygame.Color('#000000'))
-
+        
+        # Mouse coordinates
         mx, my = pygame.mouse.get_pos()
-
+        
+        # Launches specific game based on input
         if glrl_button.collidepoint((mx,my)):
             if click:
                 pygame.display.set_mode((1024, 800))
-                main()
+                GLRL_main()
+        # if boss_rush_button.collidepoint((mx,my)):
+        #     if click:
+        #         pygame.display.set_mode((1280, 720))
+        #         boss_rush_main()
         
         # Draw buttons
         pygame.draw.rect(screen, (255,0,0), glrl_button)
         screen.blit(button_font.render("Green Light Red Light", True, (255,255,255)), ((SCREEN_WIDTH // 2) - 90, 110))
 
         pygame.draw.rect(screen, (255,0,0), boss_rush_button)
+        screen.blit(button_font.render("Boss Rush", True, (255,255,255)), ((SCREEN_WIDTH // 2) - 90, 210))
+
         pygame.draw.rect(screen, (255,0,0), falling_objects_button)
+        screen.blit(button_font.render("Falling Objects", True, (255,255,255)), ((SCREEN_WIDTH // 2) - 90, 310))
+
         pygame.draw.rect(screen, (255,0,0), pong_button)
+        screen.blit(button_font.render("Pong", True, (255,255,255)), ((SCREEN_WIDTH // 2) - 90, 410))
+
         pygame.draw.rect(screen, (255,0,0), space_shooter_button)
+        screen.blit(button_font.render("Space Shooter", True, (255,255,255)), ((SCREEN_WIDTH // 2) - 90, 510))
 
         click = False
 
