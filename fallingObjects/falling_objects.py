@@ -42,8 +42,12 @@ def foo():
     pass
 
 
-def main(image_path):
+def falling_objects_main():
     pygame.init()
+
+    image_path = 'resources/elephant.jpg'
+    # image_path = 'fallingObjects/resources/elephant.jpg' # Comment this out if running through this file
+                                                         # Line 49 intended for main menu functionality
 
     # initialize the screen
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -132,6 +136,7 @@ def main(image_path):
                 if (event.type == KEYDOWN and event.key == K_RETURN) or event.type == QUIT:
                     print('Game Over')
                     game_over = True
+                    return_to_main_menu()
             pygame.display.flip()
             count += 1
             continue
@@ -141,6 +146,7 @@ def main(image_path):
             if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
                 print('Game exited by player')
                 game_over = True
+                return_to_main_menu()
             elif event.type == ADD_DROP_BLOCKS:
                 size = random.randint(20, 60)
                 new_drop_block = Drop_Block(size)
@@ -177,6 +183,10 @@ def main(image_path):
 
     pygame.quit()
 
+def return_to_main_menu():
+    screen = pygame.display.set_mode((480, 640))
+    from main import main_menu
+    main_menu()
 
 if __name__ == '__main__':
-    main('resources/elephant.jpg')
+    falling_objects_main()
