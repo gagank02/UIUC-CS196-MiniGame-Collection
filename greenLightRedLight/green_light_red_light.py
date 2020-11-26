@@ -1,11 +1,9 @@
-import pygame, sys
+import pygame, sys, time, random
 sys.path.insert(0, '..') 
 from entity.entity import Entity
-import random
 from itertools import cycle
-import lights
-import time
-import clouds
+from greenLightRedLight import lights
+from greenLightRedLight import clouds
 
 from pygame.locals import (
     K_LEFT,
@@ -28,8 +26,8 @@ SCREEN_HEIGHT = 800
 pygame.init()
 font = pygame.font.Font('freesansbold.ttf', 100)
 
-# Create screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Green Light Red Light") 
 screen_rect = screen.get_rect()
 
 # Events
@@ -41,7 +39,8 @@ pygame.time.set_timer(ADD_CLOUD, 2000)
 
 
 # Create a runner
-runner = Entity(5, 5, 5, 5, 'minotaur.png', 100, 100)
+# runner = Entity(5, 5, 5, 5, 'minotaur.png', 100, 100)
+runner = Entity(5, 5, 5, 5, 'greenLightRedLight/minotaur.png', 100, 100)
 runner.rect.x = 0
 runner.rect.y = SCREEN_HEIGHT - 100
 
@@ -55,7 +54,11 @@ all_sprites.add(runner)
 clock = pygame.time.Clock()
 
 # Main function
-def main():
+def GLRL_main():
+    # Create screen
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen_rect = screen.get_rect()
+
     running = True
 
     # Runner attributes
@@ -81,11 +84,14 @@ def main():
                 # If esc, QUIT
                 if event.key == K_ESCAPE:
                     running = False
+                    return_to_main_menu()
                 # If window close button, QUIT
                 elif event.key == QUIT:
                     running = False
+                    return_to_main_menu()
                 elif hp <= 0:
                     running = False
+                    return_to_main_menu()
             if event.type == ADD_CLOUD:
                 new_cloud = clouds.Cloud()
                 all_clouds.add(new_cloud)
@@ -143,13 +149,18 @@ def main():
         # Check death
         if hp <= 0:
             running = False
+            return_to_main_menu()
 
         # Flip everything to display
         pygame.display.flip()
         clock.tick(60)
-        
+
     pygame.quit()
 
+def return_to_main_menu():
+    screen = pygame.display.set_mode((480, 640))
+    from main import main_menu
+    main_menu()
 
 if __name__ == '__main__':
-    main()
+    GLRL_main()

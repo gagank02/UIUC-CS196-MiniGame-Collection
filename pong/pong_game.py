@@ -2,7 +2,7 @@
 import pygame, sys
 sys.path.insert(0, '..')
 from entity.entity import Entity
-from ball import Ball
+from pong.ball import Ball
 
 def reset_all_values():
     global scoreA
@@ -15,38 +15,49 @@ def reset_all_values():
     A = 0
     B = 0
 
-if __name__ == '__main__':
-    pygame.init()
 
-    # setting colors for game
-    black = (0, 0, 0)
-    white = (255, 255, 255)
+pygame.init()
 
-    # dimensions for screen size
-    SCREEN_WIDTH = 700
-    SCREEN_HEIGHT = 500
-    size = (SCREEN_WIDTH, SCREEN_HEIGHT)
-    screen = pygame.display.set_mode(size)
-    pygame.display.set_caption("Pong")
+# setting colors for game
+black = (0, 0, 0)
+white = (255, 255, 255)
 
-    # initializing two paddles and ball
-    player1 = Entity(5, 5, 5, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis.png", 100, 20)
-    player1.rect.x = 0
-    player1.rect.y = 200
+# dimensions for screen size
+SCREEN_WIDTH = 700
+SCREEN_HEIGHT = 500
+size = (SCREEN_WIDTH, SCREEN_HEIGHT)
+screen = pygame.display.set_mode(size)
+pygame.display.set_caption("Pong")
 
-    player2 = Entity(5, 5, 5, 0, "69-694797_table-tennis-racket-transparent-png-butterfly-table-tennis_copy.png", 100, 20)
-    player2.rect.x = 680
-    player2.rect.y = 200
+# initializing two paddles and ball
+player1 = Entity(5, 5, 5, 0, "left_paddle.png", 100, 20)
+# player1 = Entity(5, 5, 5, 0, "pong/left_paddle.png", 100, 20) # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
+player1.rect.x = 0                                            # Line 34 intended for Main Menu functionality
+player1.rect.y = 200
 
-    ball = Ball(white, 10, 10)
-    ball.rect.x = 345
-    ball.rect.y = 195
+player2 = Entity(5, 5, 5, 0, "right_paddle.png", 100, 20)   
+# player2 = Entity(5, 5, 5, 0, "pong/right_paddle.png", 100, 20) # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
+player2.rect.x = 680                                           # Line 39 intended for Main Menu functionality
+player2.rect.y = 200
 
-    # list of all sprites in our Game
-    all_sprites = pygame.sprite.Group()
+ball = Ball(white, 10, 10)
+ball.rect.x = 345
+ball.rect.y = 195
 
-    all_sprites.add(player1)
-    all_sprites.add(player2)
+# list of all sprites in our Game
+all_sprites = pygame.sprite.Group()
+
+all_sprites.add(player1)
+all_sprites.add(player2)
+
+
+
+# controls how fast game updates
+clock = pygame.time.Clock()
+
+font = pygame.font.Font(None, 50)
+
+def pong_main():
 
     playing = True
     state = 'INTRO'
@@ -56,20 +67,20 @@ if __name__ == '__main__':
     A = 0
     B = 0
 
-    # controls how fast game updates
-    clock = pygame.time.Clock()
-
-    font = pygame.font.Font(None, 50)
-
     # Main Program Loop
     while playing:
         # Main Event Loop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 playing = False
+                return_to_main_menu()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:  # pressing q key quits the game
                     playing = False
+                    return_to_main_menu()
+                elif event.key == pygame.K_ESCAPE:  # pressing q key quits the game
+                    playing = False
+                    return_to_main_menu()
 
                 if state == 'INTRO':
                     if event.key == pygame.K_SPACE:
@@ -130,7 +141,8 @@ if __name__ == '__main__':
         elif state == 'GAMEOVER':
             pass
         elif state == 'QUIT':
-            pygame.quit()
+            playing = False
+            return_to_main_menu()
 
         # fills the screen
         screen.fill(black)
@@ -171,3 +183,11 @@ if __name__ == '__main__':
         clock.tick(60)
 
     pygame.quit()
+
+def return_to_main_menu():
+    screen = pygame.display.set_mode((480, 640))
+    from main import main_menu
+    main_menu()
+
+if __name__ == '__main__':
+    pong_main()
