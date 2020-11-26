@@ -1,5 +1,5 @@
 import pygame
-from random import randint
+import fallingObjects.constants
 
 
 class Entity(pygame.sprite.Sprite):
@@ -14,6 +14,10 @@ class Entity(pygame.sprite.Sprite):
         image (pygame.Surface): The image/sprite for your player
         ih (int): How tall your player is (in px)
         iw (int): How wide your player is (in px)
+        rect (pygame.Rect): representing entity's spatial properties
+        inv (int): duration of invincibility after player is hit or player spawns (in tick)
+        direction (int): where entity is facing at
+                        -1 for the left, 1 for the right
     """
     def __init__(self, hp, ms, luck, attack, image, ih, iw):
         super(Entity, self).__init__()
@@ -28,6 +32,17 @@ class Entity(pygame.sprite.Sprite):
         self.attack = attack
         self.ih = ih
         self.iw = iw
+        self.inv = 1.5 * 60
+        self.direction = -1
+
+    def locate(self, deviation: int):
+        """sets up entity's initial position
+
+        Args:
+            deviation (int): the distance entity is placed from the center of screen
+        """
+        self.rect.centerx = fallingObjects.constants.WIDTH / 2 + deviation
+        self.rect.bottom = fallingObjects.constants.HEIGHT + 20
 
     # If-statements refer to off-screen checks
     def moveUp(self, pixels):
@@ -61,3 +76,40 @@ class Entity(pygame.sprite.Sprite):
                 self.kill()
             else:
                 self.rect.x = (width - self.iw)
+
+    def lose_hp(self, value=1):
+        self.hp -= value
+
+    def reset_inv(self):
+        self.inv = 1.5 * 60
+
+    def lose_inv(self):
+        self.inv -= 1
+
+    def is_dead(self) -> bool:
+        return self.hp <= 0
+
+    def update(self, key, key_comb):
+        """controls player's movement
+
+        Args:
+            key (tuple): a tuple of int containing player's key strokes
+            key_comb (tuple): the key combination the player uses,
+                              either direction keys or \"A\" & \"D\"
+        """
+        if key_comb.__eq__((pygame.K_LEFT, pygame.K_RIGHT)):
+            if key[pygame.K_LEFT]:
+                if self.direction == 1:
+                    self.image = pygame.transform.flip(self.image, True, False)
+                    self.direction *= -1
+                self.moveLeft(self.ms)
+            if key[pygame.K_RIGHT]:
+                if self.direction == -1:
+                    self.image = pygame.transform.flip(self.image, True, False)
+                    self.direction *= -1
+                self.moveRight(self.ms, fallingObjects.constants.WIDTH)
+        elif key_comb.__eq__((pygame.K_a, pygame.K_d)):
+            if key[pygame.K_a]:
+                self.moveLeft(self.ms)
+            if key[pygame.K_d]:
+                self.moveRight(self.ms, fallingObjects.constants.WIDTH)

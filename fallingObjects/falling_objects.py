@@ -21,14 +21,17 @@ from pygame.locals import (
     QUIT,
 )
 try:
-    from fallingObjects.player import Player
+    from entity.entity import Entity
     from fallingObjects.constants import *
     from fallingObjects.all_elements import Drop_Block, UI, Start, HP, GameOver
-except ImportError:
+except (ImportError, ModuleNotFoundError):
     print('Proper search path not found\nAdding correct path to system path...')
-    import sys
-    sys.path.append('../')
-    from fallingObjects.player import Player
+    import sys, os
+    current_path = os.path.abspath(os.path.dirname(__file__))
+    root_path = os.path.split(current_path)[0]
+    sys.path.append(root_path)
+    print(sys.path)
+    from entity.entity import Entity
     from fallingObjects.constants import *
     from fallingObjects.all_elements import Drop_Block, UI, Start, HP, GameOver
 
@@ -54,8 +57,9 @@ def falling_objects_main():
     pygame.display.set_caption('Falling Objects')
 
     # initialize player, drop blocks, and their group
-    player_a = Player(speed=10, hp=3, invincibility=60 * 1.5, image=image_path)
-    player_a.init(0)
+    player_a = Entity(attack=6, ms=10, hp=3, image=image_path, iw=80, ih=80, luck=6)
+    player_a.image.set_colorkey(WHITE)
+    player_a.locate(0)
 
     drop_blocks = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group()
@@ -146,7 +150,6 @@ def falling_objects_main():
             if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
                 print('Game exited by player')
                 game_over = True
-                return_to_main_menu()
             elif event.type == ADD_DROP_BLOCKS:
                 size = random.randint(20, 60)
                 new_drop_block = Drop_Block(size)
@@ -183,10 +186,12 @@ def falling_objects_main():
 
     pygame.quit()
 
+
 def return_to_main_menu():
-    screen = pygame.display.set_mode((480, 640))
+    pygame.display.set_mode((480, 640))
     from main import main_menu
     main_menu()
+
 
 if __name__ == '__main__':
     falling_objects_main()
