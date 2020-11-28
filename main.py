@@ -30,7 +30,6 @@ button_font = pygame.font.Font('freesansbold.ttf', 16)
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 clock = pygame.time.Clock()
-is_running = True
 
 # Background image
 bg = pygame.image.load("bg.png")
@@ -39,11 +38,11 @@ bg = pygame.image.load("bg.png")
 button_clr = (130, 135, 143)
 
 # Buttons
-glrl_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 100), (200, 50))
-boss_rush_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 200), (200, 50))
-falling_objects_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 300), (200, 50))
-pong_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 400), (200, 50))
-space_shooter_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 500), (200, 50))
+glrl_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 130), (200, 50))
+boss_rush_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 230), (200, 50))
+falling_objects_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 330), (200, 50))
+pong_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 430), (200, 50))
+space_shooter_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 530), (200, 50))
 
 def write_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
@@ -56,10 +55,8 @@ def main_menu():
 
     while True:
         
-        background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-        # background.fill(pygame.Color('#000000'))
         screen.blit(bg, (0, 0))
-        write_text("Main Menu", font, (255, 255, 255), screen, SCREEN_WIDTH/2, 50)
+        write_text("Main Menu", font, (255, 255, 255), screen, SCREEN_WIDTH/2, 65)
         
         # Mouse coordinates
         mx, my = pygame.mouse.get_pos()
@@ -88,19 +85,19 @@ def main_menu():
         
         # Draw buttons
         pygame.draw.rect(screen, button_clr, glrl_button)
-        write_text("Green Light Red Light", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 125)
+        write_text("Green Light Red Light", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 155)
 
         pygame.draw.rect(screen, button_clr, boss_rush_button)
-        write_text("Boss Rush", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 225)
+        write_text("Boss Rush", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 255)
 
         pygame.draw.rect(screen, button_clr, falling_objects_button)
-        write_text("Falling Objects", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 325)
+        write_text("Falling Objects", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 355)
 
         pygame.draw.rect(screen, button_clr, pong_button)
-        write_text("Pong", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 425)
+        write_text("Pong", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 455)
 
         pygame.draw.rect(screen, button_clr, space_shooter_button)
-        write_text("Space Shooter", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 525)
+        write_text("Space Shooter", button_font, (255,255,255), screen, (SCREEN_WIDTH / 2), 555)
 
         click = False
 

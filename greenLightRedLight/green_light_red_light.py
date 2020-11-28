@@ -84,14 +84,14 @@ def GLRL_main():
                 # If esc, QUIT
                 if event.key == K_ESCAPE:
                     running = False
-                    return_to_main_menu()
+                    display_game_over_screen()
                 # If window close button, QUIT
                 elif event.key == QUIT:
                     running = False
-                    return_to_main_menu()
+                    display_game_over_screen()
                 elif hp <= 0:
                     running = False
-                    return_to_main_menu()
+                    display_game_over_screen()
             if event.type == ADD_CLOUD:
                 new_cloud = clouds.Cloud()
                 all_clouds.add(new_cloud)
@@ -109,12 +109,12 @@ def GLRL_main():
         if pressed_keys[K_RIGHT] or pressed_keys[K_d]:
             runner.moveRight(10 + (.2 * ms), SCREEN_WIDTH) # Base speed * 20% of ms
             if count == 1:
-                print("current hp: " + str(hp))
+                # print("current hp: " + str(hp))
                 hp -= .025
         if pressed_keys[K_LEFT] or pressed_keys[K_a]:
             runner.moveLeft(10 + (.2 * ms)) # Base speed * 20% of ms
             if count == 1:
-                print("current hp: " + str(hp))
+                # print("current hp: " + str(hp))
                 hp -= .025
 
         all_clouds.update()
@@ -133,7 +133,7 @@ def GLRL_main():
             screen.blit(entity.image, entity.rect)
 
         # Displays total time
-        text = font.render(str(int(passed_time/1000)) + "s", True, BLACK)
+        text = font.render("Score: " + str(int(passed_time/1000)) + "s", True, BLACK)
         screen.blit(text, (50, 50))
 
         # Displays HP
@@ -149,7 +149,7 @@ def GLRL_main():
         # Check death
         if hp <= 0:
             running = False
-            return_to_main_menu()
+            display_game_over_screen()
 
         # Flip everything to display
         pygame.display.flip()
@@ -157,10 +157,10 @@ def GLRL_main():
 
     pygame.quit()
 
-def return_to_main_menu():
-    screen = pygame.display.set_mode((480, 640))
-    from main import main_menu
-    main_menu()
-
+def display_game_over_screen():
+    screen = pygame.display.set_mode((1280, 780))
+    from gameOver import game_over
+    game_over()
+    
 if __name__ == '__main__':
     GLRL_main()
