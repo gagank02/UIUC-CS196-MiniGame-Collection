@@ -30,7 +30,6 @@ except (ImportError, ModuleNotFoundError):
     current_path = os.path.abspath(os.path.dirname(__file__))
     root_path = os.path.split(current_path)[0]
     sys.path.append(root_path)
-    print(sys.path)
     from entity.entity import Entity
     from fallingObjects.constants import *
     from fallingObjects.all_elements import Drop_Block, UI, Start, HP, GameOver
@@ -48,13 +47,13 @@ def foo():
 def falling_objects_main():
     pygame.init()
 
-    image_path = 'resources/elephant.jpg'
-    # image_path = 'fallingObjects/resources/elephant.jpg' # Comment this out if running through this file
-                                                         # Line 49 intended for main menu functionality
-
     # initialize the screen
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Falling Objects')
+
+    image_path = 'fallingObjects/resources/elephant.jpg'
+    # image_path = 'fallingObjects/resources/elephant.jpg' # Comment this out if running through this file
+                                                         # Line 49 intended for main menu functionality
 
     # initialize player, drop blocks, and their group
     player_a = Entity(attack=6, ms=10, hp=3, image=image_path, iw=80, ih=80, luck=6)
