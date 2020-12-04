@@ -87,7 +87,7 @@ def space_shooter_main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-                    display_game_over_screen(str(score))
+                    # display_game_over_screen(str(score))
                 if event.key == pygame.K_SPACE:
                     bullet = Bullet(player.rect.centerx, player.rect.top)
                     bullet.image = bullet_image
@@ -97,7 +97,7 @@ def space_shooter_main():
 
             if event.type == pygame.QUIT:
                 running = False
-                display_game_over_screen(str(score))
+                # display_game_over_screen(str(score))
 
         keypress = pygame.key.get_pressed()
         if keypress[pygame.K_RIGHT]:
@@ -118,7 +118,7 @@ def space_shooter_main():
             new_enemies()
             if player.hp <= 0:
                 running = False
-                display_game_over_screen(str(score))
+                # display_game_over_screen(str(score))
 
         screen.fill(black)
         
