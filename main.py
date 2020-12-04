@@ -5,7 +5,7 @@ from greenLightRedLight.green_light_red_light import GLRL_main
 from greenLightRedLight.lights import Green, Red
 from greenLightRedLight.clouds import Cloud
 
-# from bossRush.bossRush import boss_rush_main
+from bossRush.bossRush import boss_rush_main
 
 from fallingObjects.falling_objects import falling_objects_main
 import fallingObjects.constants
