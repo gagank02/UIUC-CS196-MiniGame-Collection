@@ -1,5 +1,5 @@
 import pygame, sys, time, random
-sys.path.insert(0, '..') 
+sys.path.insert(0, '..')
 from entity.entity import Entity
 from itertools import cycle
 from greenLightRedLight import lights
@@ -27,7 +27,7 @@ pygame.init()
 font = pygame.font.Font('freesansbold.ttf', 100)
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Green Light Red Light") 
+pygame.display.set_caption("Green Light Red Light")
 screen_rect = screen.get_rect()
 
 # Events
@@ -66,7 +66,7 @@ def GLRL_main():
     ms = float(runner.ms)
     luck = runner.luck
 
-    passed_time = 0    
+    passed_time = 0
     start_time = pygame.time.get_ticks()
 
     # Creates lights
@@ -74,7 +74,7 @@ def GLRL_main():
     red = lights.Red()
 
     count = 0 # 1 = red, everything else = green
-    
+
     # Main loop
     while running:
         # Look for each event in the queue
@@ -100,10 +100,10 @@ def GLRL_main():
                 count += random.randint(0,10 + int((.2 * luck))) # Increases range by luck
                 if count % 2 == 0:
                     count = 1
-        
+
         passed_time = pygame.time.get_ticks() - start_time
         # reaction_time = passed_time + 250
-            
+
         # Get set of pressed keys
         pressed_keys = pygame.key.get_pressed()
         if pressed_keys[K_RIGHT] or pressed_keys[K_d]:
@@ -126,7 +126,7 @@ def GLRL_main():
         floor_surf.fill(GREEN)
         screen.blit(floor_surf, (0, SCREEN_HEIGHT - 50))
 
-        runner.rect.clamp_ip(screen_rect) 
+        runner.rect.clamp_ip(screen_rect)
 
         # Draw sprites
         for entity in all_sprites:
@@ -145,7 +145,7 @@ def GLRL_main():
             screen.blit(red.red_surface, red.red_rect)
         else:
             screen.blit(green.green_surface, green.green_rect)
-        
+
         # Check death
         if hp <= 0:
             running = False
@@ -161,6 +161,6 @@ def display_game_over_screen():
     screen = pygame.display.set_mode((1280, 780))
     from gameOver import game_over
     game_over()
-    
+
 if __name__ == '__main__':
     GLRL_main()

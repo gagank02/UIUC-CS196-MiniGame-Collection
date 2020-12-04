@@ -20,7 +20,7 @@ class Cloud(pygame.sprite.Sprite):
                 random.randint(0, SCREEN_HEIGHT - 150),
             )
         )
-    
+
     def update(self):
         self.rect.move_ip(-5, 0)
         if self.rect.right < 0:
