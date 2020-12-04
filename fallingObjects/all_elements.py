@@ -58,8 +58,8 @@ class UI:
     Attributes:
         surf (pygame.Surface):
         rect (pygame.Rect):
-    """
 
+    """
     def __init__(self, font, size, color):
         self.font = pygame.font.SysFont(font, size)
         self.surf = None
@@ -75,6 +75,10 @@ class UI:
 
         Returns:
             None
+
+        Raises:
+            TypeError: if the type of parameter is not str
+
         """
         if type(to_render) != str:
             raise TypeError('Argument to_render must be str')
@@ -99,6 +103,7 @@ class HP(UI):
         __hp (int): private variable
                     the HP value to be displayed.
         name (str): the name of the owner of this HP-UI.
+
     """
 
     '''initiate self.surf and self.rect'''

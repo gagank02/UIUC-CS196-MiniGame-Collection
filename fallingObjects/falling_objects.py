@@ -150,7 +150,7 @@ def falling_objects_main():
                 print('Game exited by player')
                 game_over = True
             elif event.type == ADD_DROP_BLOCKS:
-                size = random.randint(20, 60)
+                size = random.randint(20 * 0.5 * player_a.luck, 60 * 0.4 * player_a.luck)
                 new_drop_block = Drop_Block(size)
                 drop_blocks.add(new_drop_block)
                 all_sprites.add(new_drop_block)

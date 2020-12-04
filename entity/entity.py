@@ -1,5 +1,6 @@
 import pygame
 import fallingObjects.constants
+import card.card as card
 
 
 class Entity(pygame.sprite.Sprite):
@@ -14,12 +15,18 @@ class Entity(pygame.sprite.Sprite):
         image (pygame.Surface): The image/sprite for your player
         ih (int): How tall your player is (in px)
         iw (int): How wide your player is (in px)
+
         rect (pygame.Rect): representing entity's spatial properties
         inv (int): duration of invincibility after player is hit or player spawns (in tick)
         direction (int): where entity is facing at
                         -1 for the left, 1 for the right
+
     """
-    def __init__(self, hp, ms, luck, attack, image, ih, iw):
+    def __init__(self, hp=0, ms=0, luck=0, attack=0, image=None, ih=0, iw=0, crd=None):
+        """The last optional parameter `crd` is a tuple containing 4 stats of entity in turn.
+        if it exists, it will apply to or override the corresponding class members.
+
+        """
         super(Entity, self).__init__()
 
         self.image = pygame.image.load(image)
@@ -34,6 +41,13 @@ class Entity(pygame.sprite.Sprite):
         self.iw = iw
         self.inv = 1.5 * 60
         self.direction = -1
+
+        if crd is not None:
+            try:
+                for i in range(len(crd)):
+                    [self.hp, self.ms, self.luck, self.attack][i] = crd[i]
+            except ValueError as e:
+                print('Packaged entity stats broken ({0})'.format(e))
 
     def locate(self, deviation: int):
         """sets up entity's initial position
