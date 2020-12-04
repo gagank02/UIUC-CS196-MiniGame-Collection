@@ -36,7 +36,7 @@ bullets = pygame.sprite.Group()
 player = Entity(100, 10, 0, 0, "images/playerShip3_blue.png", 40, 50)
 # player = Entity(100, 10, 0, 0, "spaceShooter/images/playerShip3_blue.png", 40, 50) # Comment this out if running through this file
                                                                                    # Line 37 intended for main menu functionality
-player.rect.centerx = width / 2
+player.rect.centerx = int(width / 2)
 player.rect.bottom = height - 10
 player.radius = 25
 pygame.draw.circle(player.image, red, player.rect.center, player.radius)
@@ -81,7 +81,6 @@ def space_shooter_main():
 
     while running:
         
-        # score = 0
         clock.tick(30)
 
         for event in pygame.event.get():
