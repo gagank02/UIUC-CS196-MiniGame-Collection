@@ -73,14 +73,14 @@ def pong_main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 playing = False
-                return_to_main_menu()
+                display_game_over_screen(score)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:  # pressing q key quits the game
                     playing = False
-                    return_to_main_menu()
+                    display_game_over_screen(score)
                 elif event.key == pygame.K_ESCAPE:  # pressing q key quits the game
                     playing = False
-                    return_to_main_menu()
+                    display_game_over_screen(score)
 
                 if state == 'INTRO':
                     if event.key == pygame.K_SPACE:
@@ -142,7 +142,7 @@ def pong_main():
             pass
         elif state == 'QUIT':
             playing = False
-            return_to_main_menu()
+            # display_game_over_screen(score)
 
         # fills the screen
         screen.fill(black)
@@ -184,10 +184,10 @@ def pong_main():
 
     pygame.quit()
 
-def return_to_main_menu():
-    screen = pygame.display.set_mode((480, 640))
-    from main import main_menu
-    main_menu()
+def display_game_over_screen(score):
+    screen = pygame.display.set_mode((1280, 780))
+    from gameOver import game_over
+    game_over(score)
 
 if __name__ == '__main__':
     pong_main()

@@ -37,24 +37,22 @@ pygame.time.set_timer(LIGHT_EVENT, random.randint(1000,3000))
 ADD_CLOUD = pygame.USEREVENT + 1
 pygame.time.set_timer(ADD_CLOUD, 2000)
 
-
 # Create a runner
 # runner = Entity(5, 5, 5, 5, 'minotaur.png', 100, 100)
 runner = Entity(5, 5, 5, 5, 'greenLightRedLight/minotaur.png', 100, 100)
 runner.rect.x = 0
 runner.rect.y = SCREEN_HEIGHT - 100
 
-
 # # Sprite groups
 all_sprites = pygame.sprite.Group()
 all_clouds = pygame.sprite.Group()
 all_sprites.add(runner)
 
-
 clock = pygame.time.Clock()
 
 # Main function
 def GLRL_main():
+
     # Create screen
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     screen_rect = screen.get_rect()
@@ -83,15 +81,18 @@ def GLRL_main():
             if event.type == KEYDOWN:
                 # If esc, QUIT
                 if event.key == K_ESCAPE:
+                    score = str(int(passed_time/1000))
                     running = False
-                    display_game_over_screen()
+                    display_game_over_screen(score)
                 # If window close button, QUIT
                 elif event.key == QUIT:
+                    score = str(int(passed_time/1000))
                     running = False
-                    display_game_over_screen()
+                    display_game_over_screen(score)
                 elif hp <= 0:
+                    score = str(int(passed_time/1000))
                     running = False
-                    display_game_over_screen()
+                    display_game_over_screen(score)
             if event.type == ADD_CLOUD:
                 new_cloud = clouds.Cloud()
                 all_clouds.add(new_cloud)
@@ -133,6 +134,7 @@ def GLRL_main():
             screen.blit(entity.image, entity.rect)
 
         # Displays total time
+        # score = str(int(passed_time/1000))
         text = font.render("Score: " + str(int(passed_time/1000)) + "s", True, BLACK)
         screen.blit(text, (50, 50))
 
@@ -148,8 +150,9 @@ def GLRL_main():
         
         # Check death
         if hp <= 0:
+            score = str(int(passed_time/1000))
             running = False
-            display_game_over_screen()
+            display_game_over_screen(score)
 
         # Flip everything to display
         pygame.display.flip()
@@ -157,10 +160,10 @@ def GLRL_main():
 
     pygame.quit()
 
-def display_game_over_screen():
+def display_game_over_screen(score):
     screen = pygame.display.set_mode((1280, 780))
     from gameOver import game_over
-    game_over()
+    game_over(score)
     
 if __name__ == '__main__':
     GLRL_main()

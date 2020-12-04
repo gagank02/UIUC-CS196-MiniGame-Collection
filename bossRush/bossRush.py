@@ -68,8 +68,9 @@ def boss_rush_main():
         # Event queue
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                score = "Dummy Score"
                 running = False
-                return_to_main_menu()
+                display_game_over_screen(score)
             elif event.type == shootEvent:
                 bossShot.rect.x = (boss.rect.x + (boss.iw - bossShot.iw) / 2)
                 bossShot.rect.y = (boss.rect.y + (boss.ih - bossShot.ih) / 2)
@@ -78,8 +79,9 @@ def boss_rush_main():
                 all_sprites.add(bossShot)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    score = "Dummy Score"
                     running = False
-                    return_to_main_menu()
+                    display_game_over_screen(score)
 
         keys = pygame.key.get_pressed()
         
@@ -155,10 +157,10 @@ def boss_rush_main():
 
     pygame.quit()
 
-def return_to_main_menu():
-    screen = pygame.display.set_mode((480, 640))
-    from main import main_menu
-    main_menu()
+def display_game_over_screen(score):
+    screen = pygame.display.set_mode((1280, 780))
+    from gameOver import game_over
+    game_over(score)
 
 if __name__ == "__main__":
     boss_rush_main()

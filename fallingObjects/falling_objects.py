@@ -139,7 +139,7 @@ def falling_objects_main():
                 if (event.type == KEYDOWN and event.key == K_RETURN) or event.type == QUIT:
                     print('Game Over')
                     game_over = True
-                    return_to_main_menu()
+                    display_game_over_screen(str(score))
             pygame.display.flip()
             count += 1
             continue
@@ -186,10 +186,10 @@ def falling_objects_main():
     pygame.quit()
 
 
-def return_to_main_menu():
-    pygame.display.set_mode((480, 640))
-    from main import main_menu
-    main_menu()
+def display_game_over_screen(score):
+    screen = pygame.display.set_mode((1280, 780))
+    from gameOver import game_over
+    game_over(score)
 
 
 if __name__ == '__main__':
