@@ -40,7 +40,7 @@ def game_over(score):
 
         # Display score
         the_score = font.render("Your Score: " + score, True, WHITE)
-        screen.blit(the_score, (750, 50))
+        screen.blit(the_score, (SCREEN_WIDTH / 2, 50))
 
         # Mouse coordinates
         mx, my = pygame.mouse.get_pos()
