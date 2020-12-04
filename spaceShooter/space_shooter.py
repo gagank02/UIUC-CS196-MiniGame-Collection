@@ -66,7 +66,7 @@ def new_enemies():
     enemies.add(e)
 
 font_type = pygame.font.match_font('times new roman')
-def draw_text(surface, text, font_size, x, y):
+def score_display(surface, text, font_size, x, y):
     font = pygame.font.Font(font_type, font_size)
     text_surface = font.render(text, True, white)
     text_rect = text_surface.get_rect()
@@ -77,10 +77,11 @@ score = 0
 
 def space_shooter_main():
     running = True
+    score = 0
 
     while running:
         
-        score = 0
+        # score = 0
         clock.tick(30)
 
         for event in pygame.event.get():
@@ -126,7 +127,7 @@ def space_shooter_main():
 
         health_bar(screen, 5, 5, player.hp)
 
-        draw_text(screen, "SCORE: " + str(score), 40, width / 2, 10)
+        score_display(screen, "SCORE: " + str(score), 40, width / 2, 10)
 
         pygame.display.flip()
 
