@@ -15,7 +15,6 @@ def reset_all_values():
     A = 0
     B = 0
 
-
 pygame.init()
 
 # setting colors for game
@@ -30,12 +29,12 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Pong")
 
 # initializing two paddles and ball
-player1 = Entity(5, 5, 5, 0, "left_paddle.png", 100, 20)
+player1 = Entity(5, 5, 5, 0, 'left_paddle.jpg', 100, 20)
 # player1 = Entity(5, 5, 5, 0, "pong/left_paddle.png", 100, 20) # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
 player1.rect.x = 0                                            # Line 34 intended for Main Menu functionality
 player1.rect.y = 200
 
-player2 = Entity(5, 5, 5, 0, "right_paddle.png", 100, 20)   
+player2 = Entity(5, 5, 5, 0, 'right_paddle.jpg', 100, 20)
 # player2 = Entity(5, 5, 5, 0, "pong/right_paddle.png", 100, 20) # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
 player2.rect.x = 680                                           # Line 39 intended for Main Menu functionality
 player2.rect.y = 200
@@ -49,8 +48,6 @@ all_sprites = pygame.sprite.Group()
 
 all_sprites.add(player1)
 all_sprites.add(player2)
-
-
 
 # controls how fast game updates
 clock = pygame.time.Clock()

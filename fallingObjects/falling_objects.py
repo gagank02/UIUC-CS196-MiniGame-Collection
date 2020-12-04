@@ -170,7 +170,7 @@ def falling_objects_main():
         drop_blocks.update()
         key = pygame.key.get_pressed()
 
-        player_a.update(key=key, key_comb=(K_LEFT, K_RIGHT))
+        player_a.updateFallingObjects(key=key, key_comb=(K_LEFT, K_RIGHT))
 
         if player_a.inv <= 0 and player_a.hp > 1:
             player_a_UI_HP.update(WHITE)     # When player is invincible, HP indicator turns to red
