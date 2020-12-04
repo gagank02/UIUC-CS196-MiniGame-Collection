@@ -51,8 +51,8 @@ def falling_objects_main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Falling Objects')
 
-    image_path = 'fallingObjects/resources/elephant.jpg'
-    # image_path = 'fallingObjects/resources/elephant.jpg' # Comment this out if running through this file
+    # image_path = 'fallingObjects/resources/elephant.jpg'
+    image_path = 'fallingObjects/resources/elephant.jpg' # Comment this out if running through this file
                                                          # Line 49 intended for main menu functionality
 
     # initialize player, drop blocks, and their group
@@ -139,7 +139,7 @@ def falling_objects_main():
                 if (event.type == KEYDOWN and event.key == K_RETURN) or event.type == QUIT:
                     print('Game Over')
                     game_over = True
-                    display_game_over_screen(str(score))
+                    display_game_over_screen(str(score // 10))
             pygame.display.flip()
             count += 1
             continue

@@ -81,16 +81,16 @@ def GLRL_main():
             if event.type == KEYDOWN:
                 # If esc, QUIT
                 if event.key == K_ESCAPE:
-                    score = str(int(passed_time/1000))
+                    score = str(int(passed_time/1000)) + "s"
                     running = False
                     display_game_over_screen(score)
                 # If window close button, QUIT
                 elif event.key == QUIT:
-                    score = str(int(passed_time/1000))
+                    score = str(int(passed_time/1000)) + "s"
                     running = False
                     display_game_over_screen(score)
                 elif hp <= 0:
-                    score = str(int(passed_time/1000))
+                    score = str(int(passed_time/1000)) + "s"
                     running = False
                     display_game_over_screen(score)
             if event.type == ADD_CLOUD:
@@ -150,7 +150,7 @@ def GLRL_main():
 
         # Check death
         if hp <= 0:
-            score = str(int(passed_time/1000))
+            score = str(int(passed_time/1000))  + "s"
             running = False
             display_game_over_screen(score)
 
