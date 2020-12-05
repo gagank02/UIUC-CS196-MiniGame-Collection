@@ -91,7 +91,7 @@ def boss_rush_main():
                 or counter <= 0 
                 or damage >= boss.hp 
                 or hits >= player.hp):
-                score = "Dummy Score"
+                score = str(damage + (100 * counter * lives))
                 running = False
                 display_game_over_screen(score)
             elif event.type == attEvent:
@@ -104,7 +104,7 @@ def boss_rush_main():
                 all_sprites.add(bossShot)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    score = "Dummy Score"
+                    score = str(0)
                     running = False
                     display_game_over_screen(score)
             elif event.type == pygame.USEREVENT:
