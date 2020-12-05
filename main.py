@@ -14,7 +14,7 @@ from fallingObjects.all_elements import Drop_Block, UI, Start, HP, GameOver
 from pong.pong_game import reset_all_values, pong_main
 from pong.ball import Ball
 
-from spaceShooter.space_shooter import health_bar, new_enemies, draw_text, space_shooter_main
+from spaceShooter.space_shooter import health_bar, new_enemies, space_shooter_main
 from spaceShooter.sprites import Enemies, Bullet
 
 pygame.init()

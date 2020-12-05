@@ -24,17 +24,17 @@ pygame.display.set_caption("Space Shooter")
 running = True
 
 images = path.join(path.dirname(__file__), "images")
-enemy_image = pygame.image.load(path.join(images, "meteorGrey_small1.png")).convert()
-# enemy_image = pygame.image.load("spaceShooter/images/meteorGrey_small1.png") # Comment this out if running through this file
+# enemy_image = pygame.image.load(path.join(images, "meteorGrey_small1.png")).convert()
+enemy_image = pygame.image.load("spaceShooter/images/meteorGrey_small1.png") # Comment this out if running through this file
                                                                                                           # Line 28 intended for main menu functionality
-bullet_image = pygame.image.load(path.join(images, "laserRed02.png")).convert()
-# bullet_image = pygame.image.load("spaceShooter/images/laserRed02.png") # Comment this out if running through this file
+# bullet_image = pygame.image.load(path.join(images, "laserRed02.png")).convert()
+bullet_image = pygame.image.load("spaceShooter/images/laserRed02.png") # Comment this out if running through this file
                                                                                                     # Line 31 intended for main menu functionality
 all_sprites = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
-player = Entity(100, 10, 0, 0, "images/playerShip3_blue.png", 40, 50)
-# player = Entity(100, 10, 0, 0, "spaceShooter/images/playerShip3_blue.png", 40, 50) # Comment this out if running through this file
+# player = Entity(100, 10, 0, 0, "images/playerShip3_blue.png", 40, 50)
+player = Entity(100, 10, 0, 0, "spaceShooter/images/playerShip3_blue.png", 40, 50) # Comment this out if running through this file
                                                                                    # Line 37 intended for main menu functionality
 player.rect.centerx = int(width / 2)
 player.rect.bottom = height - 10
@@ -87,7 +87,7 @@ def space_shooter_main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-                    # display_game_over_screen(str(score))
+                    display_game_over_screen(str(score))
                 if event.key == pygame.K_SPACE:
                     bullet = Bullet(player.rect.centerx, player.rect.top)
                     bullet.image = bullet_image
@@ -97,7 +97,7 @@ def space_shooter_main():
 
             if event.type == pygame.QUIT:
                 running = False
-                # display_game_over_screen(str(score))
+                display_game_over_screen(str(score))
 
         keypress = pygame.key.get_pressed()
         if keypress[pygame.K_RIGHT]:
@@ -118,7 +118,7 @@ def space_shooter_main():
             new_enemies()
             if player.hp <= 0:
                 running = False
-                # display_game_over_screen(str(score))
+                display_game_over_screen(str(score))
 
         screen.fill(black)
         
