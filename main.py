@@ -8,8 +8,8 @@ from greenLightRedLight.clouds import Cloud
 from bossRush.bossRush import boss_rush_main
 
 from fallingObjects.falling_objects import falling_objects_main
-import fallingObjects.constants
-from fallingObjects.all_elements import Drop_Block, UI, Start, HP, GameOver
+# import fallingObjects.constants
+# from fallingObjects.all_elements import Drop_Block, UI, Start, HP, GameOver
 
 from pong.pong_game import reset_all_values, pong_main
 from pong.ball import Ball
@@ -43,10 +43,12 @@ falling_objects_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 330), (200, 50)
 pong_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 430), (200, 50))
 space_shooter_button = pygame.Rect(((SCREEN_WIDTH // 2) - 100, 530), (200, 50))
 
+
 def write_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect(center=(x, y))
     surface.blit(textobj, textrect)
+
 
 def main_menu():
 
@@ -111,7 +113,7 @@ def main_menu():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
- 
+
         pygame.display.update()
         clock.tick(60)
 

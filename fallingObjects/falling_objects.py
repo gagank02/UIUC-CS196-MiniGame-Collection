@@ -12,6 +12,7 @@ In PyCharm, this action is not needed since it automatically adds the path of th
 """
 import pygame
 import random
+import os
 from pygame.locals import (
     K_LEFT,
     K_RIGHT,
@@ -26,7 +27,7 @@ try:
     from fallingObjects.all_elements import Drop_Block, UI, Start, HP, GameOver
 except (ImportError, ModuleNotFoundError):
     print('Proper search path not found\nAdding correct path to system path...')
-    import sys, os
+    import sys
     current_path = os.path.abspath(os.path.dirname(__file__))
     root_path = os.path.split(current_path)[0]
     sys.path.append(root_path)
@@ -187,10 +188,18 @@ def falling_objects_main():
 
 
 def display_game_over_screen(score):
-    screen = pygame.display.set_mode((1280, 780))
+    pygame.display.set_mode((1280, 780))
     from gameOver import game_over
     game_over(score)
 
 
+class RunAsScriptError(Exception):
+    def __init__(self, dir_name):
+        self.dir = dir_name
+
+    def __str__(self):
+        return f'{self.dir} is not supposed to be run as script'
+
+
 if __name__ == '__main__':
-    falling_objects_main()
+    raise RunAsScriptError(os.path.split(__file__)[1])

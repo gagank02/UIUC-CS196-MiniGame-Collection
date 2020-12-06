@@ -78,10 +78,12 @@ def game_over(score):
         pygame.display.update()
         clock.tick(60)
 
+
 def return_to_main_menu():
     screen = pygame.display.set_mode((480, 640))
     from main import main_menu
     main_menu()
 
+
 if __name__ == "__main__":
-    game_over()
+    raise Exception('Not supposed to be run as script!')

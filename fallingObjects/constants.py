@@ -8,8 +8,8 @@ YELLOW = (255, 225, 0)
 BACKGROUND_COLOR = BLACK
 
 # below defines the size of the screen.
-WIDTH = 1000
-HEIGHT = 500
+WIDTH = 1280
+HEIGHT = 780
 
 ACCELERATION_COEFFICIENT = 1.030  # <- this determines the acceleration of falling objects
 # (note that this coefficient is super sensitive and should be altered carefully).

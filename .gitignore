@@ -9,3 +9,11 @@
 .idea/workspace.xml
 .idea/vcs.xml
 .idea/misc.xml
+*.pyc
+*.pyc
+pong/__pycache__/ball.cpython-36.pyc
+__pycache__/main.cpython-36.pyc
+entity/__pycache__/entity.cpython-36.pyc
+fallingObjects/__pycache__/constants.cpython-36.pyc
+*.pyc
+*.pyc
