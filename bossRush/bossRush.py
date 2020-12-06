@@ -19,20 +19,20 @@ pygame.display.set_caption("Boss Rush Time Trial")
 all_sprites = pygame.sprite.Group()
 
 # Initialize entities and add them to sprite list
-player = Entity(4, 5, 10, 100, "sprites/[PH]_player.png", 64, 64)
-# player = Entity(10, 5, 10, 0, "bossRush/sprites/[PH]_player.png", 64, 64) # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
+# player = Entity(4, 5, 10, 100, "sprites/[PH]_player.png", 64, 64)
+player = Entity(10, 5, 10, 0, "bossRush/sprites/[PH]_player.png", 64, 64) # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
 player.rect.y = 0                                                         # Line 22 intended for Main Menu functionality
 player.rect.x = 0
 all_sprites.add(player)
 
-boss = Entity(5100, 10, 0, 1, "sprites/[PH]_boss.png", 256, 256) 
-# boss = Entity(10, 10, 0, 10, "bossRush/sprites/[PH]_boss.png", 256, 256) # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
+# boss = Entity(5100, 10, 0, 1, "sprites/[PH]_boss.png", 256, 256) 
+boss = Entity(10, 10, 0, 10, "bossRush/sprites/[PH]_boss.png", 256, 256) # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
 boss.rect.y = (SCREEN_HEIGHT - boss.ih) / 2                              # Line 28 intended for Main Menu functionality
 boss.rect.x = (SCREEN_WIDTH - boss.iw) / 2
 all_sprites.add(boss)
 
-bossShot = Entity(0, 5, 10, boss.attack, "sprites/[PH]_shot.png", 64, 64)
-# bossShot = Entity(0, 5, 10, boss.attack, "bossRush/sprites/[PH]_shot.png", 32, 32) # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
+# bossShot = Entity(0, 5, 10, boss.attack, "sprites/[PH]_shot.png", 64, 64)
+bossShot = Entity(0, 5, 10, boss.attack, "bossRush/sprites/[PH]_shot.png", 32, 32) # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
 bossShot.rect.x = -1 * bossShot.iw                                                 # Line 34 intended for Main Menu functionality
 bossShot.rect.y = -1 * bossShot.ih
 tan = (0, 0)
@@ -47,10 +47,10 @@ playerShot = []
 
 # Adds projectile with specified direction to the list
 def shotAppend(direction):
-    playerShot.append(Entity(0, 10, direction, player.attack,
-                              "sprites/[PH]_shot.png", 16, 16))
-    #  playerShot.append(Entity(0, 10, direction, player.attack,           # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
-                            #   "bossRush/sprites/[PH]_shot.png", 16, 16)) # Line 49-50 intended for Main Menu functionality
+    # playerShot.append(Entity(0, 10, direction, player.attack,
+    #                           "sprites/[PH]_shot.png", 16, 16))
+    playerShot.append(Entity(0, 10, direction, player.attack,           # COMMENT THIS OUT IF RUNNING GAME THROUGH THIS FILE
+                              "bossRush/sprites/[PH]_shot.png", 16, 16)) # Line 49-50 intended for Main Menu functionality
     playerShot[-1].rect.y = (player.rect.y +                            
                               ((player.ih - playerShot[-1].ih) / 2))
     playerShot[-1].rect.x = (player.rect.x + 
