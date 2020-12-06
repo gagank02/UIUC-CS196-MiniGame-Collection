@@ -52,12 +52,11 @@ def falling_objects_main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Falling Objects')
 
-    # image_path = 'fallingObjects/resources/elephant.jpg'
-    image_path = 'fallingObjects/resources/elephant.jpg' # Comment this out if running through this file
+    image_path = 'fallingObjects/resources/elephant.png' # Comment this out if running through this file
                                                          # Line 49 intended for main menu functionality
 
     # initialize player, drop blocks, and their group
-    player_a = Entity(attack=6, ms=10, hp=3, image=image_path, iw=80, ih=80, luck=6)
+    player_a = Entity(attack=6, ms=10, hp=3, image=image_path, iw=100, ih=70, luck=6)
     player_a.image.set_colorkey(WHITE)
     player_a.locate(0)
 

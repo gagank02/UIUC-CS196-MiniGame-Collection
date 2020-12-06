@@ -56,7 +56,7 @@ class Entity(pygame.sprite.Sprite):
             deviation (int): the distance entity is placed from the center of screen
         """
         self.rect.centerx = fallingObjects.constants.WIDTH / 2 + deviation
-        self.rect.bottom = fallingObjects.constants.HEIGHT + 20
+        self.rect.bottom = fallingObjects.constants.HEIGHT
 
     # If-statements refer to off-screen checks
     def moveUp(self, pixels):
