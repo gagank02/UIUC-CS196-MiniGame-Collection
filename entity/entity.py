@@ -103,7 +103,7 @@ class Entity(pygame.sprite.Sprite):
     def is_dead(self) -> bool:
         return self.hp <= 0
 
-    def update(self, key, key_comb):
+    def updateFallingObjects(self, key, key_comb):
         """controls player's movement
 
         Args:

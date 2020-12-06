@@ -51,8 +51,8 @@ def falling_objects_main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Falling Objects')
 
-    image_path = 'fallingObjects/resources/elephant.jpg'
-    # image_path = 'fallingObjects/resources/elephant.jpg' # Comment this out if running through this file
+    # image_path = 'fallingObjects/resources/elephant.jpg'
+    image_path = 'fallingObjects/resources/elephant.jpg' # Comment this out if running through this file
                                                          # Line 49 intended for main menu functionality
 
     # initialize player, drop blocks, and their group
@@ -139,7 +139,7 @@ def falling_objects_main():
                 if (event.type == KEYDOWN and event.key == K_RETURN) or event.type == QUIT:
                     print('Game Over')
                     game_over = True
-                    return_to_main_menu()
+                    display_game_over_screen(str(score // 10))
             pygame.display.flip()
             count += 1
             continue
@@ -170,7 +170,7 @@ def falling_objects_main():
         drop_blocks.update()
         key = pygame.key.get_pressed()
 
-        player_a.update(key=key, key_comb=(K_LEFT, K_RIGHT))
+        player_a.updateFallingObjects(key=key, key_comb=(K_LEFT, K_RIGHT))
 
         if player_a.inv <= 0 and player_a.hp > 1:
             player_a_UI_HP.update(WHITE)     # When player is invincible, HP indicator turns to red
@@ -186,10 +186,10 @@ def falling_objects_main():
     pygame.quit()
 
 
-def return_to_main_menu():
-    pygame.display.set_mode((480, 640))
-    from main import main_menu
-    main_menu()
+def display_game_over_screen(score):
+    screen = pygame.display.set_mode((1280, 780))
+    from gameOver import game_over
+    game_over(score)
 
 
 if __name__ == '__main__':
