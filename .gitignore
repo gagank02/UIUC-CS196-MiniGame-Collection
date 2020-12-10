@@ -17,3 +17,4 @@ entity/__pycache__/entity.cpython-36.pyc
 fallingObjects/__pycache__/constants.cpython-36.pyc
 *.pyc
 *.pyc
+fallingObjects/__pycache__/falling_objects.cpython-36.pyc
